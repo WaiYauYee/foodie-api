@@ -1,0 +1,5 @@
+ml-service/venv/
+__pycache__/
+*.pyc
+node_modules/
+ml-service/.env

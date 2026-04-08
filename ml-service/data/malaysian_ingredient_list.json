@@ -1,0 +1,5699 @@
+[
+    {
+        "food_name": "Red Bean",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 329,
+        "protein_g_per_100g": 19.87,
+        "fat_g_per_100g": 0.53,
+        "carbohydrate_g_per_100g": 62.9,
+        "fibre_g_per_100g": 12.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09020023" 
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 197,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Green Bean",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 31,
+        "protein_g_per_100g": 1.83,
+        "fat_g_per_100g": 0.22,
+        "carbohydrate_g_per_100g": 6.97,
+        "fibre_g_per_100g": 2.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09020017"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Corn",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 87,
+        "protein_g_per_100g": 3.6,
+        "fat_g_per_100g": 1.8,
+        "carbohydrate_g_per_100g": 12.5,
+        "fibre_g_per_100g": 3.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14070010"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "whole (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Grass jelly",
+        "food_group": "Jellies and puddings",
+        "energy_kcal_per_100g": 32,
+        "protein_g_per_100g": 0.7,
+        "fat_g_per_100g": 0.04,
+        "carbohydrate_g_per_100g": 7.1,
+        "fibre_g_per_100g": 1.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02030006"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 381,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Attap chee (attap seed)",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 41,
+        "protein_g_per_100g": 0.2,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 10.4,
+        "fibre_g_per_100g": 0.2,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/attap_seed_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Jelly",
+        "food_group": "Dessert",
+        "energy_kcal_per_100g": 266,
+        "protein_g_per_100g": 0.15,
+        "fat_g_per_100g": 0.02,
+        "carbohydrate_g_per_100g": 69.95,
+        "fibre_g_per_100g": 1,
+        "data_source": [ 
+            {
+                "source": "USDA FoodData Central",
+                "url": "https://fdc.nal.usda.gov/food-details/2345860/nutrients"
+            },
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/jelly_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 20,
+                "serving_unit": "tablespoon"
+            },
+            {
+                "serving_size_g": 14,
+                "serving_unit": "individual packet"
+            }
+        ]
+    },
+    {
+        "food_name": "Rose syrup",
+        "food_group": "Sugars and syrups",
+        "energy_kcal_per_100g": 268,
+        "protein_g_per_100g": 0,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 67,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/107021/0/10/rose/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 18,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+        {
+        "food_name": "Condensed Milk",
+        "food_group": "Milk and milk products",
+        "energy_kcal_per_100g": 343,
+        "protein_g_per_100g": 8.5,
+        "fat_g_per_100g": 11.9,
+        "carbohydrate_g_per_100g": 50.4,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/111010/0/10/milk/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 20.7,
+                "serving_unit": "tablespoon"
+            },
+            {
+                "serving_size_g": 525,
+                "serving_unit": "tin"
+            }
+        ]
+    },
+    {
+        "food_name": "Gula Melaka Syrup",
+        "food_group": "",
+        "energy_kcal_per_100g": 200,
+        "protein_g_per_100g": 0,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://fitia.app/calories-nutritional-information/gula-malacca-syrup-F7jk37mi4d/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 30,
+                "serving_unit": "serving"
+            },
+            {
+                "serving_size_g": 15,
+                "serving_unit": "tablespoon"
+            },
+            {
+                "serving_size_g": 5,
+                "serving_unit": "teaspoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Red bean paste filling",
+        "food_group": "Dessert",
+        "energy_kcal_per_100g": 250,
+        "protein_g_per_100g": 5.0,
+        "fat_g_per_100g": 1.0,
+        "carbohydrate_g_per_100g": 50.0,
+        "fibre_g_per_100g": 5.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/red_bean_paste_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "serving"
+            },
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Palm oil",
+        "food_group": "Processed Food",
+        "energy_kcal_per_100g": 884,
+        "protein_g_per_100g": 0,
+        "fat_g_per_100g": 100,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/palm_oil_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 237.3,
+                "serving_unit": "cup"
+            },
+            {
+                "serving_size_g": 14,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Butter",
+        "food_group": "Milk and milk products",
+        "energy_kcal_per_100g": 753,
+        "protein_g_per_100g": 1,
+        "fat_g_per_100g": 79.2,
+        "carbohydrate_g_per_100g": 9.1,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/111001/0/10/butter/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 10,
+                "serving_unit": "piece"
+            },
+            {
+                "serving_size_g": 14.1,
+                "serving_unit": "tablespoon"
+            },
+            {
+                "serving_size_g": 250,
+                "serving_unit": "slab"
+            }
+        ]
+    },
+    {
+        "food_name": "Peanut paste filling",
+        "food_group": "Nut",
+        "energy_kcal_per_100g": 594,
+        "protein_g_per_100g": 25.0,
+        "fat_g_per_100g": 50.0,
+        "carbohydrate_g_per_100g": 18.7,
+        "fibre_g_per_100g": 6.2,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/peanut_paste_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 32,
+                "serving_unit": "serving"
+            },
+             {
+                "serving_size_g": 237,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Olive oil",
+        "food_group": "Oils and fats",
+        "energy_kcal_per_100g": 891,
+        "protein_g_per_100g": 0,
+        "fat_g_per_100g": 100,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/112005/0/10/oil/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 12.9,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Vegetable oil",
+        "food_group": "Oils and fats",
+        "energy_kcal_per_100g": 897.68,
+        "protein_g_per_100g": 0,
+        "fat_g_per_100g": 	99.71,
+        "carbohydrate_g_per_100g": 0.08,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcdcurrent/index.php/site/detail_product/R112022/0/10/oil/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 3.308,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Blend oil",
+        "food_group": "Oils and fats",
+        "energy_kcal_per_100g": 896.14,
+        "protein_g_per_100g": 0,
+        "fat_g_per_100g": 99.37,
+        "carbohydrate_g_per_100g": 0.46,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcdcurrent/index.php/site/detail_product/R112009/0/10/oil/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 2.794,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Peanut (Groundnut)",
+        "food_group": "Nuts, seeds and products",
+        "energy_kcal_per_100g": 543,
+        "protein_g_per_100g": 25.5,
+        "fat_g_per_100g": 	41.8,
+        "carbohydrate_g_per_100g": 16.3,
+        "fibre_g_per_100g": 6.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/104018/0/10/peanut/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 154.4,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Black sesame seeds",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 555,
+        "protein_g_per_100g": 19.4,
+        "fat_g_per_100g": 45.96,
+        "carbohydrate_g_per_100g": 6.35,
+        "fibre_g_per_100g": 19.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09030020"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 9,
+                "serving_unit": "tablespoon"
+            },
+            {
+                "serving_size_g": 144,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "White sesame seeds",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 583,
+        "protein_g_per_100g": 20.12,
+        "fat_g_per_100g": 51.07,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 21.4,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09030041"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 9,
+                "serving_unit": "tablespoon"
+            },
+            {
+                "serving_size_g": 144,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Kuih-Teow (Rice noodle)",
+        "food_group": "Cereal based",
+        "energy_kcal_per_100g": 120,
+        "protein_g_per_100g": 3.8,
+        "fat_g_per_100g": 6,
+        "carbohydrate_g_per_100g": 12.8,
+        "fibre_g_per_100g": 0.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/221006/0/10/rice%20noodle/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 450,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Mee-Hoon (Rice noodle)",
+        "food_group": "Cereal based",
+        "energy_kcal_per_100g": 109,
+        "protein_g_per_100g": 3.1,
+        "fat_g_per_100g": 5.1,
+        "carbohydrate_g_per_100g": 12.6,
+        "fibre_g_per_100g": 0.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)/Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/221012/0/10/rice%20noodle/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 450,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Hard boiled egg",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 151,
+        "protein_g_per_100g": 13.2,
+        "fat_g_per_100g": 10.9,
+        "carbohydrate_g_per_100g": 0.3,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01060002"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 55,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Onion (sauteed)",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 123,
+        "protein_g_per_100g": 0.95,
+        "fat_g_per_100g": 10.8,
+        "carbohydrate_g_per_100g": 7.86,
+        "fibre_g_per_100g": 1.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14080022"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop"
+            }
+        ]
+    },
+    {
+        "food_name": "Red chilies",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 48,
+        "protein_g_per_100g": 1.4,
+        "fat_g_per_100g": 0.4,
+        "carbohydrate_g_per_100g": 4.2,
+        "fibre_g_per_100g": 10.6,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040043"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 10,
+                "serving_unit": "whole"
+            },
+            {
+                "serving_size_g": 116,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Green chilies",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 43,
+        "protein_g_per_100g": 2.8,
+        "fat_g_per_100g": 0.3,
+        "carbohydrate_g_per_100g": 1,
+        "fibre_g_per_100g": 12.9,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040042"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 10,
+                "serving_unit": "whole"
+            },
+            {
+                "serving_size_g": 116,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Fresh herbs",
+        "food_group": "Vegetable",
+        "energy_kcal_per_100g": 40,
+        "protein_g_per_100g": 3.0,
+        "fat_g_per_100g": 1.0,
+        "carbohydrate_g_per_100g": 8.0,
+        "fibre_g_per_100g": 4.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/fresh_herbs_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 10,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Lime",
+        "food_group": "Fruits and fruit products",
+        "energy_kcal_per_100g": 64,
+        "protein_g_per_100g": 1.4,
+        "fat_g_per_100g": 1.1,
+        "carbohydrate_g_per_100g": 1.2,
+        "fibre_g_per_100g": 0.9,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/106044/0/10/lime/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 22.3,
+                "serving_unit": "whole (small)"
+            },
+            {
+                "serving_size_g": 46.1,
+                "serving_unit": "whole (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Sponge cake",
+        "food_group": "Dessert",
+        "energy_kcal_per_100g": 290,
+        "protein_g_per_100g": 5.4,
+        "fat_g_per_100g": 2.8,
+        "carbohydrate_g_per_100g": 61.0,
+        "fibre_g_per_100g": 0.4,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/sponge_cake_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Pork spare ribs",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 286,
+        "protein_g_per_100g": 18.1,
+        "fat_g_per_100g": 24,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06090033"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 54,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Enoki mushroom",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 37,
+        "protein_g_per_100g": 2.66,
+        "fat_g_per_100g": 0.29,
+        "carbohydrate_g_per_100g": 7.81,
+        "fibre_g_per_100g": 2.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14030003"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 64,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Oyster mushroom",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 33,
+        "protein_g_per_100g": 3.31,
+        "fat_g_per_100g": 0.41,
+        "carbohydrate_g_per_100g": 6.09,
+        "fibre_g_per_100g": 2.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14030005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 86,
+                "serving_unit": "cup"
+            },
+             {
+                "serving_size_g": 15,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Fish tofu",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 171,
+        "protein_g_per_100g": 8.3,
+        "fat_g_per_100g": 10,
+        "carbohydrate_g_per_100g": 12.1,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03040007"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 16,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Plain tofu",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 72,
+        "protein_g_per_100g": 6.6,
+        "fat_g_per_100g": 4.2,
+        "carbohydrate_g_per_100g": 1.6,
+        "fibre_g_per_100g": 0.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09040003"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 85,
+                "serving_unit": "block"
+            }
+        ]
+    },
+    {
+        "food_name": "Dried beancurd skin (Fuchok)",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 512,
+        "protein_g_per_100g": 53.85,
+        "fat_g_per_100g": 30.3,
+        "carbohydrate_g_per_100g": 6.04,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09040002"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 5,
+                "serving_unit": "sheet"
+            }
+        ]
+    },
+    {
+        "food_name": "White Chinese cabbage (Bok choy)",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 13,
+        "protein_g_per_100g": 1.5,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 2.18,
+        "fibre_g_per_100g": 1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14010032"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 840,
+                "serving_unit": "whole"
+            },
+            {
+                "serving_size_g": 70,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Napa cabbage (Wongbok)",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 11,
+        "protein_g_per_100g": 1.1,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 0.9,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14010028"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 925,
+                "serving_unit": "whole"
+            },
+            {
+                "serving_size_g": 76,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Chinese mustard green leaf (Chye sim)",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 24,
+        "protein_g_per_100g": 2.15,
+        "fat_g_per_100g": 0.34,
+        "carbohydrate_g_per_100g": 3.01,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14010017"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 86,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Cooked white rice",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 130,
+        "protein_g_per_100g": 2.69,
+        "fat_g_per_100g": 0.28,
+        "carbohydrate_g_per_100g": 28.2,
+        "fibre_g_per_100g": 0.4,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05090006"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 200,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Fish curry",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 80,
+        "protein_g_per_100g": 6.91,
+        "fat_g_per_100g": 4.31,
+        "carbohydrate_g_per_100g": 3.23,
+        "fibre_g_per_100g": 1.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03020005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Chicken breast",
+        "food_group": "Meat and meat products",
+        "energy_kcal_per_100g": 151,
+        "protein_g_per_100g": 18.4,
+        "fat_g_per_100g": 7.8,
+        "carbohydrate_g_per_100g": 1.9,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/108013/0/10/chicken/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 65.5,
+                "serving_unit": "half piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Chicken thigh",
+        "food_group": "Meat and meat products",
+        "energy_kcal_per_100g": 220,
+        "protein_g_per_100g": 17,
+        "fat_g_per_100g": 16.9,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/108014/0/10/chicken/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 136.5,
+                "serving_unit": "medium"
+            }
+        ]
+    },
+    {
+        "food_name": "Chicken wing",
+        "food_group": "Meat and meat products",
+        "energy_kcal_per_100g": 224,
+        "protein_g_per_100g": 17.1,
+        "fat_g_per_100g": 17.3,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/108015/0/10/chicken/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 38.3,
+                "serving_unit": "piece (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Long bean",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 47,
+        "protein_g_per_100g": 2.8,
+        "fat_g_per_100g": 0.4,
+        "carbohydrate_g_per_100g": 8.35,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09020020"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 91,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Prawn Crackers",
+        "food_group": "Fish, shellfish and products",
+        "energy_kcal_per_100g": 424,
+        "protein_g_per_100g": 6.2,
+        "fat_g_per_100g": 9.8,
+        "carbohydrate_g_per_100g": 77.7,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/110068/0/10/Prawn/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 25,
+                "serving_unit": "small packet"
+            }
+        ]
+    },
+    {
+        "food_name": "Cucumber",
+        "food_group": "Vegetables and vegetable products",
+        "energy_kcal_per_100g": 16,
+        "protein_g_per_100g": 0.5,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 	3.4,
+        "fibre_g_per_100g": 0.6,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/105031/0/10/cucumber/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 96.7,
+                "serving_unit": "cup"
+            },
+            {
+                "serving_size_g": 270.3,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Chickpea",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 378,
+        "protein_g_per_100g": 20.47,
+        "fat_g_per_100g": 6.04,
+        "carbohydrate_g_per_100g": 62.95,
+        "fibre_g_per_100g": 12.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09020014"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 200,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Roast chicken",
+        "food_group": "Poultry",
+        "energy_kcal_per_100g": 227,
+        "protein_g_per_100g": 27.27,
+        "fat_g_per_100g": 12.72,
+        "carbohydrate_g_per_100g": 0.85,
+        "fibre_g_per_100g": 0.55,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11020045"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Dhal curry",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 83,
+        "protein_g_per_100g": 3.95,
+        "fat_g_per_100g": 3.57,
+        "carbohydrate_g_per_100g": 8.83,
+        "fibre_g_per_100g": 2.51,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09010009"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 331,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Fried egg",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 196,
+        "protein_g_per_100g": 13.61,
+        "fat_g_per_100g": 14.84,
+        "carbohydrate_g_per_100g": 0.83,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01050005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 45,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Potato",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 58,
+        "protein_g_per_100g": 2.57,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 12.44,
+        "fibre_g_per_100g": 2.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14070011"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "cup"
+            },
+            {
+                "serving_size_g": 170,
+                "serving_unit": "whole (small)"
+            },
+            {
+                "serving_size_g": 369,
+                "serving_unit": "whole (large)"
+            }
+        ]
+    },
+    {
+        "food_name": "Tomato",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 18,
+        "protein_g_per_100g": 0.88,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 3.89,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F04010041"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 55,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Sotong (Squid)",
+        "food_group": "Fish, shellfish and products",
+        "energy_kcal_per_100g": 76,
+        "protein_g_per_100g": 15.9,
+        "fat_g_per_100g": 1.3,
+        "carbohydrate_g_per_100g": 0.1,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/110025/0/10/sotong/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 81.1,
+                "serving_unit": "whole (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Fried chicken",
+        "food_group": "Poultry",
+        "energy_kcal_per_100g": 215,
+        "protein_g_per_100g": 19.75,
+        "fat_g_per_100g": 12.25,
+        "carbohydrate_g_per_100g": 6.42,
+        "fibre_g_per_100g": 0.66,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11020028"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 102,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Glutinous rice in lotus leaf",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 219,
+        "protein_g_per_100g": 9.69,
+        "fat_g_per_100g": 7.1,
+        "carbohydrate_g_per_100g": 29,
+        "fibre_g_per_100g": 0.92,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100060"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Roasted chestnut",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 239,
+        "protein_g_per_100g": 4.48,
+        "fat_g_per_100g": 1.19,
+        "carbohydrate_g_per_100g": 52.36,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09030013"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "handful"
+            }
+        ]
+    },
+    {
+        "food_name": "Salted egg yolk",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 568,
+        "protein_g_per_100g": 22.8,
+        "fat_g_per_100g": 53,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01060005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 17,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Beef rendang",
+        "food_group": "Meat dishes",
+        "energy_kcal_per_100g": 253,
+        "protein_g_per_100g": 18.2,
+        "fat_g_per_100g": 16.5,
+        "carbohydrate_g_per_100g": 7.8,
+        "fibre_g_per_100g": 0.4,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/222005/0/10/beef%20rendang/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 25,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Cashew nut",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 553,
+        "protein_g_per_100g": 18.22,
+        "fat_g_per_100g": 43.85,
+        "carbohydrate_g_per_100g": 30.19,
+        "fibre_g_per_100g": 3.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09030024"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Cinnamon",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 307,
+        "protein_g_per_100g": 3.3,
+        "fat_g_per_100g": 2.4,
+        "carbohydrate_g_per_100g": 68.1,
+        "fibre_g_per_100g": 11.3,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/114021/0/10/cinnamon/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 1.6,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Salted egg",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 190,
+        "protein_g_per_100g": 12.7,
+        "fat_g_per_100g": 12.7,
+        "carbohydrate_g_per_100g": 6.3,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01060004"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 67,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Sweet potato",
+        "food_group": "Starchy roots, tubers and products",
+        "energy_kcal_per_100g": 138,
+        "protein_g_per_100g": 2,
+        "fat_g_per_100g": 0.5,
+        "carbohydrate_g_per_100g": 31.3,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/102007/0/10/Sweet%20potato/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 65,
+                "serving_unit": "round slice"
+            },
+            {
+                "serving_size_g": 68.9,
+                "serving_unit": "half cup"
+            },
+            {
+                "serving_size_g": 77,
+                "serving_unit": "whole (small)"
+            },
+            {
+                "serving_size_g": 332.5,
+                "serving_unit": "whole (medium)"
+            },
+            {
+                "serving_size_g": 681.1,
+                "serving_unit": "whole (large)"
+            }
+        ]
+    },
+    {
+        "food_name": "Sweet potato, purple",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 76,
+        "protein_g_per_100g": 0.9,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 17.6,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14070014"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 130,
+                "serving_unit": "whole"
+            },
+            {
+                "serving_size_g": 133,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Tapioca pearls",
+        "food_group": "Dessert",
+        "energy_kcal_per_100g": 358,
+        "protein_g_per_100g": 0.2,
+        "fat_g_per_100g": 0.0,
+        "carbohydrate_g_per_100g": 88.7,
+        "fibre_g_per_100g": 0.9,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/tapioca_pearls_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 250.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Coconut milk",
+        "food_group": "Nuts, seeds and products",
+        "energy_kcal_per_100g": 278,
+        "protein_g_per_100g": 2.8,
+        "fat_g_per_100g": 28.3,
+        "carbohydrate_g_per_100g": 	2.9,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/104011/0/10/Coconut%20milk/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 14,
+                "serving_unit": "tablespoon"
+            },
+            {
+                "serving_size_g": 237.5,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Agar-Agar",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 77,
+        "protein_g_per_100g": 0.2,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 18.6,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02030001"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Sago pearls",
+        "food_group": "Grain",
+        "energy_kcal_per_100g": 332,
+        "protein_g_per_100g": 0.2,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 83.0,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/sago_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 250.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Mango",
+        "food_group": "Fruits and fruit products",
+        "energy_kcal_per_100g": 69,
+        "protein_g_per_100g": 2.1,
+        "fat_g_per_100g": 0.5,
+        "carbohydrate_g_per_100g": 14.1,
+        "fibre_g_per_100g": 0.4,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/106049/0/10/mango/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 148.7,
+                "serving_unit": "whole (large)"
+            }
+        ]
+    },
+    {
+        "food_name": "Pumpkin",
+        "food_group": "Vegetables and vegetable products",
+        "energy_kcal_per_100g": 60,
+        "protein_g_per_100g": 0.9,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 13.9,
+        "fibre_g_per_100g": 0.3,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/105078/0/10/Pumpkin/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 143.2,
+                "serving_unit": "cup"
+            },
+            {
+                "serving_size_g": 709.1,
+                "serving_unit": "whole (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Rice porridge",
+        "food_group": "Cereals and cereal products",
+        "energy_kcal_per_100g": 75,
+        "protein_g_per_100g": 1.5,
+        "fat_g_per_100g": 0.5,
+        "carbohydrate_g_per_100g": 15.0,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/rice_porridge_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 235.3,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Carrot",
+        "food_group": "Vegetables and vegetable products",
+        "energy_kcal_per_100g": 35,
+        "protein_g_per_100g": 1,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 7.5,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/105018/0/10/Carrot/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 96.2,
+                "serving_unit": "whole"
+            },
+            {
+                "serving_size_g": 129.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Anchovies (Ikan bilis)",
+        "food_group": "Fish, shellfish and products",
+        "energy_kcal_per_100g": 259,
+        "protein_g_per_100g": 56.7,
+        "fat_g_per_100g": 3.1,
+        "carbohydrate_g_per_100g": 1,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/110003/0/10/ikan%20bilis/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 0.09,
+                "serving_unit": "piece"
+            },
+            {
+                "serving_size_g": 55.8,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Chapati flatbread",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 269,
+        "protein_g_per_100g": 8.11,
+        "fat_g_per_100g": 5.64,
+        "carbohydrate_g_per_100g": 46.47,
+        "fibre_g_per_100g": 4.19,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05030004"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Chicken curry",
+        "food_group": "Poultry",
+        "energy_kcal_per_100g": 119,
+        "protein_g_per_100g": 8.92,
+        "fat_g_per_100g": 8.12,
+        "carbohydrate_g_per_100g": 2.64,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11020016"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 447,
+                "serving_unit": "bowl"
+            },
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Teh Tarik",
+        "food_group": "Beverages",
+        "energy_kcal_per_100g": 48,
+        "protein_g_per_100g": 0.6,
+        "fat_g_per_100g": 1.56,
+        "carbohydrate_g_per_100g": 7.88,
+        "fibre_g_per_100g": 0.36,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/D09020075"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "cup (small)"
+            },
+            {
+                "serving_size_g": 200,
+                "serving_unit": "cup (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Beef curry",
+        "food_group": "Meat dishes",
+        "energy_kcal_per_100g": 144,
+        "protein_g_per_100g": 14.6,
+        "fat_g_per_100g": 5.7,
+        "carbohydrate_g_per_100g": 8.6,
+        "fibre_g_per_100g": 0.2,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/222004/0/10/curry/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 45,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Red kidney beans",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 134,
+        "protein_g_per_100g": 12.8,
+        "fat_g_per_100g": 0.4,
+        "carbohydrate_g_per_100g": 14.7,
+        "fibre_g_per_100g": 9.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09020019"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 184,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Chendol",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 105,
+        "protein_g_per_100g": 1.5,
+        "fat_g_per_100g": 4,
+        "carbohydrate_g_per_100g": 16,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02020002"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 368,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Ice cream",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 226,
+        "protein_g_per_100g": 3.3,
+        "fat_g_per_100g": 14.2,
+        "carbohydrate_g_per_100g": 22.8,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02020005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 60,
+                "serving_unit": "scoop"
+            }
+        ]
+    },
+    {
+        "food_name": "White fried carrot cake (Fried radish cake)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 174,
+        "protein_g_per_100g": 5.91,
+        "fat_g_per_100g": 11.82,
+        "carbohydrate_g_per_100g": 11.05,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100055"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 294,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Bean sprouts",
+        "food_group": "Vegetables and vegetable products",
+        "energy_kcal_per_100g": 25,
+        "protein_g_per_100g": 2.6,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 3.3,
+        "fibre_g_per_100g": 0.7,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/105058/0/10/Bean%20sprouts/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 86.7,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Green onions (Scallions)",
+        "food_group": "Vegetable",
+        "energy_kcal_per_100g": 32,
+        "protein_g_per_100g": 1.8,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 7.3,
+        "fibre_g_per_100g": 2.6,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/scallions_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Shrimp",
+        "food_group": "Fish, shellfish and products",
+        "energy_kcal_per_100g": 80,
+        "protein_g_per_100g": 18.2,
+        "fat_g_per_100g": 0.5,
+        "carbohydrate_g_per_100g": 0.6,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/110089/0/10/Shrimp/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 17,
+                "serving_unit": "tablespoon (without shell)"
+            },
+            {
+                "serving_size_g": 180,
+                "serving_unit": "cup (without shell)"
+            },
+            {
+                "serving_size_g": 214.6,
+                "serving_unit": "bowl, small (with shell)"
+            }
+        ]
+    },
+    {
+        "food_name": "White onions",
+        "food_group": "Vegetable",
+        "energy_kcal_per_100g": 40,
+        "protein_g_per_100g": 1.1,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 9.3,
+        "fibre_g_per_100g": 1.7,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/white_onions_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Stir-fried egg",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 150,
+        "protein_g_per_100g": 10.0,
+        "fat_g_per_100g": 11.0,
+        "carbohydrate_g_per_100g": 1.5,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/stir_fried_egg_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Char siew",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 255,
+        "protein_g_per_100g": 28.6,
+        "fat_g_per_100g": 12.7,
+        "carbohydrate_g_per_100g": 6.2,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06100012"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Steamed rice noodle rolls (Cheung fun)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 110,
+        "protein_g_per_100g": 2.5,
+        "fat_g_per_100g": 1.5,
+        "carbohydrate_g_per_100g": 22.5,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/cheung_fun_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 235.3,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Dark soy sauce",
+        "food_group": "Sauce",
+        "energy_kcal_per_100g": 67,
+        "protein_g_per_100g": 6.7,
+        "fat_g_per_100g": 0.0,
+        "carbohydrate_g_per_100g": 6.7,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/dark_soy_sauce_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Chilli crab",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 86,
+        "protein_g_per_100g": 4.63,
+        "fat_g_per_100g": 5.1,
+        "carbohydrate_g_per_100g": 5.52,
+        "fibre_g_per_100g": 0.97,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03060005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 177,
+                "serving_unit": "pincer"
+            },
+            {
+                "serving_size_g": 384,
+                "serving_unit": "quarter"
+            }
+        ]
+    },
+    {
+        "food_name": "Tomato paste",
+        "food_group": "Ingredient",
+        "energy_kcal_per_100g": 91,
+        "protein_g_per_100g": 4.5,
+        "fat_g_per_100g": 0.3,
+        "carbohydrate_g_per_100g": 20.0,
+        "fibre_g_per_100g": 3.6,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/tomato_paste_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 235.7,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Steamed rice cake",
+        "food_group": "Dessert",
+        "energy_kcal_per_100g": 180,
+        "protein_g_per_100g": 3.0,
+        "fat_g_per_100g": 0.5,
+        "carbohydrate_g_per_100g": 40.0,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/steamed_rice_cake_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 250.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Radish",
+        "food_group": "Vegetable",
+        "energy_kcal_per_100g": 16,
+        "protein_g_per_100g": 0.7,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 3.4,
+        "fibre_g_per_100g": 1.6,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/radish_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 115.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Sambal",
+        "food_group": "Condiment",
+        "energy_kcal_per_100g": 100,
+        "protein_g_per_100g": 2.0,
+        "fat_g_per_100g": 3.3,
+        "carbohydrate_g_per_100g": 20.0,
+        "fibre_g_per_100g": 3.3,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/sambal_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Chinese sausage (Lap cheong)",
+        "food_group": "Meat",
+        "energy_kcal_per_100g": 464,
+        "protein_g_per_100g": 17.9,
+        "fat_g_per_100g": 39.3,
+        "carbohydrate_g_per_100g": 7.1,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/lap_cheong_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 237.3,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Braised chicken",
+        "food_group": "Meat",
+        "energy_kcal_per_100g": 167,
+        "protein_g_per_100g": 20.0,
+        "fat_g_per_100g": 8.0,
+        "carbohydrate_g_per_100g": 3.3,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/chicken_braised_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Dried fish",
+        "food_group": "Meat",
+        "energy_kcal_per_100g": 300,
+        "protein_g_per_100g": 62.0,
+        "fat_g_per_100g": 2.5,
+        "carbohydrate_g_per_100g": 0.0,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/dried_fish_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 250.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Sweet chili sauce",
+        "food_group": "Condiment",
+        "energy_kcal_per_100g": 250,
+        "protein_g_per_100g": 0.0,
+        "fat_g_per_100g": 0.0,
+        "carbohydrate_g_per_100g": 60.0,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/sweet_chili_sauce_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Fried tofu puff",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 240,
+        "protein_g_per_100g": 11.9,
+        "fat_g_per_100g": 19.8,
+        "carbohydrate_g_per_100g": 4.0,
+        "fibre_g_per_100g": 2.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/fried_tofu_puffs_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50.0,
+                "serving_unit": "serving"
+            },
+            {
+                "serving_size_g": 250.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Egg noodles",
+        "food_group": "Grain",
+        "energy_kcal_per_100g": 138,
+        "protein_g_per_100g": 5.1,
+        "fat_g_per_100g": 2.1,
+        "carbohydrate_g_per_100g": 25.2,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/asian_egg_noodles_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 200.0,
+                "serving_unit": "cup"
+            },
+            {
+                "serving_size_g": 15,
+                "serving_unit": "forkful"
+            },
+            {
+                "serving_size_g": 100,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Rice noodle (Mee-hoon)",
+        "food_group": "Cereals and cereal products",
+        "energy_kcal_per_100g": 351,
+        "protein_g_per_100g": 11.3,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 76.5,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/101028/0/10/noodle/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 52.5,
+                "serving_unit": "cup (Broken pieces)"
+            },
+            {
+                "serving_size_g": 167.4,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Fried shallots",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 590,
+        "protein_g_per_100g": 5.0,
+        "fat_g_per_100g": 40.0,
+        "carbohydrate_g_per_100g": 50.0,
+        "fibre_g_per_100g": 5.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/fried_shallots_nutrition.html"
+            },
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040056"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 250.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Fish cake",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 92,
+        "protein_g_per_100g": 13.5,
+        "fat_g_per_100g": 3.3,
+        "carbohydrate_g_per_100g": 2.1,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03040008"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Fish balls",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 107,
+        "protein_g_per_100g": 11.30,
+        "fat_g_per_100g": 1.24,
+        "carbohydrate_g_per_100g": 11.77,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "FatSecret",
+                "url": "https://www.fatsecret.com.sg/calories-nutrition/generic/fish-ball"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 120,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Shredded chicken",
+        "food_group": "Meat",
+        "energy_kcal_per_100g": 160,
+        "protein_g_per_100g": 30.6,
+        "fat_g_per_100g": 3.5,
+        "carbohydrate_g_per_100g": 0.0,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/shredded_chicken_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 85.0,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Whipped cream",
+        "food_group": "Dessert",
+        "energy_kcal_per_100g": 343,
+        "protein_g_per_100g": 2.8,
+        "fat_g_per_100g": 34.0,
+        "carbohydrate_g_per_100g": 8.5,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/whipped_cream_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 40.0,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Lady's finger (Okra)",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 33,
+        "protein_g_per_100g": 1.93,
+        "fat_g_per_100g": 0.19,
+        "carbohydrate_g_per_100g": 7.45,
+        "fibre_g_per_100g": 3.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040050"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 25,
+                "serving_unit": "whole"
+            },
+            {
+                "serving_size_g": 100,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Fish head curry",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 105,
+        "protein_g_per_100g": 6.9,
+        "fat_g_per_100g": 6.9,
+        "carbohydrate_g_per_100g": 3.7,
+        "fibre_g_per_100g": 1.4,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03020006"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Guava",
+        "food_group": "Fruits and fruit products",
+        "energy_kcal_per_100g": 46,
+        "protein_g_per_100g": 0.65,
+        "fat_g_per_100g": 0.12,
+        "carbohydrate_g_per_100g": 5.88,
+        "fibre_g_per_100g": 4,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/106030/0/10/guava/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 58.8,
+                "serving_unit": "slice, small without skin & seeds"
+            },
+            {
+                "serving_size_g": 110.5,
+                "serving_unit": "slice, big without skin & seeds"
+            },
+            {
+                "serving_size_g": 318.5,
+                "serving_unit": "whole (small)"
+            },
+            {
+                "serving_size_g": 803.6,
+                "serving_unit": "whole (large)"
+            }
+        ]
+    },
+    {
+        "food_name": "Cherry Tomato",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 22,
+        "protein_g_per_100g": 0.9,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 5.2,
+        "fibre_g_per_100g": 1.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F04010007"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 15,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Steamed chicken",
+        "food_group": "Meat and meat products",
+        "energy_kcal_per_100g": 165,
+        "protein_g_per_100g": 31.0,
+        "fat_g_per_100g": 3.6,
+        "carbohydrate_g_per_100g": 0.0,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/steamed_chicken_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Hokkien mee",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 154,
+        "protein_g_per_100g": 5.46,
+        "fat_g_per_100g": 7.53,
+        "carbohydrate_g_per_100g": 16.07,
+        "fibre_g_per_100g": 0.83,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060064"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 455,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Huat kueh",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 272,
+        "protein_g_per_100g": 5.1,
+        "fat_g_per_100g": 1.4,
+        "carbohydrate_g_per_100g": 59.9,
+        "fibre_g_per_100g": 1.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F07030005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 80,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Grilled fish",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 137,
+        "protein_g_per_100g": 14.7,
+        "fat_g_per_100g": 8.0,
+        "carbohydrate_g_per_100g": 0.0,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/grilled_fish_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150.0,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Red onion",
+        "food_group": "Vegetable",
+        "energy_kcal_per_100g": 40,
+        "protein_g_per_100g": 1.1,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 9.3,
+        "fibre_g_per_100g": 1.7,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/red_onions_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100.0,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Lemon",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 29,
+        "protein_g_per_100g": 1.1,
+        "fat_g_per_100g": 0.3,
+        "carbohydrate_g_per_100g": 9.32,
+        "fibre_g_per_100g": 2.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F04010019"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 110,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Kangkong",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 26,
+        "protein_g_per_100g": 2.9,
+        "fat_g_per_100g": 0.5,
+        "carbohydrate_g_per_100g": 1,
+        "fibre_g_per_100g": 2.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14010025"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 85,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Toast",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 297,
+        "protein_g_per_100g": 9.1,
+        "fat_g_per_100g": 3.2,
+        "carbohydrate_g_per_100g": 55.7,
+        "fibre_g_per_100g": 3.4,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05030022"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 23,
+                "serving_unit": "slice"
+            }
+        ]
+    },
+    {
+        "food_name": "Kaya jam",
+        "food_group": "Oils, seasonings and condiments",
+        "energy_kcal_per_100g": 315,
+        "protein_g_per_100g": 3.88,
+        "fat_g_per_100g": 11.98,
+        "carbohydrate_g_per_100g": 47.85,
+        "fibre_g_per_100g": 1.13,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F10010007"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 15,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Kek lapis",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 475,
+        "protein_g_per_100g": 8,
+        "fat_g_per_100g": 33.8,
+        "carbohydrate_g_per_100g": 34.6,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02010013"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Ketupat",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 92,
+        "protein_g_per_100g": 2.3,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 20.8,
+        "fibre_g_per_100g": 1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100063"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 95,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Durian",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 165,
+        "protein_g_per_100g": 2.5,
+        "fat_g_per_100g": 4.1,
+        "carbohydrate_g_per_100g": 29.6,
+        "fibre_g_per_100g": 3.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F04010011"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 27,
+                "serving_unit": "piece (seed)"
+            }
+        ]
+    },
+    {
+        "food_name": "Crepe cake",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 253,
+        "protein_g_per_100g": 5.6,
+        "fat_g_per_100g": 17.89,
+        "carbohydrate_g_per_100g": 17.4,
+        "fibre_g_per_100g": 0.6,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02010009"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 74,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Kueh dodol",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 328,
+        "protein_g_per_100g": 2.56,
+        "fat_g_per_100g": 13.77,
+        "carbohydrate_g_per_100g": 48.5,
+        "fibre_g_per_100g": 0.78,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090027"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 38,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Curry puff (potato)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 326,
+        "protein_g_per_100g": 7.35,
+        "fat_g_per_100g": 19.75,
+        "carbohydrate_g_per_100g": 29.5,
+        "fibre_g_per_100g": 2.4,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090010"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 70,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Curry puff (chicken)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 329,
+        "protein_g_per_100g": 8.56,
+        "fat_g_per_100g": 21.78,
+        "carbohydrate_g_per_100g": 24.63,
+        "fibre_g_per_100g": 2.27,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090008"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 107,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Curry puff (sardine)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 315,
+        "protein_g_per_100g": 8.98,
+        "fat_g_per_100g": 18.21,
+        "carbohydrate_g_per_100g": 28.96,
+        "fibre_g_per_100g": 2.11,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090011"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 80,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Laksa",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 129,
+        "protein_g_per_100g": 4.43,
+        "fat_g_per_100g": 6.56,
+        "carbohydrate_g_per_100g": 13.13,
+        "fibre_g_per_100g": 0.46,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060073"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 632,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Cucur udang",
+        "food_group": "Wheat flour based",
+        "energy_kcal_per_100g": 266,
+        "protein_g_per_100g": 5.7,
+        "fat_g_per_100g": 11.5,
+        "carbohydrate_g_per_100g": 34.8,
+        "fibre_g_per_100g": 0.2,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/212005/0/10/cucur%20udang/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 54,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Claypot chicken rice",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 175,
+        "protein_g_per_100g": 7.53,
+        "fat_g_per_100g": 6.33,
+        "carbohydrate_g_per_100g": 23.21,
+        "fibre_g_per_100g": 2.38,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100022"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 680,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Chwee kueh",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 137,
+        "protein_g_per_100g": 0.87,
+        "fat_g_per_100g": 9.83,
+        "carbohydrate_g_per_100g": 11.25,
+        "fibre_g_per_100g": 2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 76,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Chee cheong fun (plain)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 131,
+        "protein_g_per_100g": 2.5,
+        "fat_g_per_100g": 2.2,
+        "carbohydrate_g_per_100g": 25.3,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100014"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 101,
+                "serving_unit": "roll"
+            }
+        ]
+    },
+    {
+        "food_name": "Prawn chee cheong fun",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 116,
+        "protein_g_per_100g": 2.87,
+        "fat_g_per_100g": 3.8,
+        "carbohydrate_g_per_100g": 17.5,
+        "fibre_g_per_100g": 0.77,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100109"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 118,
+                "serving_unit": "roll"
+            }
+        ]
+    },
+    {
+        "food_name": "Char siew chee cheong fun",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 151,
+        "protein_g_per_100g": 4.05,
+        "fat_g_per_100g": 6.1,
+        "carbohydrate_g_per_100g": 20.05,
+        "fibre_g_per_100g": 0.76,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100012"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 126,
+                "serving_unit": "roll"
+            }
+        ]
+    },
+    {
+        "food_name": "Char siew",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 255,
+        "protein_g_per_100g": 28.6,
+        "fat_g_per_100g": 12.7,
+        "carbohydrate_g_per_100g": 6.2,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06100012"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Char kway teow",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 179,
+        "protein_g_per_100g": 4.49,
+        "fat_g_per_100g": 7.78,
+        "carbohydrate_g_per_100g": 22.57,
+        "fibre_g_per_100g": 1.33,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060020"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 418,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Chapati",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 269,
+        "protein_g_per_100g": 8.11,
+        "fat_g_per_100g": 5.64,
+        "carbohydrate_g_per_100g": 46.47,
+        "fibre_g_per_100g": 4.19,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05030004"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Bo bo cha cha (Bubur chacha)",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 151,
+        "protein_g_per_100g": 1.9,
+        "fat_g_per_100g": 9.5,
+        "carbohydrate_g_per_100g": 14.7,
+        "fibre_g_per_100g": 2.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02050004"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 355,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Kueh bingka ubi kayu",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 221,
+        "protein_g_per_100g": 1.2,
+        "fat_g_per_100g": 4.2,
+        "carbohydrate_g_per_100g": 44.5,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/213001/0/10/bingka%20ubi/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Ba zhang (rice dumpling)",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 209,
+        "protein_g_per_100g": 6.4,
+        "fat_g_per_100g": 7.3,
+        "carbohydrate_g_per_100g": 29.5,
+        "fibre_g_per_100g": 2.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F07030012"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 185,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Bak kut teh (soup)",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 81,
+        "protein_g_per_100g": 8.34,
+        "fat_g_per_100g": 4.74,
+        "carbohydrate_g_per_100g": 1.17,
+        "fibre_g_per_100g": 0.45,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06100003"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 497,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Kueh bahulu",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 383,
+        "protein_g_per_100g": 9.1,
+        "fat_g_per_100g": 9.3,
+        "carbohydrate_g_per_100g": 65.6,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090024"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 9,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Penang laksa (Asam laksa)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 59,
+        "protein_g_per_100g": 2.76,
+        "fat_g_per_100g": 0.66,
+        "carbohydrate_g_per_100g": 10.51,
+        "fibre_g_per_100g": 0.9,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060093"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 734,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Kueh apam balik",
+        "food_group": "Wheat flour based",
+        "energy_kcal_per_100g": 245,
+        "protein_g_per_100g": 6,
+        "fat_g_per_100g": 5,
+        "carbohydrate_g_per_100g": 43.9,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/212015/0/10/apam%20balik/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 115,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Ang ku kueh (sweet bean)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 208,
+        "protein_g_per_100g": 5.14,
+        "fat_g_per_100g": 4.35,
+        "carbohydrate_g_per_100g": 37.09,
+        "fibre_g_per_100g": 2.06,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090003"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 78,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Ang ku kueh (peanut)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 358,
+        "protein_g_per_100g": 10.6,
+        "fat_g_per_100g": 18.54,
+        "carbohydrate_g_per_100g": 36.98,
+        "fibre_g_per_100g": 2.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090002"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 71,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Ice kacang (Ais kacang)",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 63,
+        "protein_g_per_100g": 1.2,
+        "fat_g_per_100g": 0.3,
+        "carbohydrate_g_per_100g": 14.1,
+        "fibre_g_per_100g": 2.6,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02020007"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 425,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Kueh dadar (Kuih ketayap)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 254,
+        "protein_g_per_100g": 4.3,
+        "fat_g_per_100g": 11.5,
+        "carbohydrate_g_per_100g": 33.2,
+        "fibre_g_per_100g": 7.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090026"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 81,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Grated coconut",
+        "food_group": "Snack",
+        "energy_kcal_per_100g": 354,
+        "protein_g_per_100g": 3.3,
+        "fat_g_per_100g": 33.5,
+        "carbohydrate_g_per_100g": 15.2,
+        "fibre_g_per_100g": 9.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/grated_coconut_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 120.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Rainbow lapis kueh (Kuih lapis)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 174,
+        "protein_g_per_100g": 1,
+        "fat_g_per_100g": 5,
+        "carbohydrate_g_per_100g": 31.3,
+        "fibre_g_per_100g": 0.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090050"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 69,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Kuih Seri Muka (Kueh Salat)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 151,
+        "protein_g_per_100g": 3.3,
+        "fat_g_per_100g": 4.5,
+        "carbohydrate_g_per_100g": 24.2,
+        "fibre_g_per_100g": 1.9,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090033"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 54,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Langsat",
+        "food_group": "Fruits and fruit products",
+        "energy_kcal_per_100g": 34,
+        "protein_g_per_100g": 0.4,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 8.2,
+        "fibre_g_per_100g": 0.9,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/106042/0/10/langsat/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g":  9.1,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Mayonnaise",
+        "food_group": "Oils, seasonings and condiments",
+        "energy_kcal_per_100g": 371,
+        "protein_g_per_100g": 0.9,
+        "fat_g_per_100g": 32.3,
+        "carbohydrate_g_per_100g": 19.9,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F10030001"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 15,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Lekor",
+        "food_group": "Snack",
+        "energy_kcal_per_100g": 300,
+        "protein_g_per_100g": 10.0,
+        "fat_g_per_100g": 10.0,
+        "carbohydrate_g_per_100g": 40.0,
+        "fibre_g_per_100g": 2.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/lekor_bites_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 236.6,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Lemang",
+        "food_group": "Grain",
+        "energy_kcal_per_100g": 150,
+        "protein_g_per_100g": 2.5,
+        "fat_g_per_100g": 5.0,
+        "carbohydrate_g_per_100g": 25.0,
+        "fibre_g_per_100g": 1.5,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/fr/lemang_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 200.0,
+                "serving_unit": "serving"
+            }
+        ]
+    },
+    {
+        "food_name": "Cooked white glutinous rice",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 97,
+        "protein_g_per_100g": 2.02,
+        "fat_g_per_100g": 0.19,
+        "carbohydrate_g_per_100g": 21.09,
+        "fibre_g_per_100g": 1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05090009"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 200,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+     {
+        "food_name": "Lepat pisang",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 205,
+        "protein_g_per_100g": 2.9,
+        "fat_g_per_100g": 2.9,
+        "carbohydrate_g_per_100g": 41.7,
+        "fibre_g_per_100g": 0.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/213018/0/10/lepat%20pisang/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 93,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+     {
+        "food_name": "Lor mee",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 117,
+        "protein_g_per_100g": 4.8,
+        "fat_g_per_100g": 4.5,
+        "carbohydrate_g_per_100g": 14.2,
+        "fibre_g_per_100g": 0.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060075"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 719,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+     {
+        "food_name": "Fried wanton (pork & prawn)",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 424,
+        "protein_g_per_100g": 11.7,
+        "fat_g_per_100g": 29.9,
+        "carbohydrate_g_per_100g": 26.9,
+        "fibre_g_per_100g": 1.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03060014"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 20,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+     {
+        "food_name": "Instant noodles (dry)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 206,
+        "protein_g_per_100g": 5.18,
+        "fat_g_per_100g": 9.01,
+        "carbohydrate_g_per_100g": 26,
+        "fibre_g_per_100g": 0.87,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060066"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 160,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Instant noodles (soup)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 78,
+        "protein_g_per_100g": 1.69,
+        "fat_g_per_100g": 3.03,
+        "carbohydrate_g_per_100g": 10.94,
+        "fibre_g_per_100g": 0.86,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060067"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 524,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Red bell pepper",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 27,
+        "protein_g_per_100g": 1.1,
+        "fat_g_per_100g": 0.4,
+        "carbohydrate_g_per_100g": 4.4,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040019"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Green bell pepper",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 16,
+        "protein_g_per_100g": 0.9,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 2.5,
+        "fibre_g_per_100g": 1.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040018"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Yellow bell pepper",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 27,
+        "protein_g_per_100g": 1,
+        "fat_g_per_100g": 0.21,
+        "carbohydrate_g_per_100g": 6.32,
+        "fibre_g_per_100g": 0.9,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040020"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Pineapple (Nanas) ",
+        "food_group": "Fruits and fruit products",
+        "energy_kcal_per_100g": 45,
+        "protein_g_per_100g": 0.5,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 10.6,
+        "fibre_g_per_100g": 0.6,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/106074/0/10/pineapple/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 130,
+                "serving_unit": "slice without skin & seeds"
+            },
+            {
+                "serving_size_g": 644.6,
+                "serving_unit": "whole (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Sausage",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 181,
+        "protein_g_per_100g": 16.66,
+        "fat_g_per_100g": 11.43,
+        "carbohydrate_g_per_100g": 3.05,
+        "fibre_g_per_100g": 1.47,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06110007"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 40,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Snow pea",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 38,
+        "protein_g_per_100g": 3,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 4.7,
+        "fibre_g_per_100g": 2.9,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09020024"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 112,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Mangosteen",
+        "food_group": "Fruits and fruit products",
+        "energy_kcal_per_100g": 34,
+        "protein_g_per_100g": 0.6,
+        "fat_g_per_100g": 1,
+        "carbohydrate_g_per_100g": 5.6,
+        "fibre_g_per_100g": 5.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/106058/0/10/mangosteen/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 16.62,
+                "serving_unit": "whole (small)"
+            },
+             {
+                "serving_size_g": 31.933,
+                "serving_unit": "whole (large)"
+            }
+        ]
+    },
+    {
+        "food_name": "Mee goreng",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 189,
+        "protein_g_per_100g": 7,
+        "fat_g_per_100g": 6.9,
+        "carbohydrate_g_per_100g": 24.71,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060080"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 605,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Mee hoon kway (soup)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 82,
+        "protein_g_per_100g": 3.8,
+        "fat_g_per_100g": 2.86,
+        "carbohydrate_g_per_100g": 10.22,
+        "fibre_g_per_100g": 0.74,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060082"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 731,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Minced pork",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 203,
+        "protein_g_per_100g": 25.9,
+        "fat_g_per_100g": 11,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06090012"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 240,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Beehoon soup (Mee hoon soup) ",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 57,
+        "protein_g_per_100g": 2.5,
+        "fat_g_per_100g": 1.01,
+        "carbohydrate_g_per_100g": 9.51,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060015"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 591,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Ham",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 246,
+        "protein_g_per_100g": 18.49,
+        "fat_g_per_100g": 18.52,
+        "carbohydrate_g_per_100g": 0.06,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06110013"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 18,
+                "serving_unit": "slice"
+            }
+        ]
+    },
+    {
+        "food_name": "Mee rebus",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 107,
+        "protein_g_per_100g": 4.16,
+        "fat_g_per_100g": 3.48,
+        "carbohydrate_g_per_100g": 14.64,
+        "fibre_g_per_100g": 1.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060084"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 612,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Rojak",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 228,
+        "protein_g_per_100g": 7.6,
+        "fat_g_per_100g": 15.5,
+        "carbohydrate_g_per_100g": 14.5,
+        "fibre_g_per_100g": 0.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/224008/0/10/rojak/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 330,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Mee siam",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 113,
+        "protein_g_per_100g": 2.96,
+        "fat_g_per_100g": 3.8,
+        "carbohydrate_g_per_100g": 16.59,
+        "fibre_g_per_100g": 0.79,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060085"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 652,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Plain fried beehoon",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 154,
+        "protein_g_per_100g": 2.18,
+        "fat_g_per_100g": 2.66,
+        "carbohydrate_g_per_100g": 30.2,
+        "fibre_g_per_100g": 0.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060096"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 240,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Chicken rendang",
+        "food_group": "Poultry",
+        "energy_kcal_per_100g": 217,
+        "protein_g_per_100g": 17.1,
+        "fat_g_per_100g": 14.6,
+        "carbohydrate_g_per_100g": 4.2,
+        "fibre_g_per_100g": 0.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11020019"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Murtabak (mutton)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 246,
+        "protein_g_per_100g": 14.13,
+        "fat_g_per_100g": 13.63,
+        "carbohydrate_g_per_100g": 16.65,
+        "fibre_g_per_100g": 1.36,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020066"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 345,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Murtabak (chicken)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 258,
+        "protein_g_per_100g": 12.89,
+        "fat_g_per_100g": 14.73,
+        "carbohydrate_g_per_100g": 18.56,
+        "fibre_g_per_100g": 1.69,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020064"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 330,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Murtabak (vegetable)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 190,
+        "protein_g_per_100g": 4.96,
+        "fat_g_per_100g": 10.2,
+        "carbohydrate_g_per_100g": 19.62,
+        "fibre_g_per_100g": 2.06,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020067"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 437,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Murtabak (chicken, mushroom, cheese)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 298,
+        "protein_g_per_100g": 21.9,
+        "fat_g_per_100g": 19.4,
+        "carbohydrate_g_per_100g": 8.92,
+        "fibre_g_per_100g": 1.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020065"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 611,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Muruku",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 500,
+        "protein_g_per_100g": 10.9,
+        "fat_g_per_100g": 30.1,
+        "carbohydrate_g_per_100g": 46.2,
+        "fibre_g_per_100g": 4.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090039"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 22,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Fried rice (Nasi goreng)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 169,
+        "protein_g_per_100g": 5.98,
+        "fat_g_per_100g": 7.87,
+        "carbohydrate_g_per_100g": 18.59,
+        "fibre_g_per_100g": 1.36,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100083"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 433,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Nasi impit",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 175,
+        "protein_g_per_100g": 4.0,
+        "fat_g_per_100g": 5.0,
+        "carbohydrate_g_per_100g": 25.0,
+        "fibre_g_per_100g": 1.5,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/nasi_impit_kuah_kacang_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 235.3,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Satay sauce",
+        "food_group": "Oils, seasonings and condiments",
+        "energy_kcal_per_100g": 240,
+        "protein_g_per_100g": 8.33,
+        "fat_g_per_100g": 17.2,
+        "carbohydrate_g_per_100g": 12.98,
+        "fibre_g_per_100g": 4.19,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F10040002"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 15,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Nasi pattaya",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 210,
+        "protein_g_per_100g": 6.9,
+        "fat_g_per_100g": 11,
+        "carbohydrate_g_per_100g": 20.9,
+        "fibre_g_per_100g": 1.1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100096"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 383,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Tomato ketchup",
+        "food_group": "Vegetables and vegetable products",
+        "energy_kcal_per_100g": 111,
+        "protein_g_per_100g": 1.7,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 26,
+        "fibre_g_per_100g": 0.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/105100/0/10/Ketchup/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 17.8,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+    {
+        "food_name": "Plain omelette",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 165,
+        "protein_g_per_100g": 12.2,
+        "fat_g_per_100g": 13.1,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01050010"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 24,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Boiled broccoli",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 35,
+        "protein_g_per_100g": 2.38,
+        "fat_g_per_100g": 0.41,
+        "carbohydrate_g_per_100g": 7.18,
+        "fibre_g_per_100g": 3.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040002"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Ondeh ondeh (Klepon)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 272,
+        "protein_g_per_100g": 2.7,
+        "fat_g_per_100g": 10,
+        "carbohydrate_g_per_100g": 44.5,
+        "fibre_g_per_100g": 2.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090041"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Otak otak / Otah (Grilled fish cake wrapped in a banana leaf)",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 98,
+        "protein_g_per_100g": 5.8,
+        "fat_g_per_100g": 6.4,
+        "carbohydrate_g_per_100g": 4.2,
+        "fibre_g_per_100g": 2.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03040011"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 29,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Oyster omelette (eggs and oysters)",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 255,
+        "protein_g_per_100g": 7.1,
+        "fat_g_per_100g": 19.5,
+        "carbohydrate_g_per_100g": 12.8,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01050009"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Ban mian / Pan mee (soup)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 82,
+        "protein_g_per_100g": 3.8,
+        "fat_g_per_100g": 2.86,
+        "carbohydrate_g_per_100g": 10.22,
+        "fibre_g_per_100g": 0.74,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060005"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 731,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Pineapple Tart",
+        "food_group": "Wheat flour based",
+        "energy_kcal_per_100g": 452,
+        "protein_g_per_100g": 6.3,
+        "fat_g_per_100g": 20.9,
+        "carbohydrate_g_per_100g": 59.7,
+        "fibre_g_per_100g": 0.7,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/212022/0/10/Pineapple%20Tart/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 5,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Pisang goreng",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 198,
+        "protein_g_per_100g": 2,
+        "fat_g_per_100g": 4.4,
+        "carbohydrate_g_per_100g": 37.5,
+        "fibre_g_per_100g": 0.2,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/213023/0/10/Pisang%20goreng/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 65,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Popiah",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 150,
+        "protein_g_per_100g": 4.52,
+        "fat_g_per_100g": 6.22,
+        "carbohydrate_g_per_100g": 19.04,
+        "fibre_g_per_100g": 1.42,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020083"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 162,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Prawn noodles (Prawn Mee)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 77,
+        "protein_g_per_100g": 4.8,
+        "fat_g_per_100g": 1.3,
+        "carbohydrate_g_per_100g": 10.3,
+        "fibre_g_per_100g": 0.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060094"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 685,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Roasted pork belly (Siew yoke)",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 387,
+        "protein_g_per_100g": 23.9,
+        "fat_g_per_100g": 31.9,
+        "carbohydrate_g_per_100g": 0.9,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06100039"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Prawn",
+        "food_group": "Fish, shellfish and products",
+        "energy_kcal_per_100g": 75,
+        "protein_g_per_100g": 17.2,
+        "fat_g_per_100g": 0.3,
+        "carbohydrate_g_per_100g": 0.9,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/110066/0/10/Prawn/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 6.5,
+                "serving_unit": "whole (medium)"
+            }
+        ]
+    },
+    {
+        "food_name": "Sambal prawns",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 129,
+        "protein_g_per_100g": 10.9,
+        "fat_g_per_100g": 8.81,
+        "carbohydrate_g_per_100g": 1.57,
+        "fibre_g_per_100g": 1.56,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03060023"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Puri",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 372,
+        "protein_g_per_100g": 8.76,
+        "fat_g_per_100g": 16.66,
+        "carbohydrate_g_per_100g": 46.85,
+        "fibre_g_per_100g": 2.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05030016"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Curry vegetables",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 85,
+        "protein_g_per_100g": 2.33,
+        "fat_g_per_100g": 7.03,
+        "carbohydrate_g_per_100g": 2.98,
+        "fibre_g_per_100g": 1.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14080010"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Putu mayam",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 188,
+        "protein_g_per_100g": 2.2,
+        "fat_g_per_100g": 3.4,
+        "carbohydrate_g_per_100g": 37.1,
+        "fibre_g_per_100g": 2.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05100111"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 104,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Jaggery sugar",
+        "food_group": "Sweets",
+        "energy_kcal_per_100g": 383,
+        "protein_g_per_100g": 0.4,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 98.0,
+        "fibre_g_per_100g": 0.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/jaggery_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 200.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Putu piring",
+        "food_group": "Rice and rice flour based",
+        "energy_kcal_per_100g": 234,
+        "protein_g_per_100g": 2.9,
+        "fat_g_per_100g": 4.3,
+        "carbohydrate_g_per_100g": 46,
+        "fibre_g_per_100g": 0.4,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/211023/0/10/putu%20piring/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 32,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Rambutan",
+        "food_group": "Fruits and fruit products",
+        "energy_kcal_per_100g": 59,
+        "protein_g_per_100g": 0.7,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 13.9,
+        "fibre_g_per_100g": 0.3,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/106084/0/10/rambutan/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 16.9,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "Crushed peanuts (topping)",
+        "food_group": "Nut",
+        "energy_kcal_per_100g": 567,
+        "protein_g_per_100g": 25.8,
+        "fat_g_per_100g": 49.2,
+        "carbohydrate_g_per_100g": 16.1,
+        "fibre_g_per_100g": 8.5,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/crushed_peanuts_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 149.3,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Peanut sauce (coating)",
+        "food_group": "Sauce",
+        "energy_kcal_per_100g": 257,
+        "protein_g_per_100g": 6.3,
+        "fat_g_per_100g": 16.0,
+        "carbohydrate_g_per_100g": 22.0,
+        "fibre_g_per_100g": 1.8,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/peanut_sauce_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 256.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Papaya",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 34,
+        "protein_g_per_100g": 0.4,
+        "fat_g_per_100g": 0.1,
+        "carbohydrate_g_per_100g": 6.9,
+        "fibre_g_per_100g": 2.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F04010027"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 130,
+                "serving_unit": "slice"
+            }
+        ]
+    },
+    {
+        "food_name": "Roti Canai (flaky flatbread)",
+        "food_group": "Cereal based",
+        "energy_kcal_per_100g": 317,
+        "protein_g_per_100g": 7,
+        "fat_g_per_100g": 10.8,
+        "carbohydrate_g_per_100g": 47.9,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/221023/0/10/roti%20canai/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 95,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Roti jala",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 137,
+        "protein_g_per_100g": 4.1,
+        "fat_g_per_100g": 3.9,
+        "carbohydrate_g_per_100g": 21.3,
+        "fibre_g_per_100g": 4.7,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020103"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 80,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Roti john",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 286,
+        "protein_g_per_100g": 10,
+        "fat_g_per_100g": 13.7,
+        "carbohydrate_g_per_100g": 30.5,
+        "fibre_g_per_100g": 4.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020104"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 253,
+                "serving_unit": "whole"
+            }
+        ]
+    },
+    {
+        "food_name": "White bread",
+        "food_group": "Carb-based",
+        "energy_kcal_per_100g": 255,
+        "protein_g_per_100g": 9.7,
+        "fat_g_per_100g": 2.74,
+        "carbohydrate_g_per_100g": 48.94,
+        "fibre_g_per_100g": 2.54,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05030024"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 24,
+                "serving_unit": "slice"
+            }
+        ]
+    },
+    {
+        "food_name": "Plain roti naan",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 301,
+        "protein_g_per_100g": 8.64,
+        "fat_g_per_100g": 5.26,
+        "carbohydrate_g_per_100g": 54.73,
+        "fibre_g_per_100g": 1.91,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05030007"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 77,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Roti Naan (with cheese)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 303,
+        "protein_g_per_100g": 11.17,
+        "fat_g_per_100g": 10.19,
+        "carbohydrate_g_per_100g": 41.74,
+        "fibre_g_per_100g": 1.57,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05020071"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 122,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Sliced cheese",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 201,
+        "protein_g_per_100g": 23.6,
+        "fat_g_per_100g": 9.3,
+        "carbohydrate_g_per_100g": 5.8,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01010003"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 17,
+                "serving_unit": "slice"
+            }
+        ]
+    },
+    {
+        "food_name": "Roti Tissue",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 300,
+        "protein_g_per_100g": 5.3,
+        "fat_g_per_100g": 12,
+        "carbohydrate_g_per_100g": 43.3,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Kalori API",
+                "url": "https://kalori-api.my/search"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Petai (Bitter bean)",
+        "food_group": "Vegetables and vegetable products",
+        "energy_kcal_per_100g": 124,
+        "protein_g_per_100g": 10,
+        "fat_g_per_100g": 1.8,
+        "carbohydrate_g_per_100g": 16.9,
+        "fibre_g_per_100g": 1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/105076/0/10/petai/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 119.2,
+                "serving_unit": "cup (seeds)"
+            },
+            {
+                "serving_size_g": 24,
+                "serving_unit": "strand (small)"
+            },
+            {
+                "serving_size_g": 27.8,
+                "serving_unit": "strand (large)"
+            }
+        ]
+    },
+    {
+        "food_name": "Sambal prawns (Sambal Udang)",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 129,
+        "protein_g_per_100g": 10.9,
+        "fat_g_per_100g": 8.81,
+        "carbohydrate_g_per_100g": 1.57,
+        "fibre_g_per_100g": 1.56,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03060023"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Beef satay",
+        "food_group": "Satay",
+        "energy_kcal_per_100g": 219,
+        "protein_g_per_100g": 38.9,
+        "fat_g_per_100g": 6.7,
+        "carbohydrate_g_per_100g": 0.8,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/236002/0/10/satay/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 11.6,
+                "serving_unit": "stick (4 pieces)"
+            }
+        ]
+    },
+    {
+        "food_name": "Chicken satay",
+        "food_group": "Satay",
+        "energy_kcal_per_100g": 227,
+        "protein_g_per_100g": 41.3,
+        "fat_g_per_100g": 6.1,
+        "carbohydrate_g_per_100g": 1.8,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/236001/0/10/satay/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 10.3,
+                "serving_unit": "stick (4 pieces)"
+            }
+        ]
+    },
+    {
+        "food_name": "Pork satay",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 293,
+        "protein_g_per_100g": 20.88,
+        "fat_g_per_100g": 16.19,
+        "carbohydrate_g_per_100g": 15.76,
+        "fibre_g_per_100g": 0.97,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06100037"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 11,
+                "serving_unit": "stick"
+            }
+        ]
+    },
+    {
+        "food_name": "Satay celup",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 225,
+        "protein_g_per_100g": 12.5,
+        "fat_g_per_100g": 14,
+        "carbohydrate_g_per_100g": 15,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Kalori API",
+                "url": "https://kalori-api.my/search"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 20,
+                "serving_unit": "stick"
+            }
+        ]
+    },
+    {
+        "food_name": "Soto ayam",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 107,
+        "protein_g_per_100g": 1.5,
+        "fat_g_per_100g": 5.9,
+        "carbohydrate_g_per_100g": 11.9,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/237002/0/10/soto%20ayam/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 478.6,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+     {
+        "food_name": "Tandoori chicken",
+        "food_group": "Poultry",
+        "energy_kcal_per_100g": 164,
+        "protein_g_per_100g": 18.4,
+        "fat_g_per_100g": 8.9,
+        "carbohydrate_g_per_100g": 2.7,
+        "fibre_g_per_100g": 0.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11020052"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+     {
+        "food_name": "Tang yuan",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 124,
+        "protein_g_per_100g": 2,
+        "fat_g_per_100g": 0.3,
+        "carbohydrate_g_per_100g": 28.2,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F07030010"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 20,
+                "serving_unit": "piece"
+            },
+            {
+                "serving_size_g": 320,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+     {
+        "food_name": "Sugar syrup",
+        "food_group": "Sugar and confectionery",
+        "energy_kcal_per_100g": 288,
+        "protein_g_per_100g": 0.2,
+        "fat_g_per_100g": 0,
+        "carbohydrate_g_per_100g": 74.9,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F13030010"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 15,
+                "serving_unit": "tablespoon"
+            }
+        ]
+    },
+     {
+        "food_name": "Tau huey (Tau foo fah)",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 59,
+        "protein_g_per_100g": 2.3,
+        "fat_g_per_100g": 0.6,
+        "carbohydrate_g_per_100g": 11.1,
+        "fibre_g_per_100g": 0.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02030011"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 310,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+     {
+        "food_name": "Tauhu Sumbat",
+        "food_group": "Appetizer",
+        "energy_kcal_per_100g": 167,
+        "protein_g_per_100g": 6.7,
+        "fat_g_per_100g": 10.0,
+        "carbohydrate_g_per_100g": 13.3,
+        "fibre_g_per_100g": 2.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/tauhu_sumbat_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 236.6,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+     {
+        "food_name": "Thosai",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 216,
+        "protein_g_per_100g": 4.5,
+        "fat_g_per_100g": 4.5,
+        "carbohydrate_g_per_100g": 39.2,
+        "fibre_g_per_100g": 1.4,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05010009"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+     {
+        "food_name": "Chutney (coconut)",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 106,
+        "protein_g_per_100g": 2.61,
+        "fat_g_per_100g": 7.86,
+        "carbohydrate_g_per_100g": 6.05,
+        "fibre_g_per_100g": 4.16,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F04020001"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 171,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+     {
+        "food_name": "Sambar",
+        "food_group": "Nuts and legumes",
+        "energy_kcal_per_100g": 71,
+        "protein_g_per_100g": 2.84,
+        "fat_g_per_100g": 3.09,
+        "carbohydrate_g_per_100g": 7.84,
+        "fibre_g_per_100g": 2.23,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F09010013"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 339,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Chutney (tomato)",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 77,
+        "protein_g_per_100g": 2.82,
+        "fat_g_per_100g": 4.15,
+        "carbohydrate_g_per_100g": 7.16,
+        "fibre_g_per_100g": 5.54,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14080008"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 169,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Seafood tom yum soup (red)",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 67,
+        "protein_g_per_100g": 2.95,
+        "fat_g_per_100g": 3.14,
+        "carbohydrate_g_per_100g": 6.64,
+        "fibre_g_per_100g": 0.75,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03060029"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 541,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Wajik",
+        "food_group": "Rice and rice flour based",
+        "energy_kcal_per_100g": 284,
+        "protein_g_per_100g": 3.8,
+        "fat_g_per_100g": 2.6,
+        "carbohydrate_g_per_100g": 61.4,
+        "fibre_g_per_100g": 0.1,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/211028/0/10/wajik/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 23,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Wan Tan Mee (Dry wanton noodles)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 149,
+        "protein_g_per_100g": 7.15,
+        "fat_g_per_100g": 6.37,
+        "carbohydrate_g_per_100g": 15.66,
+        "fibre_g_per_100g": 0.75,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060134"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 357,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Wanton (Wonton)",
+        "food_group": "Meat and alternatives",
+        "energy_kcal_per_100g": 64,
+        "protein_g_per_100g": 4,
+        "fat_g_per_100g": 2.79,
+        "carbohydrate_g_per_100g": 5.62,
+        "fibre_g_per_100g": 0.52,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F06100053"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 450,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Wa Tan Ho",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 145,
+        "protein_g_per_100g": 6.25,
+        "fat_g_per_100g": 7,
+        "carbohydrate_g_per_100g": 15,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Kalori API",
+                "url": "https://kalori-api.my/search"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 400,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+    {
+        "food_name": "Yam Cake (Taro cake)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 145,
+        "protein_g_per_100g": 2.5,
+        "fat_g_per_100g": 2.4,
+        "carbohydrate_g_per_100g": 28.4,
+        "fibre_g_per_100g": 1,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090067"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 142,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Yong tau foo (clear soup, 7 pieces, boiled)",
+        "food_group": "Mixed",
+        "energy_kcal_per_100g": 35,
+        "protein_g_per_100g": 2.82,
+        "fat_g_per_100g": 1.77,
+        "carbohydrate_g_per_100g": 1.87,
+        "fibre_g_per_100g": 0.49,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F08010061"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 770,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Yong tau foo (clear soup, 7 pieces, fried)",
+        "food_group": "Mixed",
+        "energy_kcal_per_100g": 63,
+        "protein_g_per_100g": 4.45,
+        "fat_g_per_100g": 3.03,
+        "carbohydrate_g_per_100g": 4.54,
+        "fibre_g_per_100g": 0.52,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F08010062"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 772,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Boiled eggplant",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 35,
+        "protein_g_per_100g": 0.83,
+        "fat_g_per_100g": 0.23,
+        "carbohydrate_g_per_100g": 8.73,
+        "fibre_g_per_100g": 2.5,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14040028"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 241,
+                "serving_unit": "whole (medium)"
+            },
+            {
+                "serving_size_g": 99,
+                "serving_unit": "cup"
+            },
+            {
+                "serving_size_g": 142,
+                "serving_unit": "whole (baby)"
+            }
+        ]
+    },
+    {
+        "food_name": "You tiao",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 385,
+        "protein_g_per_100g": 8.3,
+        "fat_g_per_100g": 17.2,
+        "carbohydrate_g_per_100g": 49,
+        "fibre_g_per_100g": 1.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090069"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 74,
+                "serving_unit": "stick"
+            }
+        ]
+    },
+    {
+        "food_name": "Yu sheng",
+        "food_group": "Miscellaneous",
+        "energy_kcal_per_100g": 145,
+        "protein_g_per_100g": 4.8,
+        "fat_g_per_100g": 10.9,
+        "carbohydrate_g_per_100g": 6.9,
+        "fibre_g_per_100g": 3.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F07030014"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+    {
+        "food_name": "Pomelo",
+        "food_group": "Fruit",
+        "energy_kcal_per_100g": 41,
+        "protein_g_per_100g": 0.8,
+        "fat_g_per_100g": 0.2,
+        "carbohydrate_g_per_100g": 9.1,
+        "fibre_g_per_100g": 0.4,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F04010034"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 39,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Crispy crackers (wonton skins)",
+        "food_group": "Appetizer",
+        "energy_kcal_per_100g": 500,
+        "protein_g_per_100g": 6.7,
+        "fat_g_per_100g": 26.7,
+        "carbohydrate_g_per_100g": 50.0,
+        "fibre_g_per_100g": 3.3,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/fried_wonton_strips_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150.0,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Raw salmon",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 208,
+        "protein_g_per_100g": 20.4,
+        "fat_g_per_100g": 13.4,
+        "carbohydrate_g_per_100g": 0,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03010002"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Banana cake",
+        "food_group": "Desserts",
+        "energy_kcal_per_100g": 324,
+        "protein_g_per_100g": 5.6,
+        "fat_g_per_100g": 17.4,
+        "carbohydrate_g_per_100g": 36.2,
+        "fibre_g_per_100g": 1.3,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F02010001"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 90,
+                "serving_unit": "slice"
+            }
+        ]
+    },
+    {
+        "food_name": "Chicken egg yolk, raw",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 322,
+        "protein_g_per_100g": 15.86,
+        "fat_g_per_100g": 26.54,
+        "carbohydrate_g_per_100g": 3.59,
+        "fibre_g_per_100g": 0,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F01060009"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 18,
+                "serving_unit": "whole (medium)"
+            },
+            {
+                "serving_size_g": 15,
+                "serving_unit": "whole (small)"
+            },
+            {
+                "serving_size_g": 21,
+                "serving_unit": "whole (large)"
+            }
+        ]
+    },
+    {
+        "food_name": "Half-Boiled Eggs",
+        "food_group": "Dairy and eggs",
+        "energy_kcal_per_100g": 140,
+        "protein_g_per_100g": 12,
+        "fat_g_per_100g": 10,
+        "carbohydrate_g_per_100g": 1,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Kalori API",
+                "url": "https://kalori-api.my/search"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 50,
+                "serving_unit": "per egg"
+            }
+        ]
+    },
+    {
+        "food_name": "Kueh pie tee (Pai tee)",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 238,
+        "protein_g_per_100g": 4.5,
+        "fat_g_per_100g": 16.4,
+        "carbohydrate_g_per_100g": 17.8,
+        "fibre_g_per_100g": 2.2,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090032"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 37,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Kuih kapit",
+        "food_group": "Wheat flour based",
+        "energy_kcal_per_100g": 417,
+        "protein_g_per_100g": 7.5,
+        "fat_g_per_100g": 6.7,
+        "carbohydrate_g_per_100g": 81.6,
+        "fibre_g_per_100g": 0.4,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/212018/0/10/kapit/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 4,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Kuih keria",
+        "food_group": "Wheat flour based",
+        "energy_kcal_per_100g": 236,
+        "protein_g_per_100g": 2.6,
+        "fat_g_per_100g": 3.9,
+        "carbohydrate_g_per_100g": 47.7,
+        "fibre_g_per_100g": 0.8,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/212019/0/10/keria/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 38,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Kuih kosui (Kuih lompang)",
+        "food_group": "Rice and rice flour based",
+        "energy_kcal_per_100g": 136,
+        "protein_g_per_100g": 2.6,
+        "fat_g_per_100g": 0.3,
+        "carbohydrate_g_per_100g": 30.8,
+        "fibre_g_per_100g": 0.5,
+        "data_source": [
+            {
+                "source": "Malaysian Food Composition Database (MyFCD)",
+                "url": "https://myfcd.moh.gov.my/myfcd97/index.php/site/detail_product/211015/0/10/lompang/0/0/"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 86,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+    {
+        "food_name": "Kolo mee (Kolok mee)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 190,
+        "protein_g_per_100g": 10.33,
+        "fat_g_per_100g": 7.9,
+        "carbohydrate_g_per_100g": 19.28,
+        "fibre_g_per_100g": 0.56,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060069"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 318,
+                "serving_unit": "bowl"
+            }
+        ]
+    },
+    {
+        "food_name": "Moon cake",
+        "food_group": "Dessert",
+        "energy_kcal_per_100g": 387,
+        "protein_g_per_100g": 6.0,
+        "fat_g_per_100g": 17.0,
+        "carbohydrate_g_per_100g": 50.0,
+        "fibre_g_per_100g": 1.0,
+        "data_source": [
+            {
+                "source": "SnapCalorie",
+                "url": "https://www.snapcalorie.com/nutrition/mooncake_nutrition.html"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 238.1,
+                "serving_unit": "cup"
+            }
+        ]
+    },
+    {
+        "food_name": "Muah chee",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 255,
+        "protein_g_per_100g": 7.6,
+        "fat_g_per_100g": 9.4,
+        "carbohydrate_g_per_100g": 34.8,
+        "fibre_g_per_100g": 3.8,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090038"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+     {
+        "food_name": "Nasi kerabu",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 118,
+        "protein_g_per_100g": 3.9,
+        "fat_g_per_100g": 4.7,
+        "carbohydrate_g_per_100g": 14.5,
+        "fibre_g_per_100g": null,
+        "data_source": [
+            {
+                "source": "Kalori API",
+                "url": "https://kalori-api.my/search"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 380,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+     {
+        "food_name": "Pulut inti",
+        "food_group": "Snacks",
+        "energy_kcal_per_100g": 211,
+        "protein_g_per_100g": 4.13,
+        "fat_g_per_100g": 7.09,
+        "carbohydrate_g_per_100g": 32.61,
+        "fibre_g_per_100g": 0.9,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F11090046"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 183,
+                "serving_unit": "piece"
+            }
+        ]
+    },
+     {
+        "food_name": "Salted egg squid",
+        "food_group": "Fish and seafood",
+        "energy_kcal_per_100g": 379,
+        "protein_g_per_100g": 10.88,
+        "fat_g_per_100g": 39.42,
+        "carbohydrate_g_per_100g": 17.72,
+        "fibre_g_per_100g": 1.11,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F03060021"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 100,
+                "serving_unit": "scoop (serving spoon)"
+            }
+        ]
+    },
+     {
+        "food_name": "ee mee (Yee mee)",
+        "food_group": "Grains and staples",
+        "energy_kcal_per_100g": 94,
+        "protein_g_per_100g": 3.6,
+        "fat_g_per_100g": 5.1,
+        "carbohydrate_g_per_100g": 8.3,
+        "fibre_g_per_100g": 0.6,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F05060033"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 500,
+                "serving_unit": "plate"
+            }
+        ]
+    },
+     {
+        "food_name": "Boiled cabbage",
+        "food_group": "Vegetables",
+        "energy_kcal_per_100g": 23,
+        "protein_g_per_100g": 1.27,
+        "fat_g_per_100g": 0.06,
+        "carbohydrate_g_per_100g": 5.51,
+        "fibre_g_per_100g": 1.9,
+        "data_source": [
+            {
+                "source": "Singapore Food Insights Database (SG FoodID)",
+                "url": "https://pphtpc.hpb.gov.sg/web/sgfoodid/tools/food-search/details/F14010008"
+            }
+        ],
+        "servings": [
+            {
+                "serving_size_g": 150,
+                "serving_unit": "cup"
+            },
+            {
+                "serving_size_g": 908,
+                "serving_unit": "whole"
+            }
+        ]
+    }
+]
