@@ -118,7 +118,9 @@ python app2.py
 
 ### Frontend Setup
 
+```
 cd frontend
+```
 
 #### Install dependencies
 ```
