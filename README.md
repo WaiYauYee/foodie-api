@@ -91,40 +91,40 @@ The project curated a comprehensive Malaysian food dataset:
 
 ### Backend Setup
 
-# Clone repository
+#### Clone repository
 git clone https://github.com/WaiYauYee/foodie-api.git
 cd ml-service
 
-# Create Python virtual environment
+#### Create Python virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
+#### Install dependencies
 pip install -r requirements.txt
 
-# Start ML service (runs on port 5000)
+#### Start ML service (runs on port 5000)
 python app2.py
 
 ### Frontend Setup
 
 cd frontend
 
-# Install dependencies
+#### Install dependencies
 npm install
 
-# Start development server (runs on http://localhost:5173)
+#### Start development server (runs on http://localhost:5173)
 npm run dev
 
 ### Server Setup
 
 cd backend
 
-# Install dependencies
+#### Install dependencies
 npm install
 
-# Start backend server
+#### Start backend server
 npm run dev  # Development with auto-reload
-# npm start   # Production mode
+npm start   # Production mode
 
 ## API Endpoints
 
