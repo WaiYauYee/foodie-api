@@ -51,29 +51,30 @@ The system consists of three main components:
 - Model Storage: In-memory caching for segmentation results (demonstration setup)
 
 ## Project Structure
+
 foodie-api/
-├── backend/              # Express.js server
-│   ├── config/          # Database and email configuration
-│   ├── controller/       # Route controllers
-│   ├── models/          # MongoDB schemas
-│   ├── routes/          # API endpoints
-│   ├── services/        # Business logic & ML client calls
-│   ├── middlewares/      # Authentication & validation
-│   ├── uploads/         # Uploaded image storage
-│   ├── server.js        # Server entry point
+├── backend/                      # Express.js server
+│   ├── config/                   # Database and email configuration
+│   ├── controller/               # Route controllers
+│   ├── models/                   # MongoDB schemas
+│   ├── routes/                   # API endpoints
+│   ├── services/                 # Business logic & ML client calls
+│   ├── middlewares/              # Authentication & validation
+│   ├── uploads/                  # Uploaded image storage
+│   ├── server.js                 # Server entry point
 │   └── package.json
 │
-├── frontend/            # React + TypeScript frontend
-│   ├── makanfit/        # Main React app
+├── frontend/                     # React + TypeScript frontend
+│   ├── makanfit/                 # Main React app
 │   └── package.json
 │
-├── ml-service/          # Python Flask ML backend
-│   ├── classification.py         # Food classification model
-│   ├── segmentation_calorie2.py  # Food segmentation & calorie estimation
-│   ├── ingredient_matcher.py     # Nutrition data retrieval
-│   ├── ingredient_embeddings.py  # Embedding generation
+├── ml-service/                   # Python Flask ML backend
+│   ├── classification.py                  # Food classification model
+│   ├── segmentation_calorie2.py           # Food segmentation & calorie estimation
+│   ├── ingredient_matcher.py              # Nutrition data retrieval
+│   ├── ingredient_embeddings.py           # Embedding generation
 │   ├── groundingdino_with_segment_anything.py  # Detection & segmentation
-│   ├── app2.py                   # Flask app entry point
+│   ├── app2.py                            # Flask app entry point
 │   └── requirements.txt
 │
 └── .gitignore
@@ -216,14 +217,6 @@ PORT           # Flask port (default: 5000)
 - LLM variance used as proxy for consistency, not actual accuracy
 - No expert nutritionist validation of calorie estimates
 - Limited ground truth for performance benchmarking
-
-### Planned Features
-- Real-time meal tracking with barcode scanning
-- Dietary preference customization
-- Recipe suggestions based on available ingredients
-- Social sharing of meals and nutrition data
-- Mobile app integration
-- Batch image processing
 
 ## Contributing
 
