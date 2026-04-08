@@ -53,6 +53,7 @@ The system consists of three main components:
 ## Project Structure
 
 foodie-api/
+```
 ├── backend/                      # Express.js server
 │   ├── config/                   # Database and email configuration
 │   ├── controller/               # Route controllers
@@ -78,6 +79,7 @@ foodie-api/
 │   └── requirements.txt
 │
 └── .gitignore
+```
 
 ## Dataset Details
 
