@@ -468,6 +468,7 @@ if (nutrition) {
   triedOtherApps: false,
   primaryGoal: 'healthier',  // PrimaryGoal type
   dietType: 'Classic', 
+  targetWater: 1000,
 });
 
 //   const fuse = new Fuse(SEARCHABLE_FOODS, {

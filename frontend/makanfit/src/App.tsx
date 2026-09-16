@@ -51,6 +51,7 @@ const INITIAL_USER: User = {
   // Timestamps
   createdAt: Date.now(),
   updatedAt: Date.now(),
+  targetWater: 1000,
 };
 
 const MOCK_MEALS: MealEntry[] = [
