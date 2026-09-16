@@ -5,7 +5,8 @@ import {
   ChevronLeft, Flag, Target, User, Dumbbell, 
   X, Check, MoveRight, TrendingUp, TrendingDown, Zap, Timer, Activity,
   PieChart,
-  Scale
+  Scale,
+  Droplets
 } from 'lucide-react';
 
 interface GoalProps {
@@ -23,12 +24,16 @@ interface SelectionOption {
 
 const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
   const [activeOverlay, setActiveOverlay] = useState<string | null>(null);
-  const [tempCalorie, setTempCalorie] = useState(user.targetCalories.toString());
-  const [tempWeight, setTempWeight] = useState(user.currentWeight.toString());
+  const [tempCalorie, setTempCalorie] = useState((user.targetCalories ?? 1279).toString());
+  const [tempWeight, setTempWeight] = useState((user.currentWeight ?? 0).toString());
   const [tempGoalWeight, setTempGoalWeight] = useState(user.goalWeight?.toString());
   const [showGoalReminder, setShowGoalReminder] = useState(false);
   const [reminderConfirmHandler, setReminderConfirmHandler] = useState<(() => void) | null>(null);
   const [goalType, setGoalType] = useState<string | null>(null);
+
+  const [tempWater, setTempWater] = useState(
+    (user.targetWater ?? 2000).toString()
+  );
 
   const handleGoalChangeWithReminder = (update: Partial<Users>, type: string) => {
     setGoalType(type);
@@ -358,8 +363,98 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
     );
   };
 
+      const CustomWaterOverlay = () => {
+      return (
+        <div className="fixed inset-0 z-[220] flex flex-col animate-in fade-in slide-in-from-bottom duration-300">
+          <div
+            className="absolute inset-0 bg-[#1A2A33]/40 backdrop-blur-sm"
+            onClick={() => setActiveOverlay(null)}
+          />
+
+          <div className="relative mt-auto bg-white rounded-t-[48px] w-full flex flex-col max-h-[90vh] shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between p-8 border-b border-gray-50">
+              <div className="w-10" />
+
+              <h3 className="text-xl font-black text-gray-900 uppercase tracking-widest text-sm">
+                Water Goal
+              </h3>
+
+              <button
+                onClick={() => setActiveOverlay(null)}
+                className="p-2 bg-gray-50 rounded-2xl text-gray-400"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="overflow-y-auto pb-8 px-8">
+              <div className="flex flex-col items-center text-center py-6">
+                <div className="w-12 h-12 rounded-2xl bg-gray-50 text-sky-500 flex items-center justify-center mb-5">
+                  <Droplets size={24} strokeWidth={2.5} />
+                </div>
+
+                <span className="text-lg font-black tracking-tight text-gray-900">
+                  Daily Water Goal
+                </span>
+
+                <div className="relative w-full mt-5">
+                  <div className="w-full bg-gray-50 border-2 border-gray-100 rounded-[24px] py-6 flex items-center justify-center focus-within:border-sky-500 focus-within:bg-white transition-all">
+                    <input
+                      type="number"
+                      autoFocus
+                      value={tempWater}
+                      onChange={(e) => setTempWater(e.target.value)}
+                      className="w-auto max-w-[180px] bg-transparent text-4xl font-black text-gray-900 text-right focus:outline-none"
+                      placeholder="2.0"
+                    />
+
+                    <span className="ml-2 text-2xl font-black text-gray-400">
+                      L
+                    </span>
+                  </div>
+                </div>
+
+                {/* <p className="text-sky-500 font-bold uppercase tracking-wider text-xs mt-4">
+                  millilitres per day
+                </p> */}
+
+                <p className="text-sky-500 font-bold uppercase tracking-wider text-xs mt-4">
+                  {((parseInt(tempWater) || 0) / 1000).toFixed(1)} litres
+                </p>
+
+                <p className="text-gray-400 text-xs font-semibold mt-2">
+                  Equivalent to {parseInt(tempWater) || 0} ml
+                </p>
+              </div>
+            </div>
+
+            {/* Confirm */}
+            <div className="p-8 pb-12">
+              <button
+                onClick={() => {
+                  const value = parseInt(tempWater);
+
+                  if (!isNaN(value) && value > 0) {
+                    onSave({ targetWater: value });
+                    setActiveOverlay(null);
+                  }
+                }}
+                className="w-full bg-[#1A2A33] text-white font-black py-6 rounded-[32px] shadow-2xl active:scale-95 transition-all uppercase tracking-[0.2em] text-sm"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
   const goalItems = [
     { section: 'Nutritional Settings', items: [
+      { id: 'waterTarget', icon: Droplets, label: 'Water Goal', value: `${user.targetWater ?? 2000} ml`, readOnly: false
+    },
       { id: 'calorieTarget', icon: Flag, label: 'Calorie Goal', value: `${user.targetCalories} kcal (${user.goalOrigin || 'Standard'})`, options: GOAL_ORIGINS, readOnly: false },
       { id: 'macroTarget', icon: PieChart, label: 'Carbs, protein, fat, and fiber goals', value: user.macroGoalOrigin === 'custom' ? `${user.targetCarbs}c ${user.targetProtein}p ${user.targetFat}f ${user.targetFiber}fb` : 'Standard', options: MACRO_ORIGINS, readOnly: false },
     ]},
@@ -428,6 +523,7 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
         </button>
       </div>
 
+      {activeOverlay === 'waterTarget' && <CustomWaterOverlay />}
       {/* Selection Overlays */}
       {activeOverlay === 'dietaryGoal' && (
         <SelectionOverlay 

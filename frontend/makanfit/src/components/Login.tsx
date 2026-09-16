@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, Sparkles, ChevronRight, ChevronLeft } from 'lucide-react';
-import MakanFitAvatar from './MakanFitAvatar';
+// import MakanFitAvatar from './MakanFitAvatar';
 import { login, requestPasswordReset, resetPassword } from '../services/authService';
 import OTPInput from './OTPInput';
 import { FaCheck } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import logoImg from '../assets/logo.png';
 
 interface LoginProps {
   onLogin: () => void;
@@ -174,18 +176,22 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
     <div className="min-h-screen w-full flex flex-col md:flex-row bg-white">
       {/* Left Pane - Brand / Marketing (Visible on md and up) bg-[#F8FAFC] */}
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#10B981] via-[#059669] to-[#064E3B] p-16 flex-col justify-between relative overflow-hidden">
-        {/* Decorative elements for the brand pane */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl -ml-48 -mb-48" />
         
         <div className="relative z-10">
-          <div className="flex items-center space-x-3 mb-12">
-            <div className="relative">
-              <div className="w-16 h-16 bg-emerald-50 rounded-[40px] flex items-center justify-center border-4 border-white shadow-xl overflow-hidden group">
+          <div className="flex items-center space-x-3 mb-0 -ml-8">
+            {/* <div className="relative">
+              <div className="w-16 h-16 bg-emerald-100 rounded-[40px] flex items-center justify-center shadow-xl overflow-hidden group">
                 <MakanFitAvatar size={42} className="group-hover:scale-110 transition-transform duration-500" />
               </div>
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tighter">MAKANFIT</h1>
+            <h1 className="text-3xl font-black text-white tracking-tighter">MakanFit</h1> */}
+            <div className="relative">
+                <img
+                src={logoImg}          
+                alt="MakanFit logo"
+                className="w-[280px] h-[90px] object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
           </div>
           
           <div className="space-y-6 max-w-lg">
@@ -229,10 +235,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
         <div className="w-full max-w-md bg-white rounded-[40px] md:rounded-none shadow-2xl md:shadow-none p-8 md:p-0 overflow-hidden relative">
           
           <div className="md:hidden flex flex-col items-center mb-10">
-             <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4">
-                <Sparkles className="w-8 h-8 text-emerald-600" />
+             {/* <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4">
+                <MakanFitAvatar size={42} className="group-hover:scale-110 transition-transform duration-500" />
              </div>
-             <h1 className="text-3xl font-black text-gray-900 tracking-tighter">MAKANFIT</h1>
+             <h1 className="text-3xl font-black text-gray-900 tracking-tighter">MakanFit</h1> */}
+             <div className="relative">
+                <img
+                src={logoImg}          
+                alt="MakanFit logo"
+                className="w-[200px] h-[60px] object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
           </div>
 
           {/* error check */}
@@ -350,9 +363,43 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                   )}
                 </button>
               </form>
+
+              {/* Social Login Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase tracking-wider font-bold">
+                  <span className="bg-white px-3 text-slate-400">Or continue with</span>
+                </div>
+              </div>
+
+              {/* Social Login Buttons */}
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  // className="w-1/2 flex items-center justify-center space-x-3 py-3.5 px-4 border-2 border-slate-200 hover:border-slate-300 rounded-2xl bg-white hover:bg-slate-50 transition-all font-semibold text-sm text-slate-700 shadow-sm"
+                  className="w-full flex items-center justify-center gap-3 py-3.5 px-4 border border-slate-200 hover:border-slate-300 rounded-2xl bg-white hover:bg-slate-50 transition-all font-semibold text-sm text-slate-700 shadow-xs cursor-pointer"
+                >
+                  <FcGoogle size={20} />
+                  <span>Google</span>
+                </button>
+              </div>
+
               <p className="mt-10 text-center text-gray-400 font-medium">
-            Don't have an account? <button onClick={onNavigateToSignUp} className="text-emerald-600 font-black hover:underline">Sign Up</button>
-          </p>
+                Don't have an account? <button onClick={onNavigateToSignUp} className="text-emerald-600 font-black hover:underline">Sign Up</button>
+              </p>
+            {/* Bottom Terms & Privacy Note */}
+            <div className="pt-6 text-center text-xs text-gray-400">
+              <span>By continuing, you agree to MakanFit's </span>
+              <a href="#" className="underline hover:text-gray-400">
+                Terms of Service
+              </a>
+              <span> & </span>
+              <a href="#" className="underline hover:text-gray-400">
+                Privacy Policy
+              </a>
+            </div>
         </div>
           ) : view === 'forgot' ? (
             <div className="animate-in fade-in slide-in-from-left duration-500">

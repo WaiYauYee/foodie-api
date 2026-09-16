@@ -163,6 +163,7 @@ export interface User {
   triedOtherApps: boolean;
   primaryGoal: PrimaryGoal;
   dietType: string;
+  targetWater: number;
 }
 
 export interface MealEntry {
@@ -214,6 +215,26 @@ export interface FoodPhotoAnalysis {
 //   svgElement: React.ReactNode;
 //   owned: boolean;
 // }
+
+export interface Challenge {
+  id: string;
+  title: string;
+  description: string;
+  reward: number;
+  progress: number;
+  target: number;
+  completed: boolean;
+  type: string;
+}
+import type { ReactNode } from 'react';
+export interface OutfitItem {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  owned: boolean;
+  svgElement: ReactNode;
+}
 
 // ============================================
 // ADDITIONAL TYPES SPECIFIC TO AUTH
@@ -296,5 +317,6 @@ export enum Page {
   PRIVACY_POLICY = 'privacy_policy',
   ADD_WEIGHT = 'add_weight',
   ACCOUNT_SETTING = 'account_setting',
+  NOTIFICATIONS = 'NOTIFICATIONS',
   PAL = 'PAL'
 }

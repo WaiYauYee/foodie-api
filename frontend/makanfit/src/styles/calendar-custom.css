@@ -1,0 +1,143 @@
+/* Custom react-calendar styling to match MakanFit's design language */
+
+.makanfit-calendar.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+  background: transparent;
+}
+
+/* Navigation bar (month/year + arrows) */
+.makanfit-calendar .react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  height: auto;
+}
+
+.makanfit-calendar .react-calendar__navigation button {
+  min-width: 40px;
+  height: 40px;
+  background: #F8FAFC;
+  border-radius: 9999px;
+  font-weight: 900;
+  color: #1A2A33;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.makanfit-calendar .react-calendar__navigation button:enabled:hover,
+.makanfit-calendar .react-calendar__navigation button:enabled:focus {
+  background: #ECFDF5;
+  color: #059669;
+}
+
+.makanfit-calendar .react-calendar__navigation button:disabled {
+  opacity: 0.3;
+}
+
+.makanfit-calendar .react-calendar__navigation__label {
+  font-weight: 900;
+  font-size: 1rem;
+  color: #1A2A33;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+}
+
+.makanfit-calendar .react-calendar__navigation__label:hover,
+.makanfit-calendar .react-calendar__navigation__label:focus {
+  background: #F8FAFC;
+}
+
+.makanfit-calendar .react-calendar__navigation__arrow {
+  font-size: 1.25rem;
+  flex-grow: 0 !important;
+}
+
+/* Weekday header row (Mo Tu We Th...) */
+.makanfit-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.makanfit-calendar .react-calendar__month-view__weekdays__weekday {
+  font-size: 0.625rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #94A3B8;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0;
+}
+
+.makanfit-calendar .react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+  cursor: default;
+}
+
+/* Day cells */
+.makanfit-calendar .react-calendar__month-view__days__day {
+  color: #1E293B;
+}
+
+.makanfit-calendar .react-calendar__month-view__days__day--weekend {
+  color: #1E293B;
+}
+
+.makanfit-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  color: #CBD5E1 !important;
+}
+
+.makanfit-calendar .react-calendar__tile {
+  max-width: 100%;
+  padding: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.makanfit-calendar .react-calendar__tile:enabled:hover,
+.makanfit-calendar .react-calendar__tile:enabled:focus {
+  background: #ECFDF5;
+  color: #059669;
+}
+
+/* Today's date — subtle outline, not filled, so it doesn't compete with "selected" */
+.makanfit-calendar .react-calendar__tile--now {
+  background: #F0FDF4;
+  color: #059669;
+  font-weight: 900;
+}
+
+.makanfit-calendar .react-calendar__tile--now:enabled:hover,
+.makanfit-calendar .react-calendar__tile--now:enabled:focus {
+  background: #DCFCE7;
+}
+
+/* Selected date — solid emerald fill, matches the mini day-strip */
+.makanfit-calendar .react-calendar__tile--active {
+  background: #10B981 !important;
+  color: white !important;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.makanfit-calendar .react-calendar__tile--active:enabled:hover,
+.makanfit-calendar .react-calendar__tile--active:enabled:focus {
+  background: #059669 !important;
+}
+
+/* Year/decade view tiles (when navigating by year) */
+.makanfit-calendar .react-calendar__year-view__months__month,
+.makanfit-calendar .react-calendar__decade-view__years__year,
+.makanfit-calendar .react-calendar__century-view__decades__decade {
+  border-radius: 16px;
+  padding: 1rem 0.5rem;
+  font-weight: 800;
+}

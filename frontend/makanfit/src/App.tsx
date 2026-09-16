@@ -16,6 +16,7 @@ import SignUp from './components/SignUp';
 import Onboarding from './components/Onboarding';
 import { LayoutDashboard, User as UserIcon, Utensils } from 'lucide-react';
 import AccountSetting from './components/AccountSetting';
+import NotificationSettings from './components/NotificationSettings';
 // import Pal from './components/Pal';
 
 const INITIAL_USER: User = {
@@ -231,22 +232,49 @@ const App: React.FC = () => {
   setMeals(prev => [newMeal, ...prev]);
 };
 
+const handleUpdateMeal = (updatedMeal: MealEntry) => {
+  setMeals(prev =>
+    prev.map(meal =>
+      meal.id === updatedMeal.id ? updatedMeal : meal
+    )
+  );
+};
 
   const handleDeleteMeal = (id: string) => {
     setMeals(prev => prev.filter(m => m.id !== id));
   };
 
+  // const handleAddWeight = (weight: number) => {
+  //    const newEntry: WeightEntry = {
+  //       id: Math.random().toString(36).substr(2, 9),
+  //       userId: user.userId,         // add the current user's ID
+  //       weight,                      // same as before
+  //       recordedAt: Date.now(),      // replaces 'timestamp'
+  //       createdAt: Date.now(),       // required field
+  //     };
+  //   setWeightHistory(prev => [newEntry, ...prev]);
+  //   setUser(prev => ({ ...prev, weight }));
+  // };
+
   const handleAddWeight = (weight: number) => {
-     const newEntry: WeightEntry = {
-        id: Math.random().toString(36).substr(2, 9),
-        userId: user.userId,         // add the current user's ID
-        weight,                      // same as before
-        recordedAt: Date.now(),      // replaces 'timestamp'
-        createdAt: Date.now(),       // required field
-      };
-    setWeightHistory(prev => [newEntry, ...prev]);
-    setUser(prev => ({ ...prev, weight }));
+  const now = Date.now();
+
+  const newEntry: WeightEntry = {
+    id: Math.random().toString(36).substr(2, 9),
+    userId: user.userId,
+    weight,
+    recordedAt: now,
+    createdAt: now,
   };
+
+  setWeightHistory(prev => [newEntry, ...prev]);
+
+  setUser(prev => ({
+    ...prev,
+    currentWeight: weight,
+    updatedAt: now,
+  }));
+};
 
   const handleUpdateUser = (updatedFields: Partial<User>) => {
     setUser(prev => ({ ...prev, ...updatedFields }));
@@ -283,7 +311,7 @@ const App: React.FC = () => {
           />
         );
       case Page.DIARY:
-        return <Diary meals={meals} onAddMeal={handleAddMeal} onDeleteMeal={handleDeleteMeal} />;
+        return <Diary meals={meals} onAddMeal={handleAddMeal} onDeleteMeal={handleDeleteMeal} onUpdateMeal={handleUpdateMeal} />;
       // case Page.PAL: return <Pal />;
       case Page.PROFILE:
         return (
@@ -294,6 +322,7 @@ const App: React.FC = () => {
             onNavigateToSecurity={() => setCurrentPage(Page.CHANGE_PASSWORD)}
             onNavigateToGoal={() => setCurrentPage(Page.GOAL)}
             onNavigateToPrivacy={() => setCurrentPage(Page.PRIVACY_POLICY)}
+            onNavigateToNotifications={() => setCurrentPage(Page.NOTIFICATIONS)}
             onLogout={handleLogout}
           />
         );
@@ -307,6 +336,10 @@ const App: React.FC = () => {
         return <Goal user={user} onBack={() => setCurrentPage(Page.PROFILE)} onSave={handleUpdateUser} />;
       case Page.PRIVACY_POLICY:
         return <PrivacyPolicy onBack={() => setCurrentPage(Page.PROFILE)} />;
+      case Page.NOTIFICATIONS:
+      return (
+        <NotificationSettings onBack={() => setCurrentPage(Page.PROFILE)} />
+      );
       case Page.ADD_WEIGHT:
         return (
           <AddWeight 

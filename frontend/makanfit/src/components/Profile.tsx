@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { User as Users } from '../types/types';
-import { User, Target, Shield, ChevronRight, LogOut, Lock, X, Settings } from 'lucide-react';
+import { User, Target, Shield, ChevronRight, LogOut, Lock, X, Settings, Bell } from 'lucide-react';
 import MakanFitAvatar from './MakanFitAvatar';
 
 interface ProfileProps {
@@ -11,6 +11,7 @@ interface ProfileProps {
   onNavigateToSecurity: () => void;
   onNavigateToGoal: () => void;
   onNavigateToPrivacy: () => void;
+  onNavigateToNotifications: () => void;
   onLogout: () => void;
 }
 
@@ -21,6 +22,7 @@ const Profile: React.FC<ProfileProps> = ({
   onNavigateToSecurity, 
   onNavigateToGoal,
   onNavigateToPrivacy,
+  onNavigateToNotifications,
   onLogout
 }) => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -43,7 +45,7 @@ const Profile: React.FC<ProfileProps> = ({
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
           <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Weight</p>
-          <p className="text-xl font-black text-gray-900">{user.currentWeight} <span className="text-sm font-normal text-gray-400">kg</span></p>
+          <p className="text-xl font-black text-gray-900">{user.startWeight} <span className="text-sm font-normal text-gray-400">kg</span></p>
         </div>
         <div className="bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
           <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Goal</p>
@@ -59,12 +61,13 @@ const Profile: React.FC<ProfileProps> = ({
             { icon: Settings, label: 'Account', color: 'text-indigo-500', bg: 'bg-indigo-50', action: onNavigateToSetting },
             { icon: Lock, label: 'Security', color: 'text-cyan-500', bg: 'bg-cyan-50', action: onNavigateToSecurity },
             { icon: Target, label: 'Goals', color: 'text-emerald-500', bg: 'bg-emerald-50', action: onNavigateToGoal },
+            { icon: Bell, label: 'Notifications', color: 'text-orange-500', bg: 'bg-orange-50', action: onNavigateToNotifications },
             { icon: Shield, label: 'Privacy Policy', color: 'text-purple-500', bg: 'bg-purple-50', action: onNavigateToPrivacy },
-          ].map((item, idx) => (
+          ].map((item, idx, arr) => (
             <button 
               key={item.label} 
               onClick={item.action}
-              className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${idx !== 3 ? 'border-b border-gray-50' : ''}`}
+              className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${idx !== arr.length - 1 ? 'border-b border-gray-50' : ''}`}
             >
               <div className="flex items-center space-x-4">
                 <div className={`${item.bg} w-10 h-10 rounded-2xl flex items-center justify-center transition-transform group-active:scale-90`}>

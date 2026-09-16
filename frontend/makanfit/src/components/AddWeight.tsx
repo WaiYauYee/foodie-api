@@ -9,7 +9,7 @@ interface AddWeightProps {
 }
 
 const AddWeight: React.FC<AddWeightProps> = ({ currentWeight, onBack, onAdd }) => {
-  const [weight, setWeight] = useState(currentWeight.toString());
+  const [weight, setWeight] = useState((currentWeight ?? 0).toString());
 
   const handleAdd = () => {
     const numericWeight = parseFloat(weight);
@@ -26,7 +26,7 @@ const AddWeight: React.FC<AddWeightProps> = ({ currentWeight, onBack, onAdd }) =
         <button onClick={onBack} className="p-1 text-gray-600">
           <X className="w-6 h-6" />
         </button>
-        <h2 className="flex-1 text-center text-xl font-black text-gray-900 tracking-tight pl-4 tracking-widest text-sm">
+        <h2 className="flex-1 text-center text-xl font-black text-gray-900 tracking-tight pl-4 tracking-wide text-sm">
           Add a weight entry
         </h2>
         <div className="w-8" /> {/* Spacer for centering */}

@@ -1,6 +1,6 @@
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Camera, Image as ImageIcon } from 'lucide-react';
+import { Camera, Image as ImageIcon, X } from 'lucide-react';
 
 interface CameraScannerProps {
   category: string;
@@ -107,45 +107,57 @@ const CameraScanner: React.FC<CameraScannerProps> = ({
         )}
       </div> */}
 
-      {/* Top Overlay Controls */}
-      <div className="relative top-0 left-0 right-0 z-50 bg-[#E6F4F1] backdrop-blur-md px-6 pt-5 pb-5 flex items-center justify-between shadow-lg">
-        <div className="flex items-center space-x-4">
-          {/* Meal Icon with Badge */}
-          <div className="relative">
-            <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center text-3xl shadow-sm">
-              {getCategoryEmoji()}
-            </div>
-            <div className="absolute -top-1 -right-1 w-7 h-7 bg-[#2D3E50] rounded-full flex items-center justify-center border-4 border-[#E6F4F1]">
-              <span className="text-white text-[10px] font-black">1</span>
-            </div>
-          </div>
+      {/* X Close Button */}
+      <div className="flex flex-col w-full bg-[#A3C9A8]">
+        <div className="flex justify-start p-1">
+        <button 
+          onClick={onClose}
+          className="p-1.5 bg-white hover:bg-slate-700 text-slate-300 border rounded-full flex items-center justify-center active:scale-90 transition-all"
+          aria-label="Close scanner"
+        >
+          <X className="w-4 h-4 text-slate-800" />
+        </button></div>
 
-          {/* Meal Info */}
-          <div className="flex flex-col">
-            <h2 className="text-[#1A2A33] text-2xl font-black leading-tight tracking-tight">
-              {category}
-            </h2>
-            <div className="flex flex-col mt-0.5">
-              <span className="flex flex-col text-[#2D3E50]/60 text-[11px] font-black uppercase leading-tight tracking-widest">
-                {currentCalories} / {targetCalories} Cal
-              </span>
-              <div className="w-28 h-2.5 bg-gray-200/50 rounded-full mt-2 overflow-hidden">
-                <div 
-                  className="h-full bg-emerald-500 rounded-full" 
-                  style={{ width: `${calProgress}%` }}
-                />
+        {/* Top Overlay Controls */}
+        <div className="relative z-50 bg-white backdrop-blur-md px-6 pt-5 pb-5 flex items-center justify-between shadow-lg rounded-t-3xl">
+          <div className="flex items-center space-x-4">
+            {/* Meal Icon with Badge */}
+            <div className="relative">
+              <div className="w-14 h-14 bg-sky-200 rounded-full flex items-center justify-center text-3xl shadow-sm">
+                {getCategoryEmoji()}
+              </div>
+              <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#2D3E50] rounded-full flex items-center justify-center">
+                <span className="text-white text-[10px] font-black">1</span>
+              </div>
+            </div>
+
+            {/* Meal Info */}
+            <div className="flex flex-col">
+              <h2 className="text-[#1A2A33] text-xl font-black leading-tight tracking-tight">
+                {category}
+              </h2>
+              <div className="flex flex-col mt-0.5">
+                <span className="flex flex-col text-[#2D3E50]/60 text-[10px] font-black uppercase leading-tight tracking-widest">
+                  {parseFloat(currentCalories.toFixed(2))} / {parseFloat(targetCalories.toFixed(2))} Cal
+                </span>
+                <div className="w-28 h-2 bg-gray-200/50 rounded-full mt-2 overflow-hidden">
+                  <div 
+                    className="h-full bg-emerald-500 rounded-full" 
+                    style={{ width: `${calProgress}%` }}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Done Button */}
-        <button 
-          onClick={onClose}
-          className="bg-[#1A2A33] text-white px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest shadow-lg"
-        >
-          Done
-        </button>
+          {/* Done Button */}
+          <button 
+            onClick={onClose}
+            className="bg-[#1A2A33] text-white px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest shadow-lg"
+          >
+            Done
+          </button>
+        </div>
       </div>
 
       {/* Centered Guide - Camera View */}

@@ -3,11 +3,11 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { MealType, Food, User, MealEntry } from '../types/types';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import '../styles/calendar-custom.css';
 import { 
   Camera, Trash2, X, ChevronLeft, ChevronRight, 
   Calendar as CalendarIcon, Target,
   Utensils, Check, 
-  ChevronRight as ChevronRightIcon,
   Loader2, Plus, ClipboardList,
   ChevronDown,
   ArrowLeft,
@@ -20,11 +20,14 @@ import {
   ZoomIn,
   ZoomOut,
   Maximize2,
-  Info
+  Info,
+  Search,
+  Droplet
 } from 'lucide-react';
-import Fuse from 'fuse.js';
+// import Fuse from 'fuse.js';
 import MakanFitAvatar from './MakanFitAvatar';
 import CameraScanner from './CameraScanner';
+import MealCategoryIcon from './MealCategoryIcon';
 import { segmentFoodImage } from '../services/foodSegmentationService';
 import { classifyFoodImage } from '../services/foodClassificationService';
 import { CalorieEstimationResponse, getCaloriesBySegmentation } from '../services/foodCalorieEstimation';
@@ -33,6 +36,7 @@ interface DiaryProps {
   meals: MealEntry[];
   onAddMeal: (meal: Food, mealType: MealType) => void;
   onDeleteMeal: (id: string) => void;
+  onUpdateMeal: (meal: MealEntry) => void;
 }
 
 // const FOOD_GROUPS = [
@@ -146,13 +150,229 @@ const getSentiment = (calories: number) => {
   }
 };
 
-const Diary: React.FC<DiaryProps> = ({ meals, onAddMeal, onDeleteMeal }) => {
+  export const Diary: React.FC<DiaryProps> = ({ 
+    meals,
+    onAddMeal,
+    onDeleteMeal,
+    onUpdateMeal,
+  }) => {
+    // Normalize initial date to midnight
+    const [selectedDate, setSelectedDate] = useState(() => {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      return d;
+    });
+
+    const getToday = () => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return today;
+    };
+
+    const isTodayOrPast = (date: Date) => {
+      const today = getToday();
+      const checkDate = new Date(date);
+      checkDate.setHours(0, 0, 0, 0);
+      return checkDate <= today;
+    };
+
+   // Hydration tracking — entries stored in mL for precision, keyed by date
+    interface WaterEntry {
+      id: string;
+      amountMl: number;
+      loggedAt: number;
+    }
+
+    const [waterEntries, setWaterEntries] = useState<Record<string, WaterEntry[]>>({});
+    const WATER_GOAL_ML = 2000; // 2.0 L — could pull from userProfile later
+    const GLASS_SIZE_ML = 250; // used only to render the glass-fill visual
+
+    const dateKey = selectedDate.toDateString();
+    const todaysWaterEntries = waterEntries[dateKey] || [];
+    const totalWaterMl = todaysWaterEntries.reduce((sum, e) => sum + e.amountMl, 0);
+    const waterL = Math.round((totalWaterMl / 1000) * 100) / 100;
+
+    // How many glasses are fully or partially filled, for the visual row
+    const totalGlassSlots = Math.ceil(WATER_GOAL_ML / GLASS_SIZE_ML);
+    const filledGlasses = totalWaterMl / GLASS_SIZE_ML; // can be fractional, e.g. 1.8
+
+    const addWaterEntry = (amountMl: number) => {
+      if (amountMl <= 0) return;
+      const entry: WaterEntry = {
+        id: Math.random().toString(36).substr(2, 9),
+        amountMl,
+        loggedAt: Date.now(),
+      };
+      setWaterEntries(prev => ({
+        ...prev,
+        [dateKey]: [...(prev[dateKey] || []), entry],
+      }));
+    };
+
+    const removeWaterByGlassIndex = (glassIndex: number) => {
+  setWaterEntries((prev) => {
+    const currentEntries = prev[dateKey] || [];
+    if (currentEntries.length === 0) return prev;
+
+    const totalMl = currentEntries.reduce((sum, e) => sum + e.amountMl, 0);
+
+    // Range of water held by the clicked glass
+    const glassStartMl = glassIndex * GLASS_SIZE_ML;
+    // const glassEndMl = (glassIndex + 1) * GLASS_SIZE_ML;
+
+    // If the clicked glass has no water in it, do nothing
+    if (totalMl <= glassStartMl) return prev;
+
+    // Calculate exact water volume currently inside THIS specific glass slot
+    const waterInThisGlass = Math.min(totalMl - glassStartMl, GLASS_SIZE_ML);
+
+    // Reduce the total logged entries by exactly what this glass was holding
+    let mlToRemove = waterInThisGlass;
+    const updatedEntries: WaterEntry[] = [];
+
+    // Subtract from the latest entries first
+    for (let i = currentEntries.length - 1; i >= 0; i--) {
+      const entry = currentEntries[i];
+
+      if (mlToRemove <= 0) {
+        updatedEntries.unshift(entry);
+      } else if (entry.amountMl > mlToRemove) {
+        updatedEntries.unshift({
+          ...entry,
+          amountMl: entry.amountMl - mlToRemove,
+        });
+        mlToRemove = 0;
+      } else {
+        mlToRemove -= entry.amountMl;
+      }
+    }
+
+    return {
+      ...prev,
+      [dateKey]: updatedEntries,
+    };
+  });
+};
+
+    // Add Water sheet state
+    const [isAddWaterOpen, setIsAddWaterOpen] = useState(false);
+    const [waterInputValue, setWaterInputValue] = useState('250');
+    const [waterInputUnit, setWaterInputUnit] = useState<'ml' | 'L'>('ml');
+
+    const WATER_PRESETS = [
+      { label: 'Glass', ml: 200, emoji: '🥛' },
+      { label: 'Cup', ml: 250, emoji: '☕' },
+      { label: 'Bottle', ml: 500, emoji: '💧' },
+      { label: 'Large Bottle', ml: 1000, emoji: '🧴' },
+    ];
+
+    const handleCustomWaterAdd = () => {
+      const raw = parseFloat(waterInputValue);
+      if (!raw || raw <= 0) return;
+      const amountMl = waterInputUnit === 'L' ? raw * 1000 : raw;
+      addWaterEntry(Math.round(amountMl));
+      setIsAddWaterOpen(false);
+      setWaterInputValue('250');
+    };
+
+    // const removeLastWaterEntry = () => {
+    //   const entries = todaysWaterEntries;
+    //   if (entries.length === 0) return;
+    //   removeWaterEntry(entries[entries.length - 1].id);
+    // };
+
+    // Pre-seed local state with default Malaysian meals matching screenshot
+  //   const [internalMeals, setInternalMeals] = useState<MealEntry[]>(() => [
+  //     {
+  //       id: 'm1',
+  //       userId: '1',
+  //       foodId: 's1',
+  //       food: { ...SEARCHABLE_FOODS[0] },
+  //       mealType: 'breakfast',
+  //       consumedAt: 123,
+  //       estimatedCalories: 123,
+  //       actualProtein_g: 123,
+  //       actualCarbs_g: 123,
+  //       actualFat_g: 123,
+  //       actualFiber_g: 123,
+  //       photoUrl: 'string',
+  //       photoAnalysisStatus: 0,
+  //       createdAt: new Date().setHours(8, 15, 0, 0),
+  //       ingredients: [{ ...SEARCHABLE_FOODS[0] }],
+  //     },
+  //     {
+  //       id: 'm2',
+  //       userId: '2',
+  //       foodId: 's2',
+  //       food: { ...SEARCHABLE_FOODS[1] },
+  //       mealType: 'breakfast',
+  //       consumedAt: 123,
+  //       estimatedCalories: 123,
+  //       actualProtein_g: 123,
+  //       actualCarbs_g: 123,
+  //       actualFat_g: 123,
+  //       actualFiber_g: 123,
+  //       photoUrl: 'string',
+  //       photoAnalysisStatus: 0,
+  //       createdAt: new Date().setHours(8, 30, 0, 0),
+  //       ingredients: [{ ...SEARCHABLE_FOODS[0] }],
+  //     }
+  //   ]);
+
+  // const meals = propMeals || internalMeals;
+
+  // const handleAddMeal = (food: Food, mealType: MealType) => {
+  //   const newEntry: MealEntry = {
+  //     id: Math.random().toString(36).substring(2, 9),
+
+  //     userId: '1',
+  //     foodId: food.id,
+  //     food: { ...food },
+
+  //     mealType,
+
+  //     consumedAt: selectedDate.getTime(),
+
+  //     estimatedCalories: food.nutrients.calories,
+
+  //     actualProtein_g: food.nutrients.protein,
+  //     actualCarbs_g: food.nutrients.carbs,
+  //     actualFat_g: food.nutrients.fat,
+  //     actualFiber_g: food.nutrients.fiber,
+
+  //     photoUrl: '',
+  //     photoAnalysisStatus: 0,
+
+  //     createdAt: selectedDate.getTime(),
+
+  //     ingredients: food.ingredients
+  //       ? [...food.ingredients]
+  //       : [{ ...food }],
+  //   };
+
+  //   if (propOnAddMeal) {
+  //     propOnAddMeal(food, mealType);
+  //   }
+  //   setInternalMeals(prev => [newEntry, ...prev]);
+  // };
+
+  // const handleDeleteMeal = (id: string) => {
+  //   if (propOnDeleteMeal) {
+  //     propOnDeleteMeal(id);
+  //   }
+  //   setInternalMeals(prev => prev.filter(m => m.id !== id));
+  // };
+
   const [isSearching, setIsSearching] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [isShowingNutritionLabel, setIsShowingNutritionLabel] = useState(false);
   const [isEditingIngredients, setIsEditingIngredients] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [mealToDelete, setMealToDelete] = useState<MealEntry | null>(null);
+  // State to manage viewing/editing ALL foods for a category (Breakfast, Lunch, Dinner, Snack)
+  const [isCategoryViewOpen, setIsCategoryViewOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<MealType>('breakfast');
+  const activeDisplayName = activeCategory === 'snack' ? 'Snacks' : activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
   const [scanMessageIndex, setScanMessageIndex] = useState(0);
@@ -160,6 +380,7 @@ const Diary: React.FC<DiaryProps> = ({ meals, onAddMeal, onDeleteMeal }) => {
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [ingredients, setIngredients] = useState<Food[]>([]);
   const [editingMealId, setEditingMealId] = useState<string | null>(null);
+  const [isSingleFoodEditOpen, setIsSingleFoodEditOpen] = useState(false);
   const [searchFromResults, setSearchFromResults] = useState(false);
   const [activeResultTab, setActiveResultTab] = useState<'nutrition' | 'customize'>('nutrition');
   const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
@@ -167,11 +388,11 @@ const Diary: React.FC<DiaryProps> = ({ meals, onAddMeal, onDeleteMeal }) => {
   // const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   // Normalize initial date to midnight
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d;
-  });
+  // const [selectedDate, setSelectedDate] = useState(() => {
+  //   const d = new Date();
+  //   d.setHours(0, 0, 0, 0);
+  //   return d;
+  // });
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const isFirstMount = useRef(true);
   const [isServingSizeOpen, setIsServingSizeOpen] = useState(false);
@@ -181,7 +402,6 @@ const Diary: React.FC<DiaryProps> = ({ meals, onAddMeal, onDeleteMeal }) => {
   const [isDeleteIngredientModalOpen, setIsDeleteIngredientModalOpen] = useState(false);
   const [selectedIngredientIndex, setSelectedIngredientIndex] = useState<number | null>(null);
   const [selectedIngredientName, setSelectedIngredientName] = useState('');
-  const [isAdjusting, setIsAdjusting] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
 
   // New states for the ingredient addition overlay
@@ -195,6 +415,8 @@ const Diary: React.FC<DiaryProps> = ({ meals, onAddMeal, onDeleteMeal }) => {
 
   const [calorieData, setCalorieData] = useState<CalorieEstimationResponse | null>(null);
   const [expandedIngredientIdx, setExpandedIngredientIdx] = useState<number | null>(null);
+
+  const [addMenuCategory, setAddMenuCategory] = useState<MealType | null>(null);
 
   const nutrition = calorieData?.total_nutrition;
 
@@ -248,14 +470,19 @@ if (nutrition) {
   dietType: 'Classic', 
 });
 
-  const fuse = new Fuse(SEARCHABLE_FOODS, {
-  keys: ['name', 'brand'],
-  threshold: 0.3
-});
+//   const fuse = new Fuse(SEARCHABLE_FOODS, {
+//   keys: ['name', 'brand'],
+//   threshold: 0.3
+// });
 
-const results = searchQuery 
-  ? fuse.search(searchQuery).map(r => r.item)
-  : SEARCHABLE_FOODS;
+// Search filter
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return SEARCHABLE_FOODS;
+    const q = searchQuery.toLowerCase();
+    return SEARCHABLE_FOODS.filter(f => 
+      f.name.toLowerCase().includes(q) || (f.group && f.group.toLowerCase().includes(q))
+    );
+  }, [searchQuery]);
 
   useEffect(() => {
     let interval: any;
@@ -344,12 +571,20 @@ useEffect(() => {
   };
 
   const goToNextDay = () => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(selectedDate.getDate() + 1);
+  const newDate = new Date(selectedDate);
+  newDate.setDate(selectedDate.getDate() + 1);
+
+  if (isTodayOrPast(newDate)) {
     setSelectedDate(newDate);
-  };
+  }
+};
 
   const todaysMeals = meals.filter(m => new Date(m.createdAt).toDateString() === selectedDate.toDateString());
+
+   // Foods for currently active category
+  const activeCategoryMeals = useMemo(() => {
+    return todaysMeals.filter(m => m.mealType === activeCategory);
+  }, [todaysMeals, activeCategory]);
 
   const totals = useMemo(() => {
   return todaysMeals.reduce(
@@ -595,6 +830,7 @@ useEffect(() => {
     setIngredients(detectedIngredients);
     setGramsValue(totalCalories > 600 ? 550 : 450);
     setAnalyzing(false);
+    setIsSingleFoodEditOpen(true);
 
   } catch (err: any) {
     console.error('❌ Error:', err);
@@ -604,40 +840,31 @@ useEffect(() => {
   }
 };
 
-  const confirmMeal = () => {
-    if (!selectedFood || !currentNutrients) return;
+  // const confirmMeal = () => {
+  //   if (!selectedFood || !currentNutrients) return;
     
-    // CRITICAL FIX: Ensure we use the 'ingredients' state and 'gramsValue' instead of stale object properties
-    const updatedMeal: Food = {
-      id: editingMealId || Math.random().toString(36).substr(2, 9),
-      name: selectedFood.name,
-      group: selectedFood.group,
-      servingSize: gramsValue,
-      servingUnit: selectedFood.servingUnit || 'g', // default if undefined
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      nutrients: currentNutrients,
-    };
+  //   // CRITICAL FIX: Ensure we use the 'ingredients' state and 'gramsValue' instead of stale object properties
+  //   const updatedMeal: Food = {
+  //     id: editingMealId || Math.random().toString(36).substr(2, 9),
+  //     name: selectedFood.name,
+  //     group: selectedFood.group,
+  //     servingSize: gramsValue,
+  //     servingUnit: selectedFood.servingUnit || 'g', // default if undefined
+  //     createdAt: Date.now(),
+  //     updatedAt: Date.now(),
+  //     nutrients: currentNutrients,
+  //   };
 
-    if (editingMealId) onDeleteMeal(editingMealId);
-    onAddMeal(updatedMeal, activeCategory);
-    resetForm();
-  };
-
-  const handleDeleteMealConfirm = () => {
-    if (editingMealId) {
-      onDeleteMeal(editingMealId);
-    }
-    setIsDeleteModalOpen(false);
-    resetForm();
-  };
+  //   if (editingMealId) onDeleteMeal(editingMealId);
+  //   onAddMeal(updatedMeal, activeCategory);
+  //   resetForm();
+  // };
 
   const resetForm = () => {
     setIsScanning(false);
     setIsSearching(false);
     setIsShowingNutritionLabel(false);
     setIsDeleteModalOpen(false);
-    setIsAdjusting(false);
     setPreviewUrl(null);
     setAnalyzing(false);
     setSelectedFood(null);
@@ -659,6 +886,7 @@ useEffect(() => {
     setSelectedIngredientIndex(null);
     setSelectedIngredientName('');
     setCalorieData(null);
+    setAddMenuCategory(null);
   };
 
   const removeIngredient = (idx: number) => {
@@ -724,22 +952,96 @@ useEffect(() => {
     }
   };
 
-  const openEditMeal = (meal: MealEntry) => {
-    setActiveCategory(meal.mealType);
+  // const openEditMeal = (meal: MealEntry) => {
+  //   setActiveCategory(meal.mealType);
+  //   setEditingMealId(meal.id);
+  //   setPreviewUrl(meal.photoUrl || null);
+
+  //    // Look up the actual food by its ID (or name if needed)
+  //   const foodFromDb = SEARCHABLE_FOODS.find(f => f.id === meal.foodId);
+
+  //   if (foodFromDb) {
+  //       setSelectedFood(foodFromDb);
+  //     } else {
+  //       console.warn("Food not found for meal:", meal.foodId);
+  //     }
+
+  //   setIsAdjusting(true);
+  //   setIngredients(meal.ingredients || []);
+  // };
+
+//   const openEditMeal = (meal: MealEntry) => {
+//   const food = meal.food ?? SEARCHABLE_FOODS.find(f => f.id === meal.foodId);
+//   if (!food) { console.warn("Food not found for meal:", meal.foodId); return; }
+
+//   setActiveCategory(meal.mealType);
+//   setEditingMealId(meal.id);
+//   setPreviewUrl(meal.photoUrl || null);
+//   setSelectedFood(food);
+//   setIngredients(meal.ingredients || []);
+//   setIsAdjusting(true);
+// };
+
+// Open the Category Info & Edit page for Breakfast / Lunch / Dinner / Snack
+  const openCategoryView = (cat: MealType) => {
+    setActiveCategory(cat);
+    setIsCategoryViewOpen(true);
+  };
+
+// Open single food edit / customize from within the category view
+  const openSingleFoodEdit = (meal: MealEntry) => {
     setEditingMealId(meal.id);
+    setSelectedFood(meal.food);
+    setIngredients(meal.ingredients || meal.food.ingredients || []);
     setPreviewUrl(meal.photoUrl || null);
+    setGramsValue(meal.food.servingSize || 250);
+    setServingSizeMode('serving');
+    setServingSizeValue(1);
+    setIsSingleFoodEditOpen(true);
+  };
 
-     // Look up the actual food by its ID (or name if needed)
-    const foodFromDb = SEARCHABLE_FOODS.find(f => f.id === meal.foodId);
+  // Confirm single food edits
+  const confirmSingleFood = () => {
+    if (!selectedFood || !currentNutrients) return;
+    
+    const updatedFood: Food = {
+      id: editingMealId || selectedFood.id,
+      name: selectedFood.name,
+      group: selectedFood.group,
+      servingSize: gramsValue,
+      servingUnit: selectedFood.servingUnit || 'g',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      nutrients: currentNutrients,
+      ingredients: ingredients.length > 0 ? ingredients : undefined,
+    };
 
-    if (foodFromDb) {
-        setSelectedFood(foodFromDb);
-      } else {
-        console.warn("Food not found for meal:", meal.foodId);
+    if (editingMealId) {
+      const existingMeal = meals.find(m => m.id === editingMealId);
+
+      if (existingMeal) {
+        onUpdateMeal({
+          ...existingMeal,
+          food: updatedFood,
+          foodId: updatedFood.id,
+          ingredients: ingredients.length > 0
+            ? ingredients
+            : [updatedFood],
+
+          estimatedCalories: currentNutrients.calories,
+          actualProtein_g: currentNutrients.protein,
+          actualCarbs_g: currentNutrients.carbs,
+          actualFat_g: currentNutrients.fat,
+          actualFiber_g: currentNutrients.fiber,
+        });
       }
+    } else {
+      onAddMeal(updatedFood, activeCategory);
+    }
 
-    setIsAdjusting(true);
-    setIngredients(meal.ingredients || []);
+    setIsSingleFoodEditOpen(false);
+    setSelectedFood(null);
+    setEditingMealId(null);
   };
 
   const handleConfirmRemoveIngredient = () => {
@@ -810,17 +1112,13 @@ useEffect(() => {
       );
   }, [todaysMeals, activeCategory]);
 
-  const ingredientSummary = useMemo(() => {
-    if (!ingredients || ingredients.length === 0) return null;
-
-    const names = ingredients.map(i => i.name).join(', ');
-    const totalCalories = ingredients.reduce(
-      (sum, i) => sum + (i.nutrients?.calories || 0),
-      0
-    );
-
-    return { names, totalCalories };
-  }, [ingredients]);
+  const confirmDeleteMeal = () => {
+    if (mealToDelete) {
+      onDeleteMeal(mealToDelete.id);
+      setMealToDelete(null);
+    }
+    setIsDeleteModalOpen(false);
+  };
 
   const MacroRing = ({ label, current, target, color }: { label: string, current: number, target: number, color: string }) => {
     const radius = 24;
@@ -851,6 +1149,8 @@ useEffect(() => {
     );
   };
 
+  const mealCategories: MealType[] = ['breakfast', 'lunch', 'dinner', 'snack'];
+
   return (
     <div className="bg-[#F8FAFC] min-h-screen">
       <div className="bg-white px-4 py-4 space-y-4 shadow-sm sticky top-0 z-[60]">
@@ -872,9 +1172,14 @@ useEffect(() => {
               </span>
             </button>
             <button 
-              onClick={goToNextDay}
-              className="p-2 hover:bg-gray-50 rounded-full transition-colors active:scale-90"
-            >
+                onClick={goToNextDay}
+                disabled={selectedDate.toDateString() === getToday().toDateString()}
+                className={`p-2 rounded-full transition-colors active:scale-90 ${
+                  selectedDate.toDateString() === getToday().toDateString()
+                    ? 'opacity-30 cursor-not-allowed'
+                    : 'hover:bg-gray-50'
+                }`}
+              >
               <ChevronRight className="w-6 h-6 text-gray-800" />
             </button>
           </div>
@@ -887,48 +1192,94 @@ useEffect(() => {
           className="flex space-x-2 overflow-x-auto pb-1 scrollbar-hide snap-x"
         >
           {days.map((d, i) => {
-              const isSelected = d.toDateString() === selectedDate.toDateString();
-              return (
-                <button 
-                  key={i} 
-                  data-selected={isSelected}
-                  onClick={() => setSelectedDate(new Date(d))} 
-                  className={`flex-shrink-0 w-14 flex flex-col items-center space-y-2 py-3 px-1 rounded-2xl border-2 transition-all snap-center ${
-                    isSelected ? 'border-emerald-500 bg-emerald-50 shadow-sm' : 'border-transparent bg-white'
-                  }`}
-                >
-                  <span className={`text-[10px] uppercase font-black tracking-tighter ${isSelected ? 'text-emerald-600' : 'text-gray-400'}`}>
-                    {d.toLocaleDateString('en-US', { weekday: 'short' })}
-                  </span>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                    isSelected ? 'bg-emerald-500 text-white' : 'text-gray-600'
-                  }`}>
-                      <span className="text-sm font-black">{d.getDate()}</span>
-                  </div>
-                </button>
-              );
-            })}
+            const isSelected = d.toDateString() === selectedDate.toDateString();
+            const isFuture = !isTodayOrPast(d);
+
+            return (
+              <button 
+                key={i}
+                data-selected={isSelected}
+                disabled={isFuture}
+                onClick={() => {
+                  if (!isFuture) {
+                    setSelectedDate(new Date(d));
+                  }
+                }}
+                className={`flex-shrink-0 w-14 flex flex-col items-center space-y-2 py-3 px-1 rounded-2xl border-2 transition-all snap-center ${
+                  isSelected
+                    ? 'border-emerald-500 bg-emerald-50 shadow-sm'
+                    : isFuture
+                      ? 'border-transparent bg-gray-50 opacity-40 cursor-not-allowed'
+                      : 'border-transparent bg-white'
+                }`}
+              >
+                <span className={`text-[10px] uppercase font-black tracking-tighter ${
+                  isSelected
+                    ? 'text-emerald-600'
+                    : isFuture
+                      ? 'text-gray-300'
+                      : 'text-gray-400'
+                }`}>
+                  {d.toLocaleDateString('en-US', { weekday: 'short' })}
+                </span>
+
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                  isSelected
+                    ? 'bg-emerald-500 text-white'
+                    : isFuture
+                      ? 'text-gray-300'
+                      : 'text-gray-600'
+                }`}>
+                  <span className="text-sm font-black">{d.getDate()}</span>
+                </div>
+              </button>
+            );
+          })}
         </div>
 
         {/* Calendar Modal Overlay */}
         {isCalendarOpen && (
           <>
             <div className="fixed inset-0 bg-black/50 z-[89] backdrop-blur-sm" onClick={() => setIsCalendarOpen(false)} />
-            <div className="fixed inset-x-0 bottom-0 bg-white z-[90] rounded-tl-3xl rounded-tr-3xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-300">
+            <div className="fixed inset-x-0 bottom-0 bg-white z-[90] rounded-tl-3xl rounded-tr-3xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto">
+              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6" />
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest">Select Date</h3>
-                <button onClick={() => setIsCalendarOpen(false)} className="p-2 bg-gray-50 rounded-full"><X size={20} /></button>
+                <h3 className="text-lg font-black text-gray-800 uppercase tracking-normal">Select Date</h3>
+                <button onClick={() => setIsCalendarOpen(false)} className="p-2 bg-gray-50 rounded-full">
+                  <X size={20} />
+                </button>
               </div>
-              <div className="flex justify-center pb-8">
-                <Calendar 
-                  value={selectedDate} 
+              <div className="flex justify-center pb-4">
+                <Calendar
+                  value={selectedDate}
+                  maxDate={getToday()}
                   onChange={(date) => {
-                    setSelectedDate(date as Date);
-                    setIsCalendarOpen(false);
-                  }}
-                  className="w-full max-w-sm rounded-2xl border-none shadow-none"
+                    const newDate = date as Date;
+
+                    if (isTodayOrPast(newDate)) {
+                      setSelectedDate(newDate);
+                      setIsCalendarOpen(false);
+                    }
+}}
+                  className="makanfit-calendar"
+                  maxDetail="month"
+                  minDetail="year"
+                  next2Label={null}
+                  prev2Label={null}
                 />
               </div>
+              {/* Quick "Today" shortcut */}
+              <button
+                onClick={() => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  setSelectedDate(today);
+                  setIsCalendarOpen(false);
+                }}
+                className="w-full mt-2 bg-[#1A2A33] text-white font-black py-4 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
+              >
+                Jump to Today
+              </button>
             </div>
           </>
         )}
@@ -1016,7 +1367,7 @@ useEffect(() => {
               </div>
         </div>
 
-        {(['breakfast','lunch','dinner','snack'] as MealType[]).map((cat) => (
+        {/* {(['breakfast','lunch','dinner','snack'] as MealType[]).map((cat) => (
           <div key={cat} className="bg-white rounded-[32px] shadow-sm border border-gray-100 p-6 space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="text-[#1A2A33] font-black uppercase tracking-widest text-xs">{cat}</h3>
@@ -1043,42 +1394,422 @@ useEffect(() => {
               Add {cat}
             </button>
           </div>
-        ))}
+        ))} */}
+
+        {/* 
+          MEAL CARDS:
+          Clicking the tab / card opens the full Category Info Edit Page that displays ALL foods in that category!
+        */}
+        <div className="space-y-4">
+          {mealCategories.map((cat) => {
+            const categoryMeals = todaysMeals.filter(m => m.mealType === cat);
+            const categoryCalories = Math.round(
+              categoryMeals.reduce((sum, m) => sum + (m.food.nutrients?.calories || 0), 0)
+            );
+            const displayName = cat === 'snack' ? 'Snacks' : cat.charAt(0).toUpperCase() + cat.slice(1);
+
+            return (
+              <div 
+                key={cat} 
+                onClick={() => openCategoryView(cat)}
+                className="bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-xs hover:shadow-sm transition-all space-y-3"
+              >
+                {/* Header Row: Cute Category Icon + Title/Calories + Plus Button */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3.5">
+                    <MealCategoryIcon type={cat} />
+                    <div>
+                      <h3 className="text-[#1A2A33] font-black uppercase tracking-widest text-xs">{displayName}</h3>
+                      {/* <h3 className="text-[17px] sm:text-lg font-extrabold text-[#1E293B] tracking-tight">
+                        {displayName}
+                      </h3> */}
+                      <p className="text-sm font-semibold text-slate-400">
+                        Eaten {categoryCalories} Cal
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Dark Circular Plus Button matching mockup */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setActiveCategory(cat);
+                      setAddMenuCategory(cat);
+                    }}
+                    className="w-10 h-10 rounded-full bg-[#1E293B] hover:bg-slate-900 active:scale-95 text-white flex items-center justify-center shadow-xs cursor-pointer transition-all"
+                    aria-label={`Add ${displayName}`}
+                    title={`Add food to ${displayName}`}
+                  >
+                    <Plus size={18} className="stroke-[3]" />
+                  </button>
+                </div>
+
+                {/* GATHERED FOODS ROW: Clicking anywhere on this card opens the Category Info Edit Page */}
+                {categoryMeals.length > 0 ? (
+                  <div className="pt-1 text-sm font-medium text-slate-600 leading-relaxed">
+                    {categoryMeals.map((meal, idx) => (
+                      <span key={meal.id}>
+                        <span className="font-semibold text-slate-700 group-hover:text-emerald-700 transition-colors">
+                          {meal.food.name} ({meal.food.nutrients.calories} Cal)
+                        </span>
+                        {idx < categoryMeals.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                    {/* {categoryMeals.map((meal, idx) => (
+                      <span key={meal.id}>
+                        <button
+                          type="button"
+                          onClick={() => openEditMeal(meal)}
+                          className="hover:text-emerald-700 hover:underline cursor-pointer inline text-left transition-colors font-medium"
+                          title="Click to view/edit this food"
+                        >
+                          {meal.food.name} ({meal.food.nutrients.calories} Cal)
+                        </button>
+                        {idx < categoryMeals.length - 1 ? ', ' : ''}
+                      </span>
+                    ))} */}
+                  </div>
+                  ) : (
+                  <p className="pt-1 text-xs text-slate-400 font-medium">
+                    No foods logged yet. Tap to view or add {displayName.toLowerCase()}.
+                  </p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Hydration Tracker Card */}
+<div className="bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-xs space-y-4">
+  <div className="flex items-center justify-between">
+    <div className="flex items-center space-x-3.5">
+      <div className="w-10 h-10 rounded-2xl bg-sky-50 flex items-center justify-center flex-shrink-0">
+        <Droplet className="w-5 h-5 text-sky-400 fill-sky-200" />
+      </div>
+      <div>
+        <h3 className="text-[#1A2A33] font-black uppercase tracking-widest text-xs">Water</h3>
+        <p className="text-sm font-semibold text-slate-400">
+          Goal: {(WATER_GOAL_ML / 1000).toFixed(1)}L
+        </p>
+      </div>
+    </div>
+
+    <div className="flex items-center space-x-3">
+      <p className="font-black text-gray-900 text-lg">
+        {waterL} <span className="text-xs text-gray-400 font-normal">L</span>
+      </p>
+      {/* <button
+        onClick={() => setIsAddWaterOpen(true)}
+        className="w-10 h-10 rounded-full bg-[#1E293B] hover:bg-slate-900 active:scale-95 text-white flex items-center justify-center shadow-xs cursor-pointer transition-all"
+        aria-label="Customize water intake"
+        title="Add or customize water intake"
+      >
+        <SlidersHorizontal size={16} className="stroke-[2.5]" />
+      </button> */}
+    </div>
+  </div>
+
+  {/* Progress bar */}
+  <div className="relative h-2 bg-slate-100 rounded-full overflow-hidden">
+    <div
+      className="absolute h-full bg-sky-400 rounded-full transition-all duration-500"
+      style={{ width: `${Math.min((totalWaterMl / WATER_GOAL_ML) * 100, 100)}%` }}
+    />
+  </div>
+
+      {/* Glass fill visual */}
+      <div className="grid grid-cols-7 gap-2 sm:gap-2.5 pt-1">
+        {Array.from({
+          length: Math.max(totalGlassSlots, Math.ceil(filledGlasses))
+        }).map((_, idx) => {
+          // Water contained within this specific glass slot
+          const waterInThisGlass = Math.max(
+            0,
+            Math.min(GLASS_SIZE_ML, totalWaterMl - idx * GLASS_SIZE_ML)
+          );
+          const glassFill = waterInThisGlass / GLASS_SIZE_ML; // fractional fill (0.0 to 1.0)
+          const isEmpty = glassFill === 0;
+
+          return (
+            <button
+              key={`glass-${idx}`}
+              onClick={() => {
+                if (isEmpty) {
+                  setIsAddWaterOpen(true);
+                } else {
+                  removeWaterByGlassIndex(idx);
+                }
+              }}
+              title={
+                isEmpty
+                  ? 'Tap to add water'
+                  : `Remove ${waterInThisGlass} ml`
+              }
+              className={`group aspect-square rounded-xl relative overflow-hidden border-2 transition-all active:scale-90 ${
+                isEmpty
+                  ? 'border-sky-100 border-dashed bg-sky-50 hover:bg-sky-100'
+                  : 'border-sky-400 bg-sky-50 hover:border-red-300 hover:bg-red-50'
+              }`}
+            >
+              {/* Water fill */}
+              <div
+                className={`absolute bottom-0 left-0 right-0 transition-all duration-500 ${
+                  isEmpty
+                    ? 'bg-transparent'
+                    : 'bg-sky-400 group-hover:bg-red-400'
+                }`}
+                style={{
+                  height: `${glassFill * 100}%`,
+                }}
+              />
+
+              {/* Icon */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                {isEmpty ? (
+                  <Plus className="w-4 h-4 text-sky-200 stroke-[3]" />
+                ) : (
+                  <>
+                    {/* Normal water icon */}
+                    <Droplet
+                      className={`
+                        w-4 h-4 transition-all
+                        group-hover:scale-0
+                        ${
+                          glassFill >= 0.5
+                            ? 'text-white fill-white'
+                            : 'text-sky-400 fill-sky-400'
+                        }
+                      `}
+                    />
+
+                    {/* Remove icon on hover */}
+                    <X
+                      className="
+                        absolute
+                        w-4 h-4
+                        text-red-500
+                        stroke-[3]
+                        scale-0
+                        group-hover:scale-100
+                        transition-transform
+                      "
+                    />
+                  </>
+                )}
+              </div>
+            </button>
+          );
+        })}
       </div>
 
-      {/* ADJUSTMENT OVERLAY (Logged Food Details) */}
-      {isAdjusting && selectedFood && (
+      {todaysWaterEntries.length === 0 ? (
+        <p className="text-xs text-slate-400 font-medium text-center pt-1">
+          No water logged yet today. Tap + to add.
+        </p>
+      ) : (
+        <p className="text-xs text-slate-400 font-medium text-center pt-1">
+          Tap any filled glass to remove its water portion held.
+        </p>
+      )}
+    </div>
+
+      {/* ADD WATER BOTTOM SHEET */}
+      {isAddWaterOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-[90] backdrop-blur-xs"
+            onClick={() => setIsAddWaterOpen(false)}
+          />
+          <div className="fixed inset-x-0 bottom-0 bg-white z-[95] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-5">
+            <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-1" />
+
+            <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+              <h3 className="text-lg font-black text-slate-900 tracking-normal">Add Water</h3>
+              <button
+                onClick={() => setIsAddWaterOpen(false)}
+                className="p-1 text-gray-400 hover:text-gray-600 rounded-full"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Quick Presets */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Quick Add</p>
+              <div className="grid grid-cols-4 gap-2">
+                {WATER_PRESETS.map((preset) => (
+                  <button
+                    key={preset.label}
+                    onClick={() => {
+                      addWaterEntry(preset.ml);
+                      setIsAddWaterOpen(false);
+                    }}
+                    className="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-100 transition-all active:scale-95"
+                  >
+                    <span className="text-xl">{preset.emoji}</span>
+                    <span className="text-[10px] font-bold text-sky-700 leading-tight text-center">{preset.label}</span>
+                    <span className="text-[9px] font-semibold text-sky-500">{preset.ml}ml</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Amount Input */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Custom Amount</p>
+              <div className="flex items-center bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden">
+                <input
+                  type="number"
+                  value={waterInputValue}
+                  onChange={(e) => setWaterInputValue(e.target.value)}
+                  placeholder="e.g. 350"
+                  className="flex-1 bg-transparent px-5 py-4 text-lg font-bold text-[#1A2A33] outline-none min-w-0"
+                  min="0"
+                  step={waterInputUnit === 'L' ? '0.1' : '10'}
+                />
+                {/* Unit toggle */}
+                <div className="flex items-center space-x-1 pr-2">
+                  {(['ml', 'L'] as const).map((unit) => (
+                    <button
+                      key={unit}
+                      onClick={() => setWaterInputUnit(unit)}
+                      className={`px-3 py-2 rounded-xl text-xs font-black uppercase transition-all ${
+                        waterInputUnit === unit
+                          ? 'bg-[#1E293B] text-white'
+                          : 'text-gray-400 hover:bg-gray-100'
+                      }`}
+                    >
+                      {unit}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={handleCustomWaterAdd}
+              className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
+            >
+              Add {waterInputValue || '0'} {waterInputUnit}
+            </button>
+          </div>
+        </>
+      )}
+
+        {addMenuCategory && (
+        <>
+          <div 
+            className="fixed inset-0 bg-black/40 z-[110] backdrop-blur-xs" 
+            onClick={() => setAddMenuCategory(null)} 
+          />
+          <div className="fixed inset-x-0 bottom-0 bg-white z-[120] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-4">
+            <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-2" />
+            <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+              <h3 className="text-lg font-black text-slate-900 tracking-normal">
+                Add to {addMenuCategory === 'snack' ? 'Snacks' : addMenuCategory}
+              </h3>
+              <button 
+                onClick={() => setAddMenuCategory(null)}
+                className="p-1 text-gray-400 hover:text-gray-600 rounded-full"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <button
+                onClick={() => {
+                  resetForm();
+                  setActiveCategory(addMenuCategory!);
+                  setIsScanning(true);
+                }}
+                className="p-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 flex flex-col items-center text-center gap-2 cursor-pointer transition-all active:scale-98"
+              >
+                <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xs">
+                  <Camera size={22} />
+                </div>
+                <div>
+                  <p className="text-[#1A2A33] font-bold tracking-wide text-sm">AI Food Scan</p>
+                  {/* <p className="font-bold text-sm text-emerald-950">AI Food Scan</p> */}
+                  <p className="text-[11px] text-emerald-700 tracking-wide">Auto-recognize Malaysian meal</p>
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  // setAddMenuCategory(null);
+                  resetForm();
+                  setActiveCategory(addMenuCategory!);
+                  setIsSearching(true);
+                }}
+                className="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 flex flex-col items-center text-center gap-2 cursor-pointer transition-all active:scale-98"
+              >
+                <div className="w-12 h-12 rounded-full bg-slate-800 text-white flex items-center justify-center shadow-xs">
+                  <Search size={22} />
+                </div>
+                <div>
+                  <p className="text-[#1A2A33] font-bold tracking-wide text-sm">Search Food</p>
+                  <p className="text-[11px] text-slate-500 tracking-wide">From Malaysian database</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      </div>
+
+      {/* CATEGORY INFO & EDIT PAGE (Shows ALL foods in Breakfast / Lunch / etc.) */}
+      {isCategoryViewOpen && (
         <div className="fixed inset-0 bg-white z-[100] flex flex-col animate-in slide-in-from-bottom duration-300">
           {/* Header Row */}
           <div className="p-4 flex items-center justify-between border-b border-gray-50 pb-0">
-            <button 
+            {/* <button 
               onClick={() => setIsAdjusting(false)} 
               className="flex items-center space-x-2 text-gray-400 font-black text-[10px] uppercase tracking-widest bg-gray-50 px-4 py-2.5 rounded-3xl"
             >
-              <Pencil size={14} />
-              <span>Edit Meal</span>
+              <ChevronLeft size={18} />
+              <span>Back</span>
+            </button> */}
+            <button
+                  onClick={() => setAddMenuCategory(activeCategory)}
+                  className="flex items-center space-x-2 text-gray-400 font-black text-[10px] uppercase tracking-widest bg-gray-100 px-4 py-2.5 rounded-3xl"
+                >
+                  <Plus size={14} className="stroke-[3]" />
+              <span>Add Food</span>
             </button>
+
             <button 
-              onClick={confirmMeal}
+              onClick={() => setIsCategoryViewOpen(false)}
               className="bg-[#1A2A33] text-white px-8 py-2.5 rounded-3xl font-black text-xs shadow-xl active:scale-95 transition-all hover:bg-black active:scale-[0.98] uppercase tracking-widest"
             >
               Done
             </button>
           </div>
 
+          {/* Category Body */}
           <div className="flex-1 overflow-y-auto pb-10">
             {/* Category Summary Header */}
             <div className="px-6 py-8 text-center space-y-4">
               <div className="flex items-center justify-center space-x-2">
                 <h2 className="text-4xl font-black text-[#1A2A33]">{activeCategory}</h2>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <p className="text-lg font-bold text-gray-800">{Math.round(categoryCurrent.calories)} / {targetCal} Cal</p>
                 <div className="w-full max-w-[240px] mx-auto h-2.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-green-500 rounded-full transition-all duration-1000" 
                     style={{ width: `${Math.min((categoryCurrent.calories / targetCal) * 100, 100)}%` }} 
                   />
+                </div>
+                
+                <div className="w-full max-w-[240px] mx-auto flex justify-between text-[11px] font-bold text-slate-400">
+                  <span>
+                    {Math.round((categoryCurrent.calories / targetCal) * 100)}% of target
+                  </span>
+
+                  <span>
+                    {Math.max(0, targetCal - Math.round(categoryCurrent.calories))} Cal remaining
+                  </span>
                 </div>
               </div>
             </div>
@@ -1091,41 +1822,105 @@ useEffect(() => {
               <MacroRing label="Fiber" current={categoryCurrent.fiber} target={categoryTargets.fiber} color="#D5B4B4" />
             </div>
 
-            <div className="h-[1px] bg-gray-100 mx-6 mb-8" />
+            <div className="h-[1px] bg-gray-100 mx-6 mb-1" />
 
-            {/* Food Item Details */}
-            <div className="px-6 space-y-2 mb-10">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h3 className="text-2xl font-black text-[#1A2A33] leading-tight">{selectedFood.name}</h3>
-                  <div className="text-sm text-gray-500 font-medium leading-relaxed">
-                    {/* INGREDIENTS LIST - Displayed when clicking a logged food */}
-                    <div className="mt-3 space-y-2">
-                      {ingredientSummary && (
-                        <span>
-                          With:{' '}
-                          <span className="text-gray-900 font-semibold">
-                            {ingredientSummary.names}
-                          </span>
-                        </span>
+            {/* ALL FOODS IN THIS CATEGORY */}
+            <div className="space-y-3 p-6 pt-0 pb-0">
+              <div className="flex items-center justify-between px-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
+                    Logged Foods in {activeDisplayName}
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-xs font-bold">
+                    {activeCategoryMeals.length}
+                  </span>
+                </div>
+              </div>
+
+              {activeCategoryMeals.length === 0 ? (
+                <div className="bg-white rounded-[28px] p-8 border border-slate-100 text-center space-y-4 shadow-xs">
+                  <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                    <Utensils size={24} />
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-800 text-base">No foods logged for {activeDisplayName}</p>
+                    <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+                      Snap a photo or search our Malaysian food library to log your meal.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setAddMenuCategory(activeCategory)}
+                    className="inline-flex items-center gap-2 bg-[#1A2A33] text-white px-5 py-2.5 rounded-2xl font-bold text-xs uppercase tracking-wider shadow-md hover:bg-black transition-all cursor-pointer"
+                  >
+                    <Plus size={14} />
+                    <span>Log {activeDisplayName} Food</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {activeCategoryMeals.map((meal) => (
+                    <div 
+                      key={meal.id}
+                      className="bg-white p-1 sm:p-5 transition-all space-y-3"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-bold text-slate-900 text-sm sm:text-base leading-snug truncate">
+                            {meal.food.name}
+                          </h4>
+                          <p className="text-xs font-semibold text-slate-400 mt-0.5">
+                            {meal.food.servingSize || 100}g • {meal.food.nutrients.calories} Cal
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                            onClick={() => openSingleFoodEdit(meal)}
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-emerald-700 bg-slate-50 hover:bg-emerald-50 border border-slate-200/80 hover:border-emerald-200 px-3 py-1.5 rounded-xl transition-all cursor-pointer active:scale-95"
+                            title="Customize food portion or ingredients"
+                          >
+                            <Pencil size={12} className="text-emerald-600" />
+                            <span>Customize</span>
+                          </button>
+                        {/* Delete Food Button */}
+                        <button
+                          onClick={() => {
+                            setMealToDelete(meal);
+                            setIsDeleteModalOpen(true);
+                          }}
+                          className="p-2 text-slate-300 hover:text-rose-500 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
+                          title="Remove food from meal"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                        </div>
+                      </div>
+
+                      {/* Ingredients list tag preview if present */}
+                      {meal.ingredients && meal.ingredients.length > 1 && (
+                        <div className="bg-slate-50 rounded-xl p-2.5 text-xs text-slate-600 font-medium space-y-1">
+                          <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">Ingredients</span>
+                          <p className="leading-relaxed">
+                            {meal.ingredients.map(i => `${i.name} (${i.nutrients?.calories || 0} Cal)`).join(', ')}
+                          </p>
+                        </div>
                       )}
                     </div>
-                  </div>
+                  ))}
                 </div>
-                <button onClick={() => setIsDeleteModalOpen(true)} className="p-2 text-gray-300 hover:text-red-500 transition-colors">
-                  <Trash2 size={24} />
-                </button>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-orange-400" />
-                <span className="text-lg font-bold text-gray-800">{currentNutrients?.calories} Cal, 1 serving ({Math.round(gramsValue)} g)</span>
-              </div>
+              )}
             </div>
 
             <div className="h-[1px] bg-gray-100 mx-6 mb-10" />
 
             {/* Malaysian Nutrition Facts Label */}
             <div className="px-6">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <div>
+                    <h3 className="font-extrabold text-slate-900 text-base">Combined Nutrition Facts</h3>
+                    <p className="text-xs text-slate-400">Total nutrition for all foods in {activeDisplayName}</p>
+                  </div>
+                </div>
               <div className="border-[4px] border-black p-5 space-y-4 text-black max-w-sm mx-auto shadow-sm">
                 <h2 className="text-3xl font-black border-b-[10px] border-black pb-1 uppercase italic leading-none tracking-tighter">Nutrition Facts</h2>
                 
@@ -1217,9 +2012,9 @@ useEffect(() => {
         </div>
       )}
 
-      {/* AI SCAN RESULTS PAGE (REDESIGNED BASED ON IMAGES) */}
-      {selectedFood && (
-        <div className="fixed inset-0 bg-white z-[95] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-500">
+      {/* SINGLE FOOD CUSTOMIZE / SCAN RESULTS MODAL */}
+      {isSingleFoodEditOpen && selectedFood && (
+        <div className="fixed inset-0 bg-white z-[110] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-500">
           {/* Header Image Section */}
           <div className="relative h-[40vh] w-full">
             {previewUrl ? (
@@ -1236,13 +2031,9 @@ useEffect(() => {
             <div className="absolute top-0 left-0 w-full p-6 flex items-center justify-between z-10">
               <button
               onClick={() => {
-                  // If we are editing a meal, go back to the Logged Food Details page
-                  // instead of exiting entirely to the diary.
-                  if (editingMealId) {
-                    setIsAdjusting(true);
-                  } else {
-                    resetForm();
-                  }
+                  setIsSingleFoodEditOpen(false);
+                  setSelectedFood(null);
+                  setEditingMealId(null);
                 }}
               className="p-2 text-white">
                 <ArrowLeft className="w-6 h-6" />
@@ -1322,10 +2113,14 @@ useEffect(() => {
                 );
               })()}
             </div>
-            {calorieData?.calorie_range_kcal && (
+            {calorieData?.calorie_range_kcal ? (
               <div className="text-xl font-black text-gray-800">
                 {Math.round(calorieData.calorie_range_kcal.min_kcal)} <span className="text-gray-400 font-semibold">–</span> {Math.round(calorieData.calorie_range_kcal.max_kcal)} <span className="text-lg text-gray-400 font-semibold">kcal</span>
               </div>
+            ) : (
+            <div className="text-xl font-black text-gray-800">
+              {currentNutrients?.calories} <span className="text-sm text-gray-400 font-semibold">kcal</span>
+            </div>
             )}
           </div>
 
@@ -1482,13 +2277,17 @@ useEffect(() => {
                         <div className="flex justify-between items-baseline border-b-4 border-black pb-1">
                         <span className="text-xl font-black">Calories</span>
 
-                        {calorieData?.calorie_range_kcal && (
+                        {calorieData?.calorie_range_kcal ? (
                           <span className="text-lg font-bold">
                             {Math.round(calorieData.calorie_range_kcal.min_kcal)}
                             <span className="text-gray-400 font-semibold"> – </span>
                             {Math.round(calorieData.calorie_range_kcal.max_kcal)} kcal
                           </span>
-                        )}
+                        ):
+                        <div className="text-xl font-black text-gray-800">
+                          {currentNutrients?.calories} <span className="text-sm text-gray-400 font-semibold">kcal</span>
+                        </div>
+                        }
                       </div>
                       </div>
 
@@ -1510,7 +2309,7 @@ useEffect(() => {
                       </div> */}
 
                       <div className="space-y-1.5">
-                        {calorieData?.total_nutrition && [
+                        {/* {calorieData?.total_nutrition && [
                           {
                             name: 'Total Fat',
                             value: calorieData.total_nutrition.fat_g,
@@ -1531,7 +2330,30 @@ useEffect(() => {
                             value: calorieData.total_nutrition.protein_g,
                             perc: Math.round((calorieData.total_nutrition.protein_g / 50) * 100),
                           },
-                        ].map((item, i) => (
+                        ] */}
+                        {currentNutrients && [
+                          {
+                            name: 'Total Fat',
+                            value: currentNutrients?.fat ?? 0,
+                            perc: Math.round(((currentNutrients?.fat ?? 0) / 65) * 100),
+                          },
+                          {
+                            name: 'Total Carbohydrate',
+                            value: currentNutrients?.carbs ?? 0,
+                            perc: Math.round(((currentNutrients?.carbs ?? 0) / 300) * 100),
+                          },
+                          {
+                            name: 'Dietary Fiber',
+                            value: currentNutrients?.fiber ?? 0,
+                            perc: Math.round(((currentNutrients?.fiber ?? 0) / 25) * 100),
+                          },
+                          {
+                            name: 'Protein',
+                            value: currentNutrients?.protein ?? 0,
+                            perc: Math.round(((currentNutrients?.protein ?? 0) / 50) * 100),
+                          },
+                        ]
+                        .map((item, i) => (
                           <div
                             key={i}
                             className="flex justify-between items-baseline border-b border-black/20 pb-1 last:border-0"
@@ -1716,7 +2538,7 @@ useEffect(() => {
           {/* Fixed Footer Button */}
           <div className="absolute bottom-0 left-0 w-full p-6 bg-transparent z-30">
             <button 
-              onClick={() => confirmMeal()}
+              onClick={confirmSingleFood}
               className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
             >
               {editingMealId ? 'Save this food' : 'Log this food'}
@@ -1924,7 +2746,7 @@ useEffect(() => {
       )}
 
       {/* DELETE CONFIRMATION MODAL */}
-      {isDeleteModalOpen && (
+      {isDeleteModalOpen && mealToDelete && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 animate-in fade-in duration-200">
           <div 
             className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
@@ -1945,7 +2767,7 @@ useEffect(() => {
 
               <div className="w-full space-y-3 pt-2">
                 <button 
-                  onClick={handleDeleteMealConfirm}
+                  onClick={confirmDeleteMeal}
                   className="w-full bg-red-500 text-white font-black py-5 rounded-3xl shadow-xl shadow-red-100 active:scale-[0.95] transition-all uppercase text-xs tracking-widest"
                 >
                   Yes, Remove Item
@@ -2099,7 +2921,81 @@ useEffect(() => {
         </div>
       )}
 
-      {/* SEARCH OVERLAY */}
+      {/* SEARCH FOOD OVERLAY */}
+      {isSearching && (
+        <div className="fixed inset-0 bg-white z-[120] p-4 flex flex-col animate-in fade-in duration-200">
+          <div className="flex items-center space-x-3 mb-4">
+            <button 
+              onClick={() => { setIsSearching(false); setIsEditingIngredients(false); 
+                if (searchFromResults) { setSearchFromResults(false); }
+              }} 
+              className="p-2 rounded-full hover:bg-gray-100 cursor-pointer"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <div className="flex-1 relative">
+              <input 
+                type="text" 
+                autoFocus 
+                placeholder="Search Malaysian food (e.g. Nasi Lemak, Roti Canai)..." 
+                value={searchQuery} 
+                onChange={(e) => setSearchQuery(e.target.value)} 
+                className="w-full bg-gray-50 border border-gray-200 py-3 pl-10 pr-4 rounded-2xl text-sm font-semibold outline-none focus:border-emerald-500" 
+              />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            </div>
+          </div>
+
+          <div className="space-y-2 overflow-y-auto flex-1">
+            {searchResults.map(f => (
+              <button 
+                key={f.id} 
+                onClick={() => { 
+                  if (isEditingIngredients && selectedFood) {
+                    // NEW FLOW: Show intermediate detail overlay
+                    setTempIngredient({
+                      ...f,
+                      nutrients: {
+                        ...f.nutrients,
+                      },
+                    });
+                    setTempServingValue(1);
+                    setTempBaseGrams(f.servingSize || 100);
+                    setTempGramsValue(f.servingSize || 100);
+                    setIsIngredientDetailOpen(true);
+                    setTempServingSizeMode('serving');
+                    setIsIngredientDetailOpen(true);
+                  } else {
+                    // Show the confirm/customize page instead of adding immediately
+                    setSelectedFood(f);
+                    setIngredients(f.ingredients || []);
+                    // setPreviewUrl(null);
+                    // setGramsValue(f.servingSize || 250);
+                    // setServingSizeMode('serving');
+                    // setServingSizeValue(1);
+                    // setEditingMealId(null);
+                    // setCalorieData(null);
+                    setIsSearching(false);
+                    setIsSingleFoodEditOpen(true);
+                  }
+                }} 
+                className="w-full p-4 border-b border-gray-100 text-left flex justify-between items-center hover:bg-slate-50 rounded-xl transition-colors cursor-pointer"
+              >
+                <div>
+                  <p className="font-bold text-gray-900 text-sm">{f.name}</p>
+                  <p className="text-xs text-gray-400 font-medium">{f.group || 'Malaysian Dish'} • {f.servingSize}g</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-emerald-600 text-sm">{f.nutrients.calories}</p>
+                  <p className="text-[10px] text-gray-400 uppercase font-semibold">kcal</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* SEARCH OVERLAY
       {isSearching && (
         <div className="fixed inset-0 bg-white z-[100] p-4 flex flex-col animate-in fade-in duration-200">
           <div className="flex items-center space-x-3 mb-6">
@@ -2142,7 +3038,7 @@ useEffect(() => {
             ))}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* AI SCAN CAMERA SELECTION OVERLAY */}
       {/* {isScanning && !analyzing && (
