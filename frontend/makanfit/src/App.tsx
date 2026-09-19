@@ -14,10 +14,10 @@ import AddWeight from './components/AddWeight';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Onboarding from './components/Onboarding';
-import { LayoutDashboard, User as UserIcon, Utensils } from 'lucide-react';
+import { Heart, LayoutDashboard, User as UserIcon, Utensils } from 'lucide-react';
 import AccountSetting from './components/AccountSetting';
 import NotificationSettings from './components/NotificationSettings';
-// import Pal from './components/Pal';
+import Pal from './components/Pal';
 
 const INITIAL_USER: User = {
   userId: 'u1',
@@ -313,7 +313,7 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
         );
       case Page.DIARY:
         return <Diary meals={meals} onAddMeal={handleAddMeal} onDeleteMeal={handleDeleteMeal} onUpdateMeal={handleUpdateMeal} />;
-      // case Page.PAL: return <Pal />;
+      case Page.PAL: return <Pal />;
       case Page.PROFILE:
         return (
           <Profile 
@@ -426,9 +426,9 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
       </span>
     </button>
 
-    {/* <button onClick={() => setCurrentPage(Page.PAL)} className={`flex flex-col md:flex-row items-center md:justify-start space-y-1 md:space-y-0 md:space-x-4 px-4 py-3 rounded-xl transition-all ${currentPage === Page.PAL ? 'text-emerald-600 md:bg-emerald-50' : 'text-gray-300'}`}>
+    <button onClick={() => setCurrentPage(Page.PAL)} className={`flex flex-col md:flex-row items-center md:justify-start space-y-1 md:space-y-0 md:space-x-4 px-4 py-3 rounded-xl transition-all ${currentPage === Page.PAL ? 'text-emerald-600 md:bg-emerald-50' : 'text-gray-300'}`}>
         <Heart className={`w-6 h-6 md:w-7 md:h-7 ${currentPage === Page.PAL ? 'fill-emerald-600' : ''}`} /><span className="text-[10px] md:text-base font-black uppercase md:normal-case tracking-widest">Pal</span>
-      </button> */}
+      </button>
 
     {/* Me */}
     <button 
