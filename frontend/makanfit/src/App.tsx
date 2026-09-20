@@ -1,6 +1,6 @@
 
 //App.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Page, User, WeightEntry, Food, MealEntry, MealType } from './types/types';
 import Dashboard from './components/Dashboard';
 import Diary from './components/Diary';
@@ -14,10 +14,12 @@ import AddWeight from './components/AddWeight';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Onboarding from './components/Onboarding';
-import { Heart, LayoutDashboard, User as UserIcon, Utensils } from 'lucide-react';
+import { Flame, Heart, LayoutDashboard, User as UserIcon, Utensils } from 'lucide-react';
 import AccountSetting from './components/AccountSetting';
 import NotificationSettings from './components/NotificationSettings';
 import Pal from './components/Pal';
+import StreakModal from './components/StreakModal';
+import { calculateStreak } from './utils/streak';
 
 const INITIAL_USER: User = {
   userId: 'u1',
@@ -130,6 +132,9 @@ const App: React.FC = () => {
   const [meals, setMeals] = useState<MealEntry[]>(MOCK_MEALS);
   const [weightHistory, setWeightHistory] = useState<WeightEntry[]>(MOCK_WEIGHTS);
   const [user, setUser] = useState<User>(INITIAL_USER);
+
+  const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
+  const streakInfo = useMemo(() => calculateStreak(meals), [meals]);
 
   useEffect(() => {
     const savedAuth = localStorage.getItem('makanfit_auth') === 'true';
@@ -318,6 +323,15 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
         return <Diary meals={meals} onAddMeal={handleAddMeal} onDeleteMeal={handleDeleteMeal} onUpdateMeal={handleUpdateMeal} />;
       case Page.PAL:
         return <Pal meals={meals} user={user} />;
+      case Page.PAL:
+        return (
+          <Pal 
+            meals={meals} 
+            user={user} 
+            onNavigateToLogMeal={() => setCurrentPage(Page.DIARY)}
+            onOpenStreakModal={() => setIsStreakModalOpen(true)}
+          />
+        );
       case Page.PROFILE:
         return (
           <Profile 
@@ -458,8 +472,22 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
     <div className="min-h-screen md:flex-row mx-auto bg-gray-50 relative overflow-x-hidden shadow-2xl">
       {/* Sidebar - Desktop Only */}
       <aside className="hidden md:flex flex-col w-72 h-screen fixed left-0 top-0 bg-white border-r border-gray-100 p-6 z-50">
-        <div className="mb-10 px-4">
+        <div className="mb-10 px-4 flex items-center justify-between">
           <h1 className="text-2xl font-black text-emerald-600 tracking-tight">MAKANFIT</h1>
+          
+          {/* Desktop Streak Button */}
+          <button
+            onClick={() => setIsStreakModalOpen(true)}
+            className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-full border transition-all text-xs font-bold cursor-pointer hover:scale-105 active:scale-95 ${
+              streakInfo.hasLoggedToday
+                ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200/80'
+                : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200/80'
+            }`}
+            title={`${streakInfo.streak}-Day Streak (${streakInfo.statusBadge}) - Tap to view streak calendar`}
+          >
+            <Flame size={14} className={streakInfo.hasLoggedToday ? "fill-orange-500 text-orange-500" : "fill-amber-400 text-amber-500"} />
+            <span>{streakInfo.streak}d</span>
+          </button>
         </div>
         <nav className="flex-1 space-y-2">
           <NavItems />
@@ -471,6 +499,23 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
         {/* Mobile Header Only */}
         <header className="md:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md px-6 py-4 flex justify-between items-center border-b border-gray-100">
           <h1 className="text-xl font-black text-emerald-600 tracking-tight">MAKANFIT</h1>
+
+          {/* Mobile Streak Button */}
+          <button
+            onClick={() => setIsStreakModalOpen(true)}
+            className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full border transition-all text-xs font-bold cursor-pointer hover:scale-105 active:scale-95 ${
+              streakInfo.hasLoggedToday
+                ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200/80'
+                : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200/80'
+            }`}
+            title={`${streakInfo.streak}-Day Streak (${streakInfo.statusBadge}) - Tap to view streak calendar`}
+          >
+            <Flame size={15} className={streakInfo.hasLoggedToday ? "fill-orange-500 text-orange-500" : "fill-amber-400 text-amber-500"} />
+            <span>{streakInfo.streak}d</span>
+            {streakInfo.isPending && (
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+            )}
+          </button>
         </header>
 
         {/* Content Area */}
@@ -485,6 +530,17 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
           <NavItems />
         </nav>
       </div>
+
+      {/* Interactive Streak Modal */}
+      <StreakModal
+        isOpen={isStreakModalOpen}
+        onClose={() => setIsStreakModalOpen(false)}
+        meals={meals}
+        onLogMeal={() => {
+          setIsStreakModalOpen(false);
+          setCurrentPage(Page.DIARY);
+        }}
+      />
     </div>
   );
 };

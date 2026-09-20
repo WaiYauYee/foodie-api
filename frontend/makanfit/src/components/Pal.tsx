@@ -17,17 +17,23 @@ import {
   Crown,
   Glasses,
   LayoutGrid,
-  BatteryWarning,
-  BatteryLow,
-  BatteryCharging,
+  Palmtree,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Mascot, { MascotMoodState } from "./Mascot";
 import { Challenge, MealEntry, OutfitItem, User } from "../types/types";
+import { calculateStreak } from '../utils/streak';
+import PalBackground, {
+  BackgroundTheme,
+  BACKGROUND_OPTIONS,
+} from "./PalBackground";
+import StreakModal from "./StreakModal";
 
 interface PalProps {
   meals?: MealEntry[];
   user?: User;
+  onNavigateToLogMeal?: (category?: any) => void;
+  onOpenStreakModal?: () => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -567,6 +573,249 @@ const SHOP_ITEMS: OutfitItem[] = [
       </g>
     ),
   },
+  {
+    id: "bg_garden",
+    name: "Zen Garden",
+    price: 0,
+    category: "scenery",
+    owned: true,
+    svgElement: (
+      <g>
+        <defs>
+          <linearGradient id="bgThumbGarden" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#BAE6FD" />
+            <stop offset="50%" stopColor="#FEF3C7" />
+            <stop offset="100%" stopColor="#A7F3D0" />
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" fill="url(#bgThumbGarden)" />
+        <circle cx="28" cy="28" r="14" fill="#FDE047" opacity="0.8" />
+        <circle cx="28" cy="28" r="8" fill="#FACC15" />
+        <path
+          d="M -10 90 Q 30 65 70 85 T 130 80 L 130 120 L -10 120 Z"
+          fill="#34D399"
+        />
+        <path
+          d="M -10 100 Q 40 85 80 95 T 130 92 L 130 120 L -10 120 Z"
+          fill="#059669"
+        />
+        <ellipse
+          cx="60"
+          cy="108"
+          rx="10"
+          ry="4"
+          fill="#CBD5E1"
+          stroke="#94A3B8"
+          strokeWidth="1"
+        />
+        <ellipse
+          cx="40"
+          cy="112"
+          rx="8"
+          ry="3.5"
+          fill="#E2E8F0"
+          stroke="#94A3B8"
+          strokeWidth="1"
+        />
+        <circle cx="95" cy="88" r="7" fill="#E11D48" />
+        <circle cx="95" cy="88" r="2.5" fill="#FDE047" />
+      </g>
+    ),
+  },
+  {
+    id: "bg_picnic",
+    name: "Cozy Picnic",
+    price: 180,
+    category: "scenery",
+    owned: false,
+    svgElement: (
+      <g>
+        <defs>
+          <linearGradient id="bgThumbPicnic" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#E0F2FE" />
+            <stop offset="60%" stopColor="#FEF08A" />
+            <stop offset="100%" stopColor="#86EFAC" />
+          </linearGradient>
+          <pattern
+            id="picnicGingham"
+            width="12"
+            height="12"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="12" height="12" fill="#FFFFFF" />
+            <rect width="6" height="12" fill="#F87171" opacity="0.5" />
+            <rect width="12" height="6" fill="#F87171" opacity="0.5" />
+            <rect width="6" height="6" fill="#DC2626" opacity="0.8" />
+          </pattern>
+        </defs>
+        <rect width="120" height="120" fill="url(#bgThumbPicnic)" />
+        <ellipse cx="60" cy="118" rx="75" ry="35" fill="#22C55E" />
+        <polygon
+          points="25,82 95,82 108,114 12,114"
+          fill="url(#picnicGingham)"
+          stroke="#DC2626"
+          strokeWidth="1.2"
+        />
+        <rect
+          x="30"
+          y="88"
+          width="18"
+          height="14"
+          rx="3"
+          fill="#D97706"
+          stroke="#92400E"
+          strokeWidth="1"
+        />
+        <path
+          d="M 33 88 C 33 80, 45 80, 45 88"
+          stroke="#92400E"
+          strokeWidth="1.5"
+          fill="none"
+        />
+        <path
+          d="M 75 96 A 14 14 0 0 1 95 96 Z"
+          fill="#EF4444"
+          stroke="#16A34A"
+          strokeWidth="1.8"
+        />
+      </g>
+    ),
+  },
+  {
+    id: "bg_forest",
+    name: "Rainforest",
+    price: 240,
+    category: "scenery",
+    owned: false,
+    svgElement: (
+      <g>
+        <defs>
+          <linearGradient id="bgThumbForest" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#064E3B" />
+            <stop offset="50%" stopColor="#047857" />
+            <stop offset="100%" stopColor="#022C22" />
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" fill="url(#bgThumbForest)" />
+        <path d="M 0 0 L 35 45 L 0 55 Z" fill="#065F46" opacity="0.8" />
+        <path d="M 120 0 L 80 50 L 120 60 Z" fill="#065F46" opacity="0.8" />
+        <path d="M -10 120 Q 30 70 80 120 Z" fill="#10B981" opacity="0.6" />
+        <path d="M 40 120 Q 90 75 130 120 Z" fill="#059669" />
+        <circle cx="35" cy="40" r="4" fill="#FEF08A" opacity="0.4" />
+        <circle cx="35" cy="40" r="2" fill="#FACC15" />
+        <circle cx="85" cy="32" r="5" fill="#FEF08A" opacity="0.4" />
+        <circle cx="85" cy="32" r="2.5" fill="#FDE047" />
+        <circle cx="60" cy="65" r="3.5" fill="#FEF08A" opacity="0.4" />
+        <circle cx="60" cy="65" r="1.8" fill="#FDE047" />
+      </g>
+    ),
+  },
+  {
+    id: "bg_beach",
+    name: "Sunny Beach",
+    price: 280,
+    category: "scenery",
+    owned: false,
+    svgElement: (
+      <g>
+        <defs>
+          <linearGradient id="bgThumbBeach" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#38BDF8" />
+            <stop offset="45%" stopColor="#BAE6FD" />
+            <stop offset="70%" stopColor="#2DD4BF" />
+            <stop offset="100%" stopColor="#FDE68A" />
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" fill="url(#bgThumbBeach)" />
+        <circle cx="95" cy="25" r="12" fill="#FBBF24" opacity="0.9" />
+        <path
+          d="M -10 75 Q 30 68 70 74 T 130 70 L 130 95 L -10 95 Z"
+          fill="#0D9488"
+          opacity="0.8"
+        />
+        <path
+          d="M -10 82 Q 35 78 75 83 T 130 80 L 130 120 L -10 120 Z"
+          fill="#FDE68A"
+        />
+        <path
+          d="M 22 105 Q 26 65 36 50"
+          stroke="#92400E"
+          strokeWidth="4"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path
+          d="M 36 50 Q 15 45 10 55"
+          stroke="#16A34A"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path
+          d="M 36 50 Q 55 42 62 52"
+          stroke="#16A34A"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path
+          d="M 36 50 Q 38 32 32 28"
+          stroke="#15803D"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <ellipse cx="85" cy="102" rx="4" ry="3" fill="#F43F5E" />
+      </g>
+    ),
+  },
+  {
+    id: "bg_night",
+    name: "Campfire Night",
+    price: 350,
+    category: "scenery",
+    owned: false,
+    svgElement: (
+      <g>
+        <defs>
+          <linearGradient id="bgThumbNight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#0B0F19" />
+            <stop offset="60%" stopColor="#1E1B4B" />
+            <stop offset="100%" stopColor="#312E81" />
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" fill="url(#bgThumbNight)" />
+        <path
+          d="M 98 16 A 10 10 0 1 0 92 34 A 8 8 0 1 1 98 16 Z"
+          fill="#FDE047"
+        />
+        <circle cx="20" cy="22" r="1.2" fill="#FFFFFF" />
+        <circle cx="45" cy="15" r="1" fill="#FFFFFF" />
+        <circle cx="65" cy="28" r="1.5" fill="#FFFFFF" />
+        <circle cx="30" cy="45" r="1" fill="#FFFFFF" />
+        <polygon points="-10,95 35,55 80,95" fill="#1E293B" opacity="0.9" />
+        <polygon points="40,95 85,62 130,95" fill="#0F172A" />
+        <rect y="92" width="120" height="28" fill="#0F172A" />
+        <ellipse cx="60" cy="112" rx="14" ry="4" fill="#78350F" />
+        <path
+          d="M 54 112 L 66 102"
+          stroke="#9A3412"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 66 112 L 54 102"
+          stroke="#9A3412"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+        <path d="M 60 106 Q 66 94 60 88 Q 54 94 60 106 Z" fill="#F97316" />
+        <path d="M 60 105 Q 63 97 60 92 Q 57 97 60 105 Z" fill="#FDE047" />
+        <circle cx="63" cy="84" r="1" fill="#FBBF24" />
+        <circle cx="57" cy="81" r="0.8" fill="#FBBF24" />
+      </g>
+    ),
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -577,12 +826,13 @@ type Category = OutfitItem["category"];
 type TabKey = "all" | Category;
 type CardMode = "shop" | "closet";
 
-const CATEGORY_ORDER: Category[] = ["hat", "eyes", "accessory"];
+const CATEGORY_ORDER: Category[] = ["hat", "eyes", "accessory", "scenery"];
 
 const CATEGORY_META: Record<Category, { label: string; Icon: LucideIcon }> = {
   hat: { label: "Headwear", Icon: Crown },
   eyes: { label: "Eyewear", Icon: Glasses },
   accessory: { label: "Accessories", Icon: Sparkles },
+  scenery: { label: "Sceneries", Icon: Palmtree },
 };
 
 const TABS: { key: TabKey; label: string; Icon: LucideIcon }[] = [
@@ -596,12 +846,23 @@ const TABS: { key: TabKey; label: string; Icon: LucideIcon }[] = [
  * in the middle of its card.
  */
 const ITEM_VIEWBOX: Record<string, string> = {
-  shades: "57 43 100 100",
-  crown: "60 -24 80 80",
-  bowtie: "82 101 50 50",
-  chef_hat: "60 -35 80 80",
-  bungaraya: "49 27 50 50",
-  halo: "55 -39 90 90",
+  shades: '57 43 100 100',
+  round_specs: '60 55 94 94',
+  crown: '60 -24 80 80',
+  songkok: '65 -15 70 70',
+  straw_hat: '50 -15 100 100',
+  sporty_band: '60 10 80 80',
+  bowtie: '82 101 50 50',
+  gold_medal: '80 95 55 55',
+  teh_tarik: '120 110 50 50',
+  chef_hat: '60 -35 80 80',
+  bungaraya: '49 27 50 50',
+  halo: '55 -39 90 90',
+  bg_garden: '0 0 120 120',
+  bg_picnic: '0 0 120 120',
+  bg_forest: '0 0 120 120',
+  bg_beach: '0 0 120 120',
+  bg_night: '0 0 120 120',
 };
 
 const ACCENT = {
@@ -746,14 +1007,17 @@ const ItemCard: React.FC<ItemCardProps> = ({
 }) => {
   // Closet: anything not owned is locked. Shop: locked only if you can't afford it yet.
   const locked = !item.owned && (mode === "closet" || !canAfford);
+  const isScenery = item.category === "scenery";
 
   let status: React.ReactNode;
   if (item.owned) {
     status = isEquipped ? (
-      <span className="text-emerald-600">Wearing</span>
+      <span className="text-emerald-600 font-black">
+        {isScenery ? "Active" : "Wearing"}
+      </span>
     ) : (
-      <span className="text-slate-500">
-        {mode === "closet" ? "Wear" : "Owned"}
+      <span className="text-slate-500 font-bold">
+        {mode === "closet" ? (isScenery ? "Set" : "Wear") : "Owned"}
       </span>
     );
   } else if (mode === "closet") {
@@ -800,7 +1064,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       >
         <svg
           viewBox={ITEM_VIEWBOX[item.id] ?? "0 0 200 200"}
-          className="w-14 h-14"
+          className={`w-14 h-14 ${isScenery ? "rounded-xl overflow-hidden shadow-2xs border border-slate-200/80" : ""}`}
           aria-hidden
         >
           {item.svgElement}
@@ -823,6 +1087,7 @@ interface ItemsBrowserProps {
   onTabChange: (t: TabKey) => void;
   mode: CardMode;
   equipped: Record<string, OutfitItem | null>;
+  backgroundTheme: BackgroundTheme;
   coins: number;
   onSelect: (item: OutfitItem) => void;
 }
@@ -837,6 +1102,7 @@ const ItemsBrowser: React.FC<ItemsBrowserProps> = ({
   onTabChange,
   mode,
   equipped,
+  backgroundTheme,
   coins,
   onSelect,
 }) => {
@@ -853,7 +1119,11 @@ const ItemsBrowser: React.FC<ItemsBrowserProps> = ({
             key={item.id}
             item={item}
             mode={mode}
-            isEquipped={equipped[item.category]?.id === item.id}
+            isEquipped={
+              item.category === "scenery"
+                ? backgroundTheme === item.id.replace("bg_", "")
+                : equipped[item.category]?.id === item.id
+            }
             canAfford={coins >= item.price}
             onSelect={() => onSelect(item)}
             className={className}
@@ -1011,6 +1281,8 @@ const MissionSection: React.FC<{
 export const Pal: React.FC<PalProps> = ({
   meals: propMeals,
   user: propUser,
+  onOpenStreakModal,
+  onNavigateToLogMeal,
 }) => {
   // ---- state (all declared up-front so effects below can safely read it) ----
   const [coins, setCoins] = useState(() => {
@@ -1018,12 +1290,59 @@ export const Pal: React.FC<PalProps> = ({
     return saved ? Number(saved) : 340;
   });
 
-  const [streak] = useState(5);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(t);
+  }, []);
+
+  const allMeals = useMemo(() => {
+    let list: MealEntry[] = propMeals || [];
+    if (!list.length) {
+      const saved = localStorage.getItem('makanfit_meals');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) list = parsed;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    return list;
+  }, [propMeals]);
+
+  const streakInfo = useMemo(() => calculateStreak(allMeals, now), [allMeals, now]);
+
   const [showOutfits, setShowOutfits] = useState(false);
   const [showShop, setShowShop] = useState(false);
   const [outfitTab, setOutfitTab] = useState<TabKey>("all");
   const [shopTab, setShopTab] = useState<TabKey>("all");
   const [sheetItemId, setSheetItemId] = useState<string | null>(null);
+
+  const [internalStreakModalOpen, setInternalStreakModalOpen] = useState(false);
+  const handleOpenStreakModal = () => {
+    if (onOpenStreakModal) {
+      onOpenStreakModal();
+    } else {
+      setInternalStreakModalOpen(true);
+    }
+  };
+
+  // Background Scenery Theme (Garden, Picnic, Forest, Beach, Night)
+  const [backgroundTheme, setBackgroundTheme] = useState<BackgroundTheme>(
+    () => {
+      const saved = localStorage.getItem("makanfit_pal_bg");
+      if (
+        saved &&
+        ["garden", "picnic", "forest", "beach", "night"].includes(saved)
+      ) {
+        return saved as BackgroundTheme;
+      }
+      return "garden";
+    },
+  );
 
   /** Read a saved challenge list from localStorage, falling back to the defaults. */
   const loadChallenges = (key: string, fallback: Challenge[]): Challenge[] => {
@@ -1067,12 +1386,18 @@ export const Pal: React.FC<PalProps> = ({
 
   const [shopItems, setShopItems] = useState<OutfitItem[]>(() => {
     const saved = localStorage.getItem("makanfit_shop_items");
+    const savedBg = localStorage.getItem("makanfit_pal_bg");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         return SHOP_ITEMS.map((item) => {
           const found = parsed.find((p: any) => p.id === item.id);
-          return found ? { ...item, owned: found.owned } : item;
+          const isDefaultScenery =
+            item.id === "bg_garden" || (savedBg && item.id === `bg_${savedBg}`);
+          if (found) {
+            return { ...item, owned: Boolean(found.owned || isDefaultScenery) };
+          }
+          return { ...item, owned: Boolean(item.owned || isDefaultScenery) };
         });
       } catch (e) {
         console.error(e);
@@ -1080,13 +1405,6 @@ export const Pal: React.FC<PalProps> = ({
     }
     return SHOP_ITEMS;
   });
-
-  const [now, setNow] = useState(() => Date.now());
-
-  useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 60_000);
-    return () => clearInterval(t);
-  }, []);
 
   const getTimestamp = (val: any): number => {
     if (!val) return 0;
@@ -1341,11 +1659,25 @@ export const Pal: React.FC<PalProps> = ({
   });
   const currentOutfit = outfitWith(null);
 
-  const tryOnOutfit = (item: OutfitItem) => ({
-    hat: item.category === "hat" ? item.svgElement : undefined,
-    eyes: item.category === "eyes" ? item.svgElement : undefined,
-    accessory: item.category === "accessory" ? item.svgElement : undefined,
-  });
+  const tryOnOutfit = (item: OutfitItem) => {
+    if (item.category === "scenery") {
+      return currentOutfit;
+    }
+    return outfitWith(item);
+  };
+
+  const handleSelectBackground = (themeId: BackgroundTheme) => {
+    setBackgroundTheme(themeId);
+    localStorage.setItem("makanfit_pal_bg", themeId);
+    const option = BACKGROUND_OPTIONS.find(
+      (b: (typeof BACKGROUND_OPTIONS)[number]) => b.id === themeId,
+    );
+    if (option) {
+      setDialogue(option.lemmyQuote);
+    }
+    setTemporaryAnimation("happy");
+    setTimeout(() => setTemporaryAnimation(null), 1200);
+  };
 
   // ---- effects ----
   useEffect(() => {
@@ -1369,6 +1701,14 @@ export const Pal: React.FC<PalProps> = ({
     palStatus.todayCalories,
     palStatus.targetCalories,
   ]);
+
+  useEffect(() => {
+    setWeeklyChallenges(prev => prev.map(c => {
+      if (c.completed) return c;
+      if (c.id === 'w1') return { ...c, progress: Math.min(streakInfo.streak, c.target) };
+      return c;
+    }));
+  }, [streakInfo.streak]);
 
   // Escape closes the top-most layer; lock page scroll while a modal is open
   useEffect(() => {
@@ -1447,6 +1787,11 @@ export const Pal: React.FC<PalProps> = ({
 
   // Equip / Unequip outfit item
   const handleEquip = (item: OutfitItem) => {
+    if (item.category === "scenery") {
+      const themeId = item.id.replace("bg_", "") as BackgroundTheme;
+      handleSelectBackground(themeId);
+      return;
+    }
     const isCurrentlyEquipped = equipped[item.category]?.id === item.id;
     setEquipped((prev) => ({
       ...prev,
@@ -1474,7 +1819,15 @@ export const Pal: React.FC<PalProps> = ({
     setShopItems((prev) =>
       prev.map((i) => (i.id === item.id ? { ...i, owned: true } : i)),
     );
-    handleEquip({ ...item, owned: true });
+    if (item.category === "scenery") {
+      const themeId = item.id.replace("bg_", "") as BackgroundTheme;
+      handleSelectBackground(themeId);
+      setDialogue(
+        `Wah, bought the ${item.name} scenery! It looks so stunning! 🌟`,
+      );
+    } else {
+      handleEquip({ ...item, owned: true });
+    }
   };
 
   const handleCompleteQuest = (id: string) => {
@@ -1545,93 +1898,171 @@ export const Pal: React.FC<PalProps> = ({
 
       {/* Header Stats Bar */}
       <div className="px-5 py-4 bg-white/80 backdrop-blur-md rounded-b-[28px] border-b border-emerald-100/60 shadow-xs flex items-center justify-between sticky top-0 z-20">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gradient-to-tr from-orange-400 to-amber-300 rounded-2xl flex items-center justify-center relative shadow-xs">
-            <Flame className="text-white fill-white" size={20} />
+        <button 
+          onClick={handleOpenStreakModal}
+          className="flex items-center space-x-3 text-left group cursor-pointer hover:opacity-90 active:scale-[0.98] transition-all"
+          title="Click to view full streak calendar and rewards"
+        >
+          <div className={`w-10 h-10 rounded-2xl flex items-center justify-center relative shadow-xs transition-all group-hover:scale-105 ${
+            streakInfo.hasLoggedToday
+              ? 'bg-gradient-to-tr from-orange-400 to-amber-300'
+              : streakInfo.streak > 0
+              ? 'bg-gradient-to-tr from-amber-400 to-yellow-300'
+              : 'bg-gradient-to-tr from-slate-200 to-slate-100 border border-slate-200/80'
+          }`}>
+            <Flame 
+              className={`transition-all ${
+                streakInfo.hasLoggedToday
+                  ? 'text-white fill-white'
+                  : streakInfo.streak > 0
+                  ? 'text-white fill-white/90'
+                  : 'text-slate-400'
+              }`} 
+              size={20} 
+            />
             <div className="absolute -top-1 -right-1 bg-white rounded-full p-0.5 shadow-xs">
-              <div className="w-4 h-4 bg-orange-600 rounded-full text-[9px] flex items-center justify-center text-white font-black">
-                {streak}
+              <div className={`w-4 h-4 rounded-full text-[9px] flex items-center justify-center text-white font-black ${
+                streakInfo.hasLoggedToday
+                  ? 'bg-orange-600'
+                  : streakInfo.streak > 0
+                  ? 'bg-amber-600'
+                  : 'bg-slate-400'
+              }`}>
+                {streakInfo.streak}
               </div>
             </div>
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <p className="text-sm font-black text-slate-800">5-Day Streak</p>
-              <span className="text-[10px] bg-orange-100 text-orange-700 font-extrabold px-1.5 py-0.5 rounded-md">
-                🔥 On Fire
+              <p className="text-sm font-black text-slate-800 group-hover:text-orange-600 transition-colors">
+                {streakInfo.streak}-Day Streak
+              </p>
+              <span className={`text-[10px] ${streakInfo.badgeBg} ${streakInfo.badgeText} font-extrabold px-1.5 py-0.5 rounded-md border ${streakInfo.badgeBorder}`}>
+                {streakInfo.statusBadge}
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium">
-              Log meals today to keep it
+            <p className={`text-[11px] font-medium transition-colors ${
+              streakInfo.hasLoggedToday 
+                ? 'text-emerald-600 font-semibold' 
+                : 'text-slate-400'
+            }`}>
+              {streakInfo.statusMessage}
             </p>
           </div>
-        </div>
+        </button>
 
         <div className="flex items-center space-x-1.5 bg-amber-50 px-3.5 py-2 rounded-2xl border border-amber-200/80 shadow-xs">
           <Coins className="text-amber-500 fill-amber-400" size={18} />
-          <span className="font-black text-amber-800 text-sm tabular-nums">
-            {coins}
-          </span>
+          <span className="font-black text-amber-800 text-sm tabular-nums">{coins}</span>
         </div>
       </div>
 
       {/* Hero Section: Interactive Lemmy Stage */}
-      <div className="relative pt-4 pb-8 flex flex-col items-center px-4">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-72 h-72 bg-gradient-to-tr from-emerald-200/40 via-teal-100/30 to-amber-100/30 rounded-full blur-3xl -z-10" />
+      <div className="relative pt-4 pb-6 px-4 max-w-md mx-auto">
+        {/* Scenic Stage Card Framing Lemmy */}
+        <PalBackground theme={backgroundTheme}>
+          <div className="w-full pt-4 pb-4 px-4 flex flex-col items-center">
 
-        <div className="flex flex-col items-center mb-3 z-10 text-center">
-          <div className="flex items-center space-x-2">
-            <h1 className="text-2xl font-black text-slate-800 tracking-tight">
-              Lemmy
-            </h1>
-            <span className="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">
-              Lvl {friendshipLevel} Companion
-            </span>
-          </div>
+          <div className="flex flex-col items-center mb-2 z-10 text-center">
+            <div className="flex items-center space-x-2 bg-white/85 backdrop-blur-md px-3 py-1 rounded-full border border-white/80 shadow-2xs">
+                <h1 className="text-base font-black text-slate-800 tracking-tight">Lemmy</h1>
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">
+                  Lvl {friendshipLevel} Companion
+                </span>
+              </div>
 
-          <div className="flex items-center space-x-3 mt-1.5">
-            <div className="flex space-x-1">
-              {[1, 2, 3, 4, 5].map((h) => (
-                <Heart
-                  key={h}
-                  className={`transition-colors duration-300 ${h <= 4 ? "fill-rose-500 text-rose-500" : "text-slate-200"}`}
-                  size={14}
-                />
-              ))}
-            </div>
-            <div
-              className="w-24 h-2 bg-slate-200/80 rounded-full overflow-hidden"
-              title={`Friendship XP: ${friendshipXp}/100`}
-            >
+            <div className="flex items-center space-x-2 mt-1.5 bg-white/70 backdrop-blur-xs px-2.5 py-0.5 rounded-full">
+                <div className="flex space-x-1">
+                  {[1, 2, 3, 4, 5].map(h => (
+                    <Heart
+                      key={h}
+                      className={`transition-colors duration-300 ${h <= 4 ? "fill-rose-500 text-rose-500" : "text-slate-300"}`}
+                      size={12}
+                    />
+                  ))}
+                </div>
               <div
-                className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-500"
-                style={{ width: `${friendshipXp}%` }}
+                className="w-24 h-2 bg-slate-200/80 rounded-full overflow-hidden"
+                title={`Friendship XP: ${friendshipXp}/100`}
+              >
+                <div
+                  className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-500"
+                  style={{ width: `${friendshipXp}%` }}
+                />
+              </div>
+              <span className="text-[10px] text-slate-400 font-semibold">
+                {friendshipXp}xp
+              </span>
+            </div>
+            </div>
+
+            {/* Speech Bubble */}
+            <div className="relative mb-2 max-w-xs px-4 py-2.5 bg-white/95 rounded-2xl shadow-sm border border-emerald-100/80 text-xs font-semibold text-slate-700 text-center z-10 transition-all duration-300">
+              <p className="leading-snug">
+                {dialogue || palStatus.defaultDialogue}
+              </p>
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-b border-r border-emerald-100/80 rotate-45" />
+            </div>
+
+            <div className="relative z-10 my-0">
+              <Mascot
+                animationState={currentMascotAnimation}
+                outfit={currentOutfit}
+                onPet={handlePetLemmy}
+                className="w-56 h-64 sm:w-64 sm:h-72"
               />
             </div>
-            <span className="text-[10px] text-slate-400 font-semibold">
-              {friendshipXp}xp
-            </span>
+
+            {/* Quick Scenery Theme Bar */}
+            <div className="w-full flex items-center justify-center gap-1 mt-1 z-10">
+              <div className="flex items-center gap-1 bg-white/90 backdrop-blur-md p-1 rounded-2xl border border-white shadow-xs overflow-x-auto [scrollbar-width:none]">
+                {BACKGROUND_OPTIONS.map(
+                  (bg: (typeof BACKGROUND_OPTIONS)[number]) => {
+                    const isCurrent = backgroundTheme === bg.id;
+                    const item = shopItems.find((i) => i.id === `bg_${bg.id}`);
+                    const isOwned = item?.owned ?? bg.id === "garden";
+                    return (
+                      <button
+                        key={bg.id}
+                        onClick={() => {
+                          if (isOwned) {
+                            handleSelectBackground(bg.id);
+                          } else if (item) {
+                            setSheetItemId(item.id);
+                          }
+                        }}
+                        title={
+                          isOwned
+                            ? `Switch to ${bg.name} (${bg.tagline})`
+                            : `Unlock ${bg.name} in Shop (${item?.price} coins)`
+                        }
+                        className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                          isCurrent
+                            ? "bg-emerald-600 text-white shadow-xs scale-102"
+                            : isOwned
+                              ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 active:scale-95"
+                              : "text-slate-400 bg-slate-50/80 hover:bg-amber-50 hover:text-amber-700 border border-dashed border-amber-200 active:scale-95"
+                        }`}
+                      >
+                        <span className="text-xs">{bg.emoji}</span>
+                        <span>{bg.name}</span>
+                        {!isOwned && item && (
+                          <span className="flex items-center text-[9px] text-amber-700 bg-amber-100/90 px-1 py-0.2 rounded font-black ml-0.5">
+                            <Lock size={9} className="mr-0.5" />
+                            {item.price}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  },
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Speech Bubble */}
-        <div className="relative mb-2 max-w-xs px-4 py-2.5 bg-white/95 rounded-2xl shadow-sm border border-emerald-100/80 text-xs font-semibold text-slate-700 text-center z-10 transition-all duration-300">
-          <p className="leading-snug">
-            {dialogue || palStatus.defaultDialogue}
-          </p>
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-b border-r border-emerald-100/80 rotate-45" />
-        </div>
-
-        <div className="relative z-10">
-          <Mascot
-            animationState={currentMascotAnimation}
-            outfit={currentOutfit}
-            onPet={handlePetLemmy}
-          />
-        </div>
+        </PalBackground>
 
         {/* Quick Action Buttons */}
-        <div className="mt-4 flex items-center space-x-3 z-10">
+        <div className="mt-4 flex items-center justify-center space-x-3 z-10">
           <button
             onClick={handlePetLemmy}
             className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-2xl shadow-md shadow-emerald-600/20 font-bold text-xs text-white hover:scale-102 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
@@ -1662,107 +2093,6 @@ export const Pal: React.FC<PalProps> = ({
           >
             <ShoppingBag size={15} className="text-amber-600" />
           </button>
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* BITEPAL STATUS CARD: Reflects logged meals, energy, tiredness, satiety   */}
-      {/* ========================================================================= */}
-      <div className="px-5 max-w-md mx-auto mb-5">
-        {" "}
-        <div className="relative overflow-hidden rounded-[28px] bg-white border border-emerald-100 shadow-sm">
-          {" "}
-          {/* Soft mood glow */}
-          <div
-            className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl opacity-50 pointer-events-none ${palStatus.moodState === "tired" ? "bg-rose-200" : palStatus.moodState === "hungry" ? "bg-amber-200" : palStatus.moodState === "stuffed" ? "bg-purple-200" : "bg-emerald-200"}`}
-          />
-          <div className="relative p-4">
-            {" "}
-            {/* Top section */}
-            <div className="flex items-center justify-between gap-3">
-              {" "}
-              {/* Mood + status */}
-              <div className="flex items-center gap-3 min-w-0">
-                <div
-                  className={`w-11 h-11 shrink-0 rounded-2xl flex items-center justify-center text-xl ${palStatus.moodState === "tired" ? "bg-rose-50" : palStatus.moodState === "hungry" ? "bg-amber-50" : palStatus.moodState === "stuffed" ? "bg-purple-50" : "bg-emerald-50"}`}
-                >
-                  {" "}
-                  {palStatus.moodEmoji}{" "}
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <h2 className="text-sm font-black text-slate-800 leading-tight">
-                      {" "}
-                      {palStatus.statusTitle}{" "}
-                    </h2>
-                    <span
-                      className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full border ${palStatus.statusBadgeColor}`}
-                    >
-                      {" "}
-                      {palStatus.statusBadge}{" "}
-                    </span>
-                  </div>{" "}
-                  <p className="text-[10px] text-slate-400 font-medium leading-snug mt-1">
-                    {" "}
-                    {palStatus.statusSubtitle}{" "}
-                  </p>{" "}
-                </div>
-              </div>{" "}
-              {/* Stamina */}{" "}
-              <div className="shrink-0 flex flex-col items-end">
-                <div className="flex items-center gap-1">
-                  {" "}
-                  {palStatus.energyPercent <= 30 ? (
-                    <BatteryLow size={15} className="text-rose-500" />
-                  ) : palStatus.energyPercent < 70 ? (
-                    <BatteryWarning size={15} className="text-amber-500" />
-                  ) : (
-                    <BatteryCharging size={15} className="text-emerald-500" />
-                  )}
-                  <span className="text-sm font-black text-slate-700 tabular-nums">
-                    {" "}
-                    {palStatus.energyPercent}%{" "}
-                  </span>
-                </div>
-                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                  {" "}
-                  Stamina{" "}
-                </span>
-              </div>{" "}
-            </div>{" "}
-            {/* Divider */}
-            <div className="h-px bg-slate-100 my-3.5" /> {/* Energy */}{" "}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                {" "}
-                <span className="text-[10px] font-bold text-slate-500">
-                  {" "}
-                  Lemmy's energy{" "}
-                </span>
-                <span className="text-[10px] font-bold text-slate-400 tabular-nums">
-                  {" "}
-                  {palStatus.todayCalories} / {palStatus.targetCalories}{" "}
-                  kcal{" "}
-                </span>
-              </div>{" "}
-              <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-700 ${palStatus.moodState === "tired" ? "bg-gradient-to-r from-rose-400 to-orange-400" : palStatus.moodState === "hungry" ? "bg-gradient-to-r from-amber-300 to-amber-500" : palStatus.moodState === "stuffed" ? "bg-gradient-to-r from-purple-400 to-indigo-400" : "bg-gradient-to-r from-emerald-400 to-teal-400"}`}
-                  style={{ width: `${Math.max(8, palStatus.energyPercent)}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between mt-1.5">
-                <span className="text-[9px] font-semibold text-slate-400">
-                  {" "}
-                  Daily fuel{" "}
-                </span>
-                <span className="text-[9px] font-bold text-emerald-600">
-                  {" "}
-                  {palStatus.satietyPercent}% of goal{" "}
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -1803,63 +2133,58 @@ export const Pal: React.FC<PalProps> = ({
         >
           {/* Fitting stage: mascot + equipment slots */}
           <div className="shrink-0 px-4 pt-3 pb-3 bg-white">
-            <div className="relative h-[224px] sm:h-[320px] rounded-[28px] overflow-hidden bg-gradient-to-b from-[#E4F6EE] to-[#CDEBDD] border-2 border-[#BFE3D2]">
-              <div className="absolute bottom-0 inset-x-0 h-14 bg-[#B5DCC8]/70 rounded-t-[50%]" />
+            <div className="relative h-[230px] sm:h-[300px] rounded-[28px] overflow-hidden border-2 border-emerald-200 shadow-sm">
+              <PalBackground theme={backgroundTheme}>
+                <div className="w-full h-[230px] sm:h-[300px] relative flex items-end justify-center pb-2">
+                  <Mascot
+                    className="w-36 h-40 sm:w-52 sm:h-60"
+                    outfit={currentOutfit}
+                  />
 
-              <div className="absolute inset-0 flex items-end justify-center pb-3">
-                <Mascot
-                  className="w-36 h-40 sm:w-52 sm:h-60"
-                  outfit={currentOutfit}
-                />
-              </div>
-
-              {/* Slots: tap a worn item to take it off, tap an empty one to browse that category */}
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-2">
-                {CATEGORY_ORDER.map((cat) => {
-                  const worn = equipped[cat];
-                  const { Icon, label } = CATEGORY_META[cat];
-                  return (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() =>
-                        worn ? handleEquip(worn) : setOutfitTab(cat)
-                      }
-                      title={worn ? `Take off ${worn.name}` : `Browse ${label}`}
-                      aria-label={
-                        worn ? `Take off ${worn.name}` : `Browse ${label}`
-                      }
-                      className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all active:scale-95 cursor-pointer ${
-                        worn
-                          ? "bg-white border-2 border-emerald-300 shadow-[0_2px_0_#A7F3D0]"
-                          : "bg-white/50 border-2 border-dashed border-emerald-300/80 text-emerald-500"
-                      }`}
-                    >
-                      {worn ? (
-                        <svg
-                          viewBox={ITEM_VIEWBOX[worn.id] ?? "0 0 200 200"}
-                          className="w-8 h-8"
-                          aria-hidden
+                {/* Slots: tap a worn item to take it off, tap an empty one to browse that category */}
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">
+                    {CATEGORY_ORDER.map(cat => {
+                      const isScenery = cat === 'scenery';
+                      const worn = isScenery
+                        ? shopItems.find(i => i.id === `bg_${backgroundTheme}`)
+                        : equipped[cat];
+                      const { Icon, label } = CATEGORY_META[cat];
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => (worn && !isScenery ? handleEquip(worn) : setOutfitTab(cat))}
+                          title={isScenery ? (worn ? `Active Scene: ${worn.name}` : 'Browse Sceneries') : (worn ? `Take off ${worn.name}` : `Browse ${label}`)}
+                          aria-label={isScenery ? (worn ? `Active Scene: ${worn.name}` : 'Browse Sceneries') : (worn ? `Take off ${worn.name}` : `Browse ${label}`)}
+                          className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all active:scale-95 cursor-pointer backdrop-blur-xs ${
+                            worn
+                              ? 'bg-white border-2 border-emerald-400 shadow-xs'
+                              : 'bg-white/80 border-2 border-dashed border-emerald-300 text-emerald-600'
+                          }`}
                         >
-                          {worn.svgElement}
-                        </svg>
-                      ) : (
-                        <Icon size={18} />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+                          {worn ? (
+                            <svg viewBox={ITEM_VIEWBOX[worn.id] ?? '0 0 120 120'} className={`w-7 h-7 ${isScenery ? 'rounded-lg overflow-hidden' : ''}`} aria-hidden>
+                              {worn.svgElement}
+                            </svg>
+                          ) : (
+                            <Icon size={17} />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
 
-              {anyEquipped && (
-                <button
-                  type="button"
-                  onClick={handleUnequipAll}
-                  className="absolute top-3 right-3 text-[11px] font-bold text-rose-600 bg-white/90 hover:bg-white px-3 py-1.5 rounded-full border border-rose-100 active:scale-95 transition-all cursor-pointer"
-                >
-                  Take all off
-                </button>
-              )}
+                {anyEquipped && (
+                    <button
+                      type="button"
+                      onClick={handleUnequipAll}
+                      className="absolute top-3 right-3 text-[11px] font-bold text-rose-600 bg-white/90 hover:bg-white px-3 py-1.5 rounded-full border border-rose-100 active:scale-95 transition-all cursor-pointer z-20 shadow-xs"
+                    >
+                      Take all off
+                    </button>
+                  )}
+                  </div>
+              </PalBackground>
             </div>
           </div>
 
@@ -1876,6 +2201,7 @@ export const Pal: React.FC<PalProps> = ({
               onTabChange={setOutfitTab}
               mode="closet"
               equipped={equipped}
+              backgroundTheme={backgroundTheme}
               coins={coins}
               onSelect={(item) =>
                 item.owned ? handleEquip(item) : setSheetItemId(item.id)
@@ -1906,6 +2232,7 @@ export const Pal: React.FC<PalProps> = ({
               onTabChange={setShopTab}
               mode="shop"
               equipped={equipped}
+              backgroundTheme={backgroundTheme}
               coins={coins}
               onSelect={(item) => setSheetItemId(item.id)}
             />
@@ -1921,17 +2248,34 @@ export const Pal: React.FC<PalProps> = ({
       {/* ================================================================= */}
       {sheetItem &&
         (() => {
-          const isEquipped = equipped[sheetItem.category]?.id === sheetItem.id;
+          const isScenery = sheetItem.category === "scenery";
+          const sheetTheme = isScenery
+            ? (sheetItem.id.replace("bg_", "") as BackgroundTheme)
+            : backgroundTheme;
+          const isEquipped = isScenery
+            ? backgroundTheme === sheetTheme
+            : equipped[sheetItem.category]?.id === sheetItem.id;
           const canAfford = coins >= sheetItem.price;
           const shortBy = sheetItem.price - coins;
 
-          const message = sheetItem.owned
-            ? isEquipped
-              ? "Lemmy is wearing this right now."
-              : "You own this. Ready to wear it?"
-            : canAfford
-              ? "Here is how Lemmy looks with it."
-              : `You need ${shortBy} more coins. Complete missions to earn them.`;
+          let message: string;
+          if (isScenery) {
+            message = sheetItem.owned
+              ? isEquipped
+                ? "Lemmy is relaxing in this scenery right now."
+                : "You own this scenery! Ready to set it as your active backdrop?"
+              : canAfford
+                ? "Here is how Lemmy looks in this scenery. Ready to unlock?"
+                : `You need ${shortBy} more coins to unlock this scenery. Complete missions to earn them.`;
+          } else {
+            message = sheetItem.owned
+              ? isEquipped
+                ? "Lemmy is wearing this right now."
+                : "You own this. Ready to wear it?"
+              : canAfford
+                ? "Here is how Lemmy looks with it."
+                : `You need ${shortBy} more coins. Complete missions to earn them.`;
+          }
 
           return (
             <div
@@ -1993,15 +2337,16 @@ export const Pal: React.FC<PalProps> = ({
                 </div>
 
                 {/* Try-on stage */}
-                <div className="relative mx-5 mt-3 h-52 rounded-[24px] overflow-hidden bg-gradient-to-b from-[#FFF3D1] to-[#FFE3A0] border-2 border-[#F6D98A]">
-                  <div className="absolute bottom-0 inset-x-0 h-12 bg-[#F6CF74]/60 rounded-t-[50%]" />
-                  <div className="absolute inset-0 flex items-end justify-center pb-2">
+                <div className="relative mx-5 mt-3 h-52 rounded-[24px] overflow-hidden border-2 border-[#F6D98A]">
+                <PalBackground theme={sheetTheme}>
+                  <div className="w-full h-52 flex items-end justify-center pb-2">
                     <Mascot
                       className="w-36 h-44"
-                      outfit={tryOnOutfit(sheetItem)}
+                      outfit={isScenery ? currentOutfit : tryOnOutfit(sheetItem)}
                     />
                   </div>
-                </div>
+                </PalBackground>
+              </div>
 
                 <p className="px-5 mt-3 text-xs font-semibold text-slate-500 text-center">
                   {message}
@@ -2021,7 +2366,13 @@ export const Pal: React.FC<PalProps> = ({
                           : "bg-emerald-500 border-emerald-700"
                       }`}
                     >
-                      {isEquipped ? "Take it off" : "Wear it"}
+                      {isScenery
+                        ? isEquipped
+                          ? "Current Scene"
+                          : "Set as Active Scene"
+                        : isEquipped
+                          ? "Take it off"
+                          : "Wear it"}
                     </button>
                   ) : (
                     <button
@@ -2059,6 +2410,17 @@ export const Pal: React.FC<PalProps> = ({
             </div>
           );
         })()}
+
+        {/* Fallback Streak Modal */}
+      <StreakModal
+        isOpen={internalStreakModalOpen}
+        onClose={() => setInternalStreakModalOpen(false)}
+        meals={allMeals}
+        onLogMeal={() => {
+          setInternalStreakModalOpen(false);
+          onNavigateToLogMeal?.();
+        }}
+      />
     </div>
   );
 };
