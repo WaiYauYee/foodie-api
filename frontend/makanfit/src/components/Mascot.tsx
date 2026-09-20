@@ -86,7 +86,24 @@ const Mascot: React.FC<MascotProps> = ({ outfit, animationState = 'idle', onPet,
           100% { opacity: 0; transform: scale(0.6) rotate(90deg); }
         }
         .animate-float-mascot { animation: mascot-float 3.5s ease-in-out infinite; }
-        .animate-happy-mascot { animation: mascot-happy-hop 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+        @keyframes mascot-happy-dance {
+          0%, 100% {
+            transform: translateY(0) rotate(0deg);
+          }
+          25% {
+            transform: translateY(-5px) rotate(-2deg);
+          }
+          50% {
+            transform: translateY(0) rotate(2deg);
+          }
+          75% {
+            transform: translateY(-5px) rotate(-2deg);
+          }
+        }
+
+        .animate-happy-mascot {
+          animation: mascot-happy-dance 2.8s ease-in-out infinite;
+        }
         .animate-tired-mascot { animation: mascot-tired-slump 4s ease-in-out infinite; }
         .animate-stuffed-mascot { animation: mascot-stuffed-sway 3.2s ease-in-out infinite; }
         .animate-hungry-mascot { animation: mascot-hungry-tremble 1.8s ease-in-out infinite; }

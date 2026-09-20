@@ -162,6 +162,9 @@ const App: React.FC = () => {
     if (savedWeights) setWeightHistory(JSON.parse(savedWeights));
   }, []);
 
+  useEffect(() => {
+  localStorage.setItem('makanfit_meals', JSON.stringify(meals));
+}, [meals]);
 
   // FIXED: Improved handleLogin with proper onboarding status detection
   const handleLogin = () => {
@@ -313,7 +316,8 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
         );
       case Page.DIARY:
         return <Diary meals={meals} onAddMeal={handleAddMeal} onDeleteMeal={handleDeleteMeal} onUpdateMeal={handleUpdateMeal} />;
-      case Page.PAL: return <Pal />;
+      case Page.PAL:
+        return <Pal meals={meals} user={user} />;
       case Page.PROFILE:
         return (
           <Profile 
