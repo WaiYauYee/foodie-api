@@ -35,13 +35,13 @@ interface EditableItem {
   category: MealType;
 }
 
-const QUICK_VOICE_SUGGESTIONS = [
-  { text: 'Ate Nasi Lemak for breakfast', label: 'Nasi Lemak' },
-  { text: 'Had 2 roti canai for lunch', label: '2 Roti Canai' },
-  { text: 'Drank 2 glasses of water', label: '2 Glasses Water' },
-  { text: 'Had Bak Kut Teh for dinner', label: 'Bak Kut Teh' },
-  { text: 'Ate 1 apple for snack', label: '1 Apple' },
-];
+// const QUICK_VOICE_SUGGESTIONS = [
+//   { text: 'Ate Nasi Lemak for breakfast', label: 'Nasi Lemak' },
+//   { text: 'Had 2 roti canai for lunch', label: '2 Roti Canai' },
+//   { text: 'Drank 2 glasses of water', label: '2 Glasses Water' },
+//   { text: 'Had Bak Kut Teh for dinner', label: 'Bak Kut Teh' },
+//   { text: 'Ate 1 apple for snack', label: '1 Apple' },
+// ];
 
 export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
   isOpen,
@@ -69,7 +69,7 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
     startListening,
     stopListening,
     resetTranscript,
-    setManualTranscript,
+    // setManualTranscript,
   } = useVoiceRecognition();
 
   // Instant in-browser keyword extraction
@@ -501,7 +501,6 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
                                 title={`Amend ${item.food.name}`}
                               >
                                 <Pencil size={11} className="stroke-[2.5]" />
-                                <span>Amend</span>
                               </button>
                             )}
 
@@ -635,7 +634,7 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
             )}
 
             {/* Quick Test Suggestion Chips */}
-            <div className="space-y-1.5 pt-1">
+            {/* <div className="space-y-1.5 pt-1">
               <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest block text-center">
                 Quick Prompts
               </span>
@@ -653,7 +652,7 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
