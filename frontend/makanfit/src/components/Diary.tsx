@@ -1208,7 +1208,7 @@ export const Diary: React.FC<DiaryProps> = ({
       >
         <Mic size={16} />
       </button>
-      <div className="bg-white px-4 py-4 shadow-sm sticky top-0 z-[70]">
+      <div className="bg-white px-4 py-4 shadow-sm sticky top-0 z-[40]">
         <div className="flex items-center justify-between">
           <div className="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center">
             <Target className="w-6 h-6 text-sky-400" />
@@ -1304,8 +1304,9 @@ export const Diary: React.FC<DiaryProps> = ({
             );
           })}
         </div>
+      </div>
 
-        {/* Calendar Modal Overlay */}
+      {/* Calendar Modal Overlay */}
         {isCalendarOpen && (
           <>
             <div
@@ -1359,7 +1360,6 @@ export const Diary: React.FC<DiaryProps> = ({
             </div>
           </>
         )}
-      </div>
 
       <div className="px-4 py-6">
         <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-100 space-y-6">
