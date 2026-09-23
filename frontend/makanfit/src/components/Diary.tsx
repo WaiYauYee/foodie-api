@@ -2955,8 +2955,13 @@ export const Diary: React.FC<DiaryProps> = ({
           <div className="absolute bottom-0 left-0 w-full p-6 bg-transparent z-30">
             <button
               onClick={confirmSingleFood}
-              className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
-            >
+              disabled={manualEditFromVoice}
+              className={`w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs ${
+                manualEditFromVoice
+                ? "bg-slate-300 text-slate-500 cursor-not-allowed opacity-70 shadow-none pointer-events-none"
+                : "bg-[#1A2A33] text-white hover:bg-black active:scale-[0.98]"
+              }`}
+              >
               {editingMealId ? "Save this food" : "Log this food"}
             </button>
           </div>
