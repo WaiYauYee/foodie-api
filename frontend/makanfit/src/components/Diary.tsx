@@ -1202,7 +1202,7 @@ export const Diary: React.FC<DiaryProps> = ({
       {/* Floating Voice Log Button — bottom-right, above nav bar */}
       <button
         onClick={() => setIsVoiceInputOpen(true)}
-        className="fixed bottom-24 right-5 md:bottom-8 md:right-8 z-[60] w-14 h-14 rounded-full bg-[#1E293B] hover:bg-black text-white flex items-center justify-center shadow-xl active:scale-90 transition-all cursor-pointer"
+        className="fixed bottom-24 right-5 md:bottom-8 md:right-8 z-[40] w-14 h-14 rounded-full bg-[#1E293B] hover:bg-black text-white flex items-center justify-center shadow-xl active:scale-90 transition-all cursor-pointer"
         title="Voice Log"
         aria-label="Open Voice Log"
       >
@@ -2955,12 +2955,7 @@ export const Diary: React.FC<DiaryProps> = ({
           <div className="absolute bottom-0 left-0 w-full p-6 bg-transparent z-30">
             <button
               onClick={confirmSingleFood}
-              disabled={manualEditFromVoice}
-              className={`w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs ${
-                manualEditFromVoice
-                ? "bg-slate-300 text-slate-500 cursor-not-allowed opacity-70 shadow-none pointer-events-none"
-                : "bg-[#1A2A33] text-white hover:bg-black active:scale-[0.98]"
-              }`}
+              className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
               >
               {editingMealId ? "Save this food" : "Log this food"}
             </button>

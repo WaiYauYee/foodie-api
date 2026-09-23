@@ -1,8 +1,10 @@
-import { Food, MealType, VoiceDetectionResult, DetectedKeyword, DetectedFoodItem } from '../types/types';
+import { Food, MealType, VoiceDetectionResult, DetectedKeyword } from '../types/types';
 import { SEARCHABLE_FOODS } from '../data/foodDatabase';
 
 const WORD_TO_NUMBER: Record<string, number> = {
-  // English
+  // english
+  a: 1,
+  an: 1,
   one: 1,
   two: 2,
   three: 3,
@@ -18,7 +20,6 @@ const WORD_TO_NUMBER: Record<string, number> = {
   double: 2,
   hundred: 100,
 
-  // Malay
   satu: 1,
   dua: 2,
   tiga: 3,
@@ -33,8 +34,6 @@ const WORD_TO_NUMBER: Record<string, number> = {
   secawan: 1,
   sepinggan: 1,
   sebotol: 1,
-  sebiji: 1,
-  sekeping: 1,
 };
 
 const CATEGORY_KEYWORDS: Record<MealType, string[]> = {
@@ -45,7 +44,6 @@ const CATEGORY_KEYWORDS: Record<MealType, string[]> = {
 };
 
 const WATER_KEYWORDS = ['water', 'air', 'h2o', 'hydrate', 'hydration', 'drink', 'drank', 'minum', 'glass', 'cup', 'bottle'];
-
 const LOG_INTENT_KEYWORDS = ['eat', 'ate', 'had', 'have', 'makan', 'log', 'logged', 'record', 'add', 'added', 'consumed', 'input'];
 
 /**
@@ -56,19 +54,19 @@ const PHONETIC_PRE_REPLACEMENTS: Array<{ pattern: RegExp; replacement: string }>
   // Roti canai misrecognitions
   { pattern: /\b(roti\s+can\s+i|roti\s+can\s+eye|roti\s+chennai|roti\s+china|roti\s+channel|roadie\s+can\s+i|roadie\s+canai|roty\s+canai|roti\s+chanai|roti\s+kana|roti\s+kannai)\b/gi, replacement: 'roti canai' },
   { pattern: /\broti\s+can\b/gi, replacement: 'roti canai' },
-
+  
   // Nasi lemak misrecognitions
   { pattern: /\b(nasty\s+lemak|nazi\s+lemak|nice\s+lemak|nurse\s+lemak|not\s+see\s+lemak|nas\s+lemak|nasi\s+lamak|nasi\s+lemon|nasi\s+mark|nasi\s+lame|nasi\s+lamek|nasy\s+lemak|nassi\s+lemak|nasi\s+le\s+ma)\b/gi, replacement: 'nasi lemak' },
-
+  
   // Bak kut teh misrecognitions
   { pattern: /\b(bah\s+kut\s+teh|bakuteh|bar\s+kut\s+teh|buck\s+kut\s+teh|backuteh|bak\s+koot\s+teh|bark\s+kut\s+teh|but\s+kut\s+teh)\b/gi, replacement: 'bak kut teh' },
-
+  
   // Teh tarik misrecognitions
   { pattern: /\b(tea\s+tarik|teh\s+tari|tehtarik|the\s+tarik|tay\s+tarik|day\s+tarik)\b/gi, replacement: 'teh tarik' },
-
+  
   // Char kway teow misrecognitions
   { pattern: /\b(chocolate\s+towel|chalk\s+white\s+owl|char\s+kuey\s+teow|char\s+koay\s+teow|char\s+quay\s+teow|char\s+kway\s+teo)\b/gi, replacement: 'char kway teow' },
-
+  
   // Roti telur misrecognitions
   { pattern: /\b(roti\s+telor|roti\s+taylor|roti\s+tailor|roti\s+trailer|roti\s+tailer)\b/gi, replacement: 'roti telur' },
 ];
@@ -132,175 +130,8 @@ export function getDefaultMealCategoryByHour(date: Date = new Date()): MealType 
   return 'dinner';
 }
 
-export interface FoodMatchSpan {
-  food: Food;
-  matchedTerm: string;
-  startIndex: number;
-  endIndex: number;
-  score: number;
-  similarity: number;
-  reason: string;
-}
-
 /**
- * Parses numeric tokens (English and Malay words, or plain numbers)
- */
-function parseNumeralToken(token: string): number | null {
-  const clean = token.trim();
-  if (WORD_TO_NUMBER[clean] !== undefined) {
-    return WORD_TO_NUMBER[clean];
-  }
-  const parsed = parseFloat(clean);
-  return !isNaN(parsed) && parsed > 0 ? parsed : null;
-}
-
-/**
- * Extracts portion and quantity from a surrounding text clause for each food
- */
-function extractPortionFromClause(clause: string): {
-  quantity: number;
-  unit: string;
-  detectedTokens: DetectedKeyword[];
-} {
-  let quantity = 1;
-  let unit = 'serving';
-  const detectedTokens: DetectedKeyword[] = [];
-  const lower = clause.toLowerCase();
-
-  // 1. Grams match (e.g. "200g", "150 gram")
-  const gramMatch = lower.match(/(\d+(\.\d+)?)\s*(g|grams|gram)/i);
-  if (gramMatch) {
-    quantity = parseFloat(gramMatch[1]);
-    unit = 'g';
-    detectedTokens.push({ token: `${gramMatch[1]}g`, type: 'quantity', color: 'purple' });
-    return { quantity, unit, detectedTokens };
-  }
-
-  // 2. Digit match, otherwise number words
-  const digitMatch = lower.match(/\b(\d+(\.\d+)?)\b/);
-  if (digitMatch && digitMatch[1]) {
-    quantity = parseFloat(digitMatch[1]);
-    detectedTokens.push({ token: `${digitMatch[1]}`, type: 'quantity', color: 'purple' });
-  } else {
-    const words = lower.split(/[\s,.]+/);
-    for (const w of words) {
-      const n = parseNumeralToken(w);
-      if (n !== null && WORD_TO_NUMBER[w] !== undefined) {
-        quantity = n;
-        detectedTokens.push({ token: w, type: 'quantity', color: 'purple' });
-        break;
-      }
-    }
-  }
-
-  // 3. Units in English or Malay words
-  for (const u of [
-    'serving', 'servings', 'plate', 'plates', 'bowl', 'bowls',
-    'piece', 'pieces', 'slice', 'slices', 'cup', 'cups',
-    'keping', 'biji', 'pinggan', 'mangkuk', 'cawan'
-  ]) {
-    if (new RegExp(`\\b${u}\\b`, 'i').test(lower)) {
-      if (['cup', 'cups', 'cawan'].includes(u)) unit = 'cup';
-      else if (['bowl', 'bowls', 'mangkuk'].includes(u)) unit = 'bowl';
-      else if (['plate', 'plates', 'pinggan'].includes(u)) unit = 'plate';
-      else if (['piece', 'pieces', 'slice', 'slices', 'keping', 'biji'].includes(u)) unit = 'piece';
-      else unit = 'serving';
-      detectedTokens.push({ token: u, type: 'unit', color: 'indigo' });
-      break;
-    }
-  }
-
-  return { quantity, unit, detectedTokens };
-}
-
-/**
- * Searches the catalog using exact, substring, phonetic alias, and Levenshtein sliding-window matching.
- * Locates start and end indices so multiple distinct foods can be extracted!
- */
-export function findMatchingFoodsFuzzy(
-  lowerTranscript: string,
-  catalog: Food[]
-): FoodMatchSpan[] {
-  const matches: FoodMatchSpan[] = [];
-  const words = lowerTranscript.split(/[\s,.]+/);
-
-  for (const food of catalog) {
-    const terms = [food.name.toLowerCase(), ...(food.aliases || []).map((a) => a.toLowerCase())];
-
-    for (const term of terms) {
-      // 1. Direct Substring Check (highest confidence)
-      let searchPos = 0;
-      while (searchPos < lowerTranscript.length) {
-        const foundIdx = lowerTranscript.indexOf(term, searchPos);
-        if (foundIdx === -1) break;
-
-        const isMainName = food.name.toLowerCase() === term;
-        const score = term.length * 2 + (isMainName ? 10 : 6);
-        matches.push({
-          food,
-          matchedTerm: food.name,
-          startIndex: foundIdx,
-          endIndex: foundIdx + term.length,
-          score: score + 50,
-          similarity: 1.0,
-          reason: isMainName ? 'Exact Match' : 'Alias Match',
-        });
-
-        searchPos = foundIdx + term.length;
-      }
-
-      // 2. Sliding window n-gram fuzzy matching (Levenshtein)
-      const termWords = term.split(/\s+/);
-      const windowSize = termWords.length;
-
-      if (windowSize <= words.length) {
-        for (let i = 0; i <= words.length - windowSize; i++) {
-          const windowText = words.slice(i, i + windowSize).join(' ');
-          const sim = stringSimilarity(windowText, term);
-
-          if (sim >= 0.72) {
-            const startCharIdx = lowerTranscript.indexOf(windowText);
-            if (startCharIdx !== -1) {
-              matches.push({
-                food,
-                matchedTerm: food.name,
-                startIndex: startCharIdx,
-                endIndex: startCharIdx + windowText.length,
-                score: sim * 40 + term.length,
-                similarity: sim,
-                reason: `Phonetic Fuzzy (${Math.round(sim * 100)}%)`,
-              });
-            }
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  // Sort by score descending and length descending
-  matches.sort((a, b) => b.score - a.score || (b.endIndex - b.startIndex) - (a.endIndex - a.startIndex));
-
-  // Deduplicate overlapping spans to avoid colliding substring matches (e.g. "Nasi Lemak Ayam Goreng" vs "Nasi Lemak")
-  const nonOverlapping: FoodMatchSpan[] = [];
-  for (const candidate of matches) {
-    const overlaps = nonOverlapping.some(
-      (existing) =>
-        candidate.startIndex < existing.endIndex && candidate.endIndex > existing.startIndex
-    );
-    const duplicateFood = nonOverlapping.some((existing) => existing.food.id === candidate.food.id);
-
-    if (!overlaps && !duplicateFood) {
-      nonOverlapping.push(candidate);
-    }
-  }
-
-  // Sort chronologically by order of appearance in speech
-  return nonOverlapping.sort((a, b) => a.startIndex - b.startIndex);
-}
-
-/**
- * Pure client-side keyword extraction, multi-food fuzzy matching, and intent parsing.
+ * Pure client-side keyword extraction, fuzzy string matching, and intent parsing.
  * NO API CALLS, NO SERVER, 100% IN-BROWSER.
  */
 export function detectVoiceKeywords(
@@ -314,7 +145,6 @@ export function detectVoiceKeywords(
       rawTranscript: '',
       intent: 'UNKNOWN',
       confidence: 0,
-      items: [],
       detectedKeywords: [],
       summary: 'Listening for meal or water keywords...',
       canExecute: false,
@@ -326,52 +156,27 @@ export function detectVoiceKeywords(
   const lower = normalizedTranscript.toLowerCase();
   const detectedKeywords: DetectedKeyword[] = [];
 
-  // 1. Detect Intent words
-  for (const kw of LOG_INTENT_KEYWORDS) {
-    if (lower.includes(kw)) {
-      detectedKeywords.push({ token: kw, type: 'intent', color: 'emerald' });
-      break;
-    }
-  }
-
-  // 2. Detect Meal Category
-  let category: MealType | undefined = undefined;
-  for (const [catKey, keywords] of Object.entries(CATEGORY_KEYWORDS) as [MealType, string[]][]) {
-    for (const kw of keywords) {
-      if (new RegExp(`\\b${kw}\\b`, 'i').test(lower)) {
-        category = catKey;
-        detectedKeywords.push({ token: kw, type: 'category', color: 'amber' });
-        break;
-      }
-    }
-    if (category) break;
-  }
-
-  if (!category) {
-    category = currentMealCategory || getDefaultMealCategoryByHour();
-  }
-
-  // 3. Check for Water / Hydration intent in speech
-  let waterAmountMl: number | undefined = undefined;
+  // 1. Check for Water / Hydration intent
   const containsWaterWord = WATER_KEYWORDS.some(k => lower.includes(k));
-  if (containsWaterWord) {
-    const waterCheck = parseWaterVoiceCommand(raw, lower, []);
-    if (waterCheck.waterAmountMl && waterCheck.waterAmountMl > 0) {
-      waterAmountMl = waterCheck.waterAmountMl;
-      detectedKeywords.push({ token: `${waterAmountMl} ml water`, type: 'water', color: 'sky' });
-    }
-  }
+  const isSpecificWaterPhrase =
+    lower.includes('water') ||
+    lower.includes('glass of water') ||
+    lower.includes('cup of water') ||
+    lower.includes('bottle of water') ||
+    lower.includes('drank water') ||
+    lower.includes('drink water') ||
+    lower.includes('drank') ||
+    lower.includes('minum air');
 
-  // 4. Find all matching food items in transcript (Supports MULTIPLE FOODS!)
   const foodMatches = findMatchingFoodsFuzzy(lower, foodCatalog);
+  const isWaterIntent = containsWaterWord && (isSpecificWaterPhrase || foodMatches.length === 0);
 
-  // If only water was mentioned (no foods)
-  if (foodMatches.length === 0 && containsWaterWord) {
+  if (isWaterIntent) {
     return parseWaterVoiceCommand(raw, lower, detectedKeywords);
   }
 
-  // 5. Parse food voice command with Multiple Food Items support
-  return parseFoodVoiceCommand(raw, lower, category, detectedKeywords, foodMatches, waterAmountMl);
+  // 2. Parse Food Logging intent
+  return parseFoodVoiceCommand(raw, lower, currentMealCategory, detectedKeywords, foodMatches);
 }
 
 function parseWaterVoiceCommand(
@@ -417,7 +222,7 @@ function parseWaterVoiceCommand(
     if (digitMatch && digitMatch[1]) {
       foundNum = parseFloat(digitMatch[1]);
     } else {
-      const words = lower.split(/[\s,.]+/);
+      const words = lower.split(/\s+/);
       for (const w of words) {
         if (WORD_TO_NUMBER[w] !== undefined) {
           foundNum = WORD_TO_NUMBER[w];
@@ -455,7 +260,6 @@ function parseWaterVoiceCommand(
     rawTranscript: raw,
     intent: 'LOG_WATER',
     confidence,
-    items: [],
     waterAmountMl,
     quantity,
     unit,
@@ -468,97 +272,186 @@ function parseWaterVoiceCommand(
 function parseFoodVoiceCommand(
   raw: string,
   lower: string,
-  category: MealType,
+  currentMealCategory: MealType | undefined,
   detectedKeywords: DetectedKeyword[],
-  foodMatches: FoodMatchSpan[],
-  waterAmountMl?: number
+  foodMatches: Array<{ food: Food; matchedTerm: string; score: number; similarity: number; reason: string }>
 ): VoiceDetectionResult {
-  const items: DetectedFoodItem[] = [];
+  // 1. Detect Intent words
+  for (const kw of LOG_INTENT_KEYWORDS) {
+    if (lower.includes(kw)) {
+      detectedKeywords.push({ token: kw, type: 'intent', color: 'emerald' });
+      break;
+    }
+  }
+
+  // 2. Detect Meal Category
+  let category: MealType | undefined = undefined;
+  for (const [catKey, keywords] of Object.entries(CATEGORY_KEYWORDS) as [MealType, string[]][]) {
+    for (const kw of keywords) {
+      const regex = new RegExp(`\\b${kw}\\b`, 'i');
+      if (regex.test(lower)) {
+        category = catKey;
+        detectedKeywords.push({ token: kw, type: 'category', color: 'amber' });
+        break;
+      }
+    }
+    if (category) break;
+  }
+
+  if (!category) {
+    category = currentMealCategory || getDefaultMealCategoryByHour();
+  }
+
+  // 3. Matched Food & Suggestions
+  let matchedFood: Food | undefined = undefined;
   const suggestions: Array<{ food: Food; similarity: number; matchedReason: string }> = [];
 
-  // Extract each matched food along with its specific quantity and unit from adjacent speech clauses
   if (foodMatches.length > 0) {
-    for (let i = 0; i < foodMatches.length; i++) {
-      const match = foodMatches[i];
-      detectedKeywords.push({
-        token: match.matchedTerm,
-        type: 'food',
-        color: 'emerald',
-      });
+    const best = foodMatches[0];
+    matchedFood = best.food;
+    detectedKeywords.push({
+      token: best.matchedTerm,
+      type: 'food',
+      color: 'emerald',
+    });
 
-      // Bounding clause before this food
-      const prevBoundary = i === 0 ? 0 : foodMatches[i - 1].endIndex;
-      const clauseBefore = lower.substring(prevBoundary, match.startIndex);
-
-      // Bounding clause after this food
-      const nextBoundary = i === foodMatches.length - 1 ? lower.length : foodMatches[i + 1].startIndex;
-      const clauseAfter = lower.substring(match.endIndex, nextBoundary);
-
-      // Extract individual portion for this food
-      const portion = extractPortionFromClause(`${clauseBefore} ${clauseAfter}`);
-      detectedKeywords.push(...portion.detectedTokens);
-
-      items.push({
-        food: match.food,
-        quantity: portion.quantity,
-        unit: portion.unit,
-        category,
-      });
-
+    // Provide top 3 suggestions if there are close alternatives
+    for (const m of foodMatches.slice(0, 3)) {
       suggestions.push({
-        food: match.food,
-        similarity: match.similarity,
-        matchedReason: match.reason,
+        food: m.food,
+        similarity: m.similarity,
+        matchedReason: m.reason,
       });
     }
   }
 
-  const hasFood = items.length > 0;
-  const hasWater = waterAmountMl !== undefined && waterAmountMl > 0;
-  const isMulti = items.length > 1 || (items.length >= 1 && hasWater);
-  const intent = isMulti ? 'LOG_MULTI' : hasFood ? 'LOG_FOOD' : 'UNKNOWN';
+  // 4. Detect Quantity & Portion
+  let quantity = 1;
+  let unit = 'serving';
 
-  const confidence = hasFood ? Math.min(0.98, (foodMatches[0]?.similarity || 0.8) + 0.1) : 0.35;
-  const canExecute = hasFood || hasWater;
+  const gramMatch = lower.match(/(\d+(\.\d+)?)\s*(g|grams|gram)/i);
+  if (gramMatch) {
+    quantity = parseFloat(gramMatch[1]);
+    unit = 'g';
+    detectedKeywords.push({ token: `${gramMatch[1]}g`, type: 'quantity', color: 'purple' });
+  } else {
+    let foundNum: number | null = null;
+    const digitMatch = lower.match(/\b(\d+(\.\d+)?)\b/);
+    if (digitMatch && digitMatch[1]) {
+      foundNum = parseFloat(digitMatch[1]);
+    } else {
+      const words = lower.split(/\s+/);
+      for (const w of words) {
+        if (WORD_TO_NUMBER[w] !== undefined) {
+          foundNum = WORD_TO_NUMBER[w];
+          break;
+        }
+      }
+    }
+
+    if (foundNum !== null && !isNaN(foundNum) && foundNum > 0) {
+      quantity = foundNum;
+      detectedKeywords.push({ token: `${quantity}`, type: 'quantity', color: 'purple' });
+    }
+
+    for (const u of ['serving', 'servings', 'plate', 'plates', 'bowl', 'bowls', 'piece', 'pieces', 'slice', 'slices', 'cup', 'cups']) {
+      if (lower.includes(u)) {
+        unit = u;
+        detectedKeywords.push({ token: u, type: 'unit', color: 'indigo' });
+        break;
+      }
+    }
+  }
+
+  const confidence = matchedFood ? Math.min(0.98, (foodMatches[0]?.similarity || 0.8) + 0.1) : 0.35;
+  const canExecute = !!matchedFood;
 
   let summary = '';
-  if (items.length > 1) {
-    const listStr = items.map((it) => `${it.quantity} ${it.unit} ${it.food.name}`).join(' + ');
-    const totalCals = items.reduce((acc, it) => {
-      const factor = it.quantity || 1;
-      return (
-        acc +
-        (it.unit === 'g'
-          ? Math.round((it.food.nutrients.calories * factor) / (it.food.servingSize || 100))
-          : Math.round(it.food.nutrients.calories * factor))
-      );
-    }, 0);
-    summary = `Log ${items.length} foods: ${listStr}${hasWater ? ` & +${waterAmountMl}ml Water` : ''} to ${category.toUpperCase()} (~${totalCals} kcal)`;
-  } else if (items.length === 1) {
-    const single = items[0];
-    const singleCals =
-      single.unit === 'g'
-        ? Math.round((single.food.nutrients.calories * single.quantity) / (single.food.servingSize || 100))
-        : Math.round(single.food.nutrients.calories * single.quantity);
+  if (matchedFood) {
+    const totalCals =
+      unit === 'g'
+        ? Math.round((matchedFood.nutrients.calories * quantity) / (matchedFood.servingSize || 100))
+        : Math.round(matchedFood.nutrients.calories * quantity);
 
-    summary = `Log ${single.quantity} ${single.unit} of "${single.food.name}"${hasWater ? ` & +${waterAmountMl}ml Water` : ''} to ${category.toUpperCase()} (~${singleCals} kcal)`;
+    summary = `Log ${quantity} ${unit} of "${matchedFood.name}" to ${category.toUpperCase()} (~${totalCals} kcal)`;
   } else {
-    summary = `Detected category ${category.toUpperCase()}. Say a food like "Nasi Lemak and Teh Tarik" to match.`;
+    summary = `Detected category ${category.toUpperCase()}. Say a food like "Nasi Lemak" or "Roti Canai" to match.`;
   }
 
   return {
     rawTranscript: raw,
-    intent,
+    intent: 'LOG_FOOD',
     confidence,
-    items,
-    matchedFood: items[0]?.food,
+    matchedFood,
     suggestions,
     category,
-    quantity: items[0]?.quantity || 1,
-    unit: items[0]?.unit || 'serving',
-    waterAmountMl,
+    quantity,
+    unit,
     detectedKeywords,
     summary,
     canExecute,
   };
+}
+
+/**
+ * Searches the catalog using exact, substring, phonetic alias, and Levenshtein sliding-window matching.
+ * This guarantees "roti can I" -> "Roti Canai" and "nasty lemak" -> "Nasi Lemak"!
+ */
+function findMatchingFoodsFuzzy(
+  lowerTranscript: string,
+  catalog: Food[]
+): Array<{ food: Food; matchedTerm: string; score: number; similarity: number; reason: string }> {
+  const matches: Array<{ food: Food; matchedTerm: string; score: number; similarity: number; reason: string }> = [];
+  const words = lowerTranscript.split(/\s+/);
+
+  for (const food of catalog) {
+    const terms = [food.name.toLowerCase(), ...(food.aliases || []).map((a) => a.toLowerCase())];
+
+    for (const term of terms) {
+      // 1. Direct Substring Check (highest confidence)
+      if (lowerTranscript.includes(term)) {
+        const isMainName = food.name.toLowerCase() === term;
+        const score = term.length * 2 + (isMainName ? 10 : 6);
+        matches.push({
+          food,
+          matchedTerm: food.name,
+          score: score + 50,
+          similarity: 1.0,
+          reason: isMainName ? 'Exact Match' : 'Alias Match',
+        });
+        break;
+      }
+
+      // 2. Sliding window n-gram fuzzy matching (Levenshtein)
+      const termWords = term.split(/\s+/);
+      const windowSize = termWords.length;
+
+      for (let i = 0; i <= words.length - windowSize; i++) {
+        const windowText = words.slice(i, i + windowSize).join(' ');
+        const sim = stringSimilarity(windowText, term);
+
+        if (sim >= 0.72) {
+          matches.push({
+            food,
+            matchedTerm: food.name,
+            score: sim * 40 + term.length,
+            similarity: sim,
+            reason: `Phonetic Fuzzy (${Math.round(sim * 100)}%)`,
+          });
+          break;
+        }
+      }
+    }
+  }
+
+  // Deduplicate by food ID, keeping highest score
+  const uniqueMap = new Map<string, { food: Food; matchedTerm: string; score: number; similarity: number; reason: string }>();
+  for (const m of matches) {
+    const existing = uniqueMap.get(m.food.id);
+    if (!existing || m.score > existing.score) {
+      uniqueMap.set(m.food.id, m);
+    }
+  }
+
+  return Array.from(uniqueMap.values()).sort((a, b) => b.score - a.score);
 }

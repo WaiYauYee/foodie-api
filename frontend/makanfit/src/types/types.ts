@@ -322,14 +322,7 @@ export enum Page {
   PAL = 'PAL'
 }
 
-export interface DetectedFoodItem {
-  food: Food;
-  quantity: number;
-  unit: string;
-  category?: MealType;
-}
-
-export type VoiceIntentType = 'LOG_FOOD' | 'LOG_WATER' | 'LOG_MULTI' | 'SET_CATEGORY' | 'UNKNOWN';
+export type VoiceIntentType = 'LOG_FOOD' | 'LOG_WATER' | 'SET_CATEGORY' | 'UNKNOWN';
 
 export interface DetectedKeyword {
   token: string;
@@ -341,7 +334,6 @@ export interface VoiceDetectionResult {
   rawTranscript: string;
   intent: VoiceIntentType;
   confidence: number;
-  items: DetectedFoodItem[];
   matchedFood?: Food;
   suggestions?: Array<{ food: Food; similarity: number; matchedReason: string }>;
   category?: MealType;
