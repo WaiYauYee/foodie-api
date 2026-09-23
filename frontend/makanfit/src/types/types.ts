@@ -80,6 +80,7 @@ export interface Food {
   updatedAt: number; // timestamp
   nutrients: FoodNutrient;
   ingredients?: Food[];
+  aliases?: string[];
 }
 
 export interface FoodComponent {
@@ -319,4 +320,27 @@ export enum Page {
   ACCOUNT_SETTING = 'account_setting',
   NOTIFICATIONS = 'NOTIFICATIONS',
   PAL = 'PAL'
+}
+
+export type VoiceIntentType = 'LOG_FOOD' | 'LOG_WATER' | 'SET_CATEGORY' | 'UNKNOWN';
+
+export interface DetectedKeyword {
+  token: string;
+  type: 'intent' | 'category' | 'food' | 'quantity' | 'unit' | 'water';
+  color: string;
+}
+
+export interface VoiceDetectionResult {
+  rawTranscript: string;
+  intent: VoiceIntentType;
+  confidence: number;
+  matchedFood?: Food;
+  suggestions?: Array<{ food: Food; similarity: number; matchedReason: string }>;
+  category?: MealType;
+  quantity?: number;
+  unit?: string;
+  waterAmountMl?: number;
+  detectedKeywords: DetectedKeyword[];
+  summary: string;
+  canExecute: boolean;
 }

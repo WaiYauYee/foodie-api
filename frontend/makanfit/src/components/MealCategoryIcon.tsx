@@ -4,10 +4,12 @@ import { MealType } from '../types/types';
 interface MealCategoryIconProps {
   type: MealType | string;
   className?: string;
+  size?: number;
 }
 
-export const MealCategoryIcon: React.FC<MealCategoryIconProps> = ({ type, className = '' }) => {
+export const MealCategoryIcon: React.FC<MealCategoryIconProps> = ({ type, className = '', size = 48, }) => {
   const normType = type.toLowerCase();
+  const iconSize = Math.round(size * (28 / 48));
 
   if (normType === 'breakfast') {
     return (
@@ -32,7 +34,7 @@ export const MealCategoryIcon: React.FC<MealCategoryIconProps> = ({ type, classN
         className={`w-12 h-12 rounded-full bg-[#F1F5F9] flex items-center justify-center relative shadow-xs shrink-0 select-none ${className}`}
         title="Breakfast"
       >
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <svg width={iconSize} height={iconSize} viewBox="0 0 28 28" fill="none">
           {/* Toast slice */}
           <path
             d="M5 12.5c0-3 2.2-5 5-5s5 2 5 5v7.5H5v-7.5z"
@@ -76,7 +78,7 @@ export const MealCategoryIcon: React.FC<MealCategoryIconProps> = ({ type, classN
         className={`w-12 h-12 rounded-full bg-[#F1F5F9] flex items-center justify-center relative shadow-xs shrink-0 select-none ${className}`}
         title="Lunch"
       >
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <svg width={iconSize} height={iconSize} viewBox="0 0 28 28" fill="none">
           {/* Fork */}
           <path
             d="M6.5 6v5a1.8 1.8 0 001.8 1.8h0a1.8 1.8 0 001.8-1.8V6M8.3 6v14"
@@ -113,7 +115,7 @@ export const MealCategoryIcon: React.FC<MealCategoryIconProps> = ({ type, classN
         className={`w-12 h-12 rounded-full bg-[#F1F5F9] flex items-center justify-center relative shadow-xs shrink-0 select-none ${className}`}
         title="Dinner"
       >
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <svg width={iconSize} height={iconSize} viewBox="0 0 28 28" fill="none">
           {/* Glass of water */}
           <rect
             x="5.5"
@@ -148,7 +150,7 @@ export const MealCategoryIcon: React.FC<MealCategoryIconProps> = ({ type, classN
       className={`w-12 h-12 rounded-full bg-[#F1F5F9] flex items-center justify-center relative shadow-xs shrink-0 select-none ${className}`}
       title="Snacks"
     >
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <svg width={iconSize} height={iconSize} viewBox="0 0 28 28" fill="none">
         {/* Yogurt cup */}
         <path
           d="M5 12h8l-1 8H6l-1-8z"
