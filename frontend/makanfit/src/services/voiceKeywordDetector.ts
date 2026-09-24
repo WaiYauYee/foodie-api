@@ -34,6 +34,9 @@ const WORD_TO_NUMBER: Record<string, number> = {
   secawan: 1,
   sepinggan: 1,
   sebotol: 1,
+  setengah: 0.5,
+  separuh: 0.5, 
+  seratus: 100,
 };
 
 const CATEGORY_KEYWORDS: Record<MealType, string[]> = {
@@ -329,8 +332,17 @@ function parseFoodVoiceCommand(
   let quantity = 1;
   let unit = 'serving';
 
+  const calMatch = lower.match(
+    /(\d+(\.\d+)?)\s*(kcal|kalori|calories|calorie|cals|cal)\b/i
+  );
   const gramMatch = lower.match(/(\d+(\.\d+)?)\s*(g|grams|gram)/i);
-  if (gramMatch) {
+
+  if (calMatch && matchedFood && matchedFood.nutrients.calories > 0) {
+    const targetCal = parseFloat(calMatch[1]);
+    quantity = Math.round((targetCal / matchedFood.nutrients.calories) * 100) / 100;
+    unit = 'serving';
+    detectedKeywords.push({ token: `${calMatch[1]} kcal`, type: 'quantity', color: 'purple' });
+  } else if (gramMatch) {
     quantity = parseFloat(gramMatch[1]);
     unit = 'g';
     detectedKeywords.push({ token: `${gramMatch[1]}g`, type: 'quantity', color: 'purple' });

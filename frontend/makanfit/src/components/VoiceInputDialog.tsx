@@ -77,6 +77,12 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
   const detectionResult: VoiceDetectionResult = useMemo(() => {
     return detectVoiceKeywords(transcript, defaultCategory, SEARCHABLE_FOODS);
   }, [transcript, defaultCategory]);
+  
+  // grams -> fraction of one serving (assumes food.servingSize is in grams)
+  const foodFactor =
+    detectionResult.unit === "g" && detectionResult.matchedFood
+      ? (detectionResult.quantity || 1) / (detectionResult.matchedFood.servingSize || 100)
+      : detectionResult.quantity || 1;
 
   // NEW: effective water amount = manual amend, else detected
   const effectiveWaterMl = waterOverride ?? detectionResult.waterAmountMl ?? 0;
@@ -166,13 +172,13 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
     ) {
       const food = detectionResult.matchedFood;
       const targetCat = detectionResult.category || defaultCategory;
-      const factor = detectionResult.quantity || 1;
+      const factor = foodFactor;
 
       const finalFood: Food = {
         ...food,
         servingSize:
           detectionResult.unit === "g"
-            ? factor
+            ? detectionResult.quantity || 1
             : Math.round(food.servingSize * factor),
         nutrients: {
           ...food.nutrients,
@@ -436,8 +442,7 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
                     <div className="text-right">
                       <p className="text-base font-black text-emerald-600">
                         {`${Math.round(
-                          (detectionResult.matchedFood?.nutrients.calories ||
-                            0) * (detectionResult.quantity || 1),
+                          (detectionResult.matchedFood?.nutrients.calories || 0) * foodFactor,
                         )} Cal`}
                       </p>
                       <p className="text-[10px] text-slate-400 font-bold uppercase">
