@@ -1498,7 +1498,7 @@ export const Diary: React.FC<DiaryProps> = ({
           MEAL CARDS:
           Clicking the tab / card opens the full Category Info Edit Page that displays ALL foods in that category!
         */}
-        <div className="space-y-4">
+        <div className="space-y-4 pt-4 pb-4">
           {mealCategories.map((cat) => {
             const categoryMeals = todaysMeals.filter((m) => m.mealType === cat);
             const categoryCalories = Math.round(
