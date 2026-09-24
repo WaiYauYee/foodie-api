@@ -206,19 +206,28 @@ function parseWaterVoiceCommand(
   }
 
   const mlMatch = lower.match(/(\d+(\.\d+)?)\s*(ml|milliliter|millilitre|milliliters|millilitres)/i);
-  const literMatch = lower.match(/(\d+(\.\d+)?)\s*(l|liter|litre|liters|litres)/i);
+  // digits + liter, e.g. "1.5 liters", "2l"
+  const literMatch = lower.match(/(\d+(?:\.\d+)?)\s*(liters|liter|litres|litre|l)\b/i);
+
+  // word + liter, e.g. "one liter", "half a liter", "setengah liter"
+  let literQty: number | null = literMatch ? parseFloat(literMatch[1]) : null;
+  if (literQty === null) {
+    const wordLiter = lower.match(/\b([a-z]+)(?:\s+a)?\s+(?:liters?|litres?)\b/);
+    if (wordLiter && WORD_TO_NUMBER[wordLiter[1]] !== undefined) {
+      literQty = WORD_TO_NUMBER[wordLiter[1]];
+    }
+  }
 
   if (mlMatch) {
     waterAmountMl = Math.round(parseFloat(mlMatch[1]));
     quantity = waterAmountMl;
     unit = 'ml';
     detectedKeywords.push({ token: `${mlMatch[1]} ml`, type: 'quantity', color: 'blue' });
-  } else if (literMatch) {
-    const lVal = parseFloat(literMatch[1]);
-    waterAmountMl = Math.round(lVal * 1000);
-    quantity = lVal;
+  } else if (literQty !== null) {
+    waterAmountMl = Math.round(literQty * 1000);
+    quantity = literQty;
     unit = 'L';
-    detectedKeywords.push({ token: `${literMatch[1]} L`, type: 'quantity', color: 'blue' });
+    detectedKeywords.push({ token: `${literQty} L`, type: 'quantity', color: 'blue' });
   } else {
     let foundNum: number | null = null;
     const digitMatch = lower.match(/(\d+(\.\d+)?)\s*(glass|glasses|cup|cups|bottle|bottles|mug|mugs)?/i);
