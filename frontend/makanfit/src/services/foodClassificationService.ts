@@ -15,8 +15,20 @@ export interface ClassificationModelInfo {
   num_classes: number;
 }
 
+export interface FoodCheck {
+  is_food: boolean;
+  label: string;
+  confidence: number;
+  percentage: number;
+  class_id: number;
+  food_probability: number;
+  non_food_probability: number;
+}
+
 export interface ClassificationResponse {
   success: boolean;
+  is_food?: boolean;
+  food_check?: FoodCheck;
   primary_prediction?: ClassificationPrediction;
   all_predictions?: ClassificationPrediction[];
   model_info?: ClassificationModelInfo;

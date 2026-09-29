@@ -722,6 +722,14 @@ export const Diary: React.FC<DiaryProps> = ({
   //   }
   // };
 
+  // Non-food / rejection modal state
+const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
+const [rejectionInfo, setRejectionInfo] = useState<{
+  imagePreview: string;
+  foodName: string;
+  confidence: number;
+} | null>(null);
+
   const handleCapture = async (base64: string) => {
     setPreviewUrl(base64);
     setIsScanning(false);
@@ -734,16 +742,35 @@ export const Diary: React.FC<DiaryProps> = ({
       console.log("🔄 Sending image to backend for classification...");
       const classificationResult = await classifyFoodImage(base64);
       console.log("🍽️ Classification result:", classificationResult);
+      console.log("🍽️ Classification all predictions:", classificationResult.all_predictions);
 
-      // const topPrediction = classificationResult.primary_prediction;
-      // if (!topPrediction || topPrediction.confidence < 0.5) {
-      //   console.warn("⚠️ Low confidence or no food detected, likely non-food image.");
-      //   setAnalyzing(false);
-      //   alert("The uploaded image does not appear to be a food item. Please try again with a food photo.");
-      //   return; // Stop further processing
-      // }
+      const topPrediction = classificationResult.primary_prediction;
+      const dishName = topPrediction?.food_name || "";
 
-      const dishName = classificationResult.primary_prediction?.food_name || "";
+      const isFood = classificationResult.is_food;
+      console.log("🍽️ Food or not:", classificationResult.is_food);
+      console.log(
+        "🍽️ Food check:",
+        classificationResult.food_check
+      );
+
+      if (!isFood || !topPrediction) {
+        console.warn("⚠️ Non-food detected or model confidence too low. Halting pipeline.");
+        setAnalyzing(false); // Stop loading spinner
+
+        setRejectionInfo({
+          imagePreview: base64,
+          foodName:
+            classificationResult.food_check?.label === "not_food_or_drink"
+              ? "Not food or drink"
+              : classificationResult.food_check?.label || "Not food",
+          confidence:
+            classificationResult.food_check?.confidence ?? 0,
+        });
+
+        setIsRejectionModalOpen(true);
+        return; // ⛔ STOP HERE: Never call segmentFoodImage or calorie estimation!
+      }
 
       // Segmentation
       console.log("🔄 Sending image to backend for segmentation...");
@@ -3499,6 +3526,97 @@ export const Diary: React.FC<DiaryProps> = ({
                 </div>
               </button>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* NON-FOOD REJECTION MODAL (No window.alert)              */}
+      {/* ======================================================== */}
+      {isRejectionModalOpen && rejectionInfo && (
+        <div 
+        onClick={() => {
+          setIsRejectionModalOpen(false);
+          setRejectionInfo(null);
+        }}
+        className="fixed inset-0 z-[130] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/70 backdrop-blur-xs animate-in fade-in duration-200">
+          <div 
+          className="relative bg-white w-full max-w-md rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl space-y-5 animate-in slide-in-from-bottom duration-300">
+            
+            {/* ✕ Top-Right Exit Button */}
+            <button
+              onClick={() => {
+                setIsRejectionModalOpen(false);
+                setRejectionInfo(null);
+              }}
+              className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              aria-label="Close modal"
+            >
+              <X size={20} />
+            </button>
+
+            {/* Header */}
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 font-bold text-xl">
+                <AlertCircle size={26} />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-slate-900 leading-tight">
+                  Couldn't spot any food
+                </h3>
+              </div>
+            </div>
+
+            {/* Photo Preview and Diagnostic */}
+            <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200 flex items-center gap-3.5">
+              <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-slate-200 flex-shrink-0 border-2 border-white shadow-xs">
+                <img
+                  src={rejectionInfo.imagePreview}
+                  alt="Captured attempt"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                {/* <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Top Match Guess</p> */}
+                <p className="font-extrabold text-slate-800 text-sm truncate">
+                  {rejectionInfo.foodName}
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Confidence: <strong className="text-amber-600">{(rejectionInfo.confidence * 100).toFixed(2)}%</strong>
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed font-medium">
+              This photo appears to be non-food item or is too dark/blurry to be analyzed. Try another photo with the food fully visible.
+            </p>
+
+            {/* Buttons */}
+            <div className="space-y-2 pt-1">
+              <button
+                onClick={() => {
+                  setIsRejectionModalOpen(false);
+                  setRejectionInfo(null);
+                  setIsScanning(true); // Retake with camera
+                }}
+                className="w-full bg-[#1A2A33] hover:bg-black text-white font-extrabold py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider shadow-md transition-all active:scale-[0.98] cursor-pointer"
+              >
+                <Camera size={16} />
+                <span>Retake</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsRejectionModalOpen(false);
+                  setRejectionInfo(null);
+                  setIsSearching(true); // Open manual search
+                }}
+                className="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider transition-all cursor-pointer"
+              >
+                <Search size={16} />
+                <span>Search It</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

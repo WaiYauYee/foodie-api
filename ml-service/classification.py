@@ -8,6 +8,9 @@ import cv2
 from typing import Tuple, List, Dict
 import os
 import tempfile
+import timm
+from huggingface_hub import hf_hub_download
+from safetensors.torch import load_file
 
 from dotenv import load_dotenv
 load_dotenv()  # load variables from ml-service/.env
@@ -142,6 +145,17 @@ FOOD_CLASS_NAMES = [
 ]
 
 # ============================================
+# FOOD / NON-FOOD CLASSIFIER
+# ============================================
+
+NON_FOOD_MODEL_ID = "mrdbourke/food-not-food-classifier-csatv2-v2"
+
+NON_FOOD_LABELS = {
+    0: "food_or_drink",
+    1: "not_food_or_drink",
+}
+
+# ============================================
 # YOUR EXACT MODEL ARCHITECTURE FROM COLAB
 # ============================================
 
@@ -229,6 +243,67 @@ class ImprovedFoodCNN(nn.Module):
         x = self.classifier(x)
         return x
 
+# ============================================
+# LOAD FOOD / NON-FOOD MODEL
+# ============================================
+
+def load_food_not_food_model(device: str):
+    """
+    Load CSATv2 food/not-food classifier from Hugging Face.
+    
+    Classes:
+        0 = food_or_drink
+        1 = not_food_or_drink
+    """
+
+    print("=" * 60)
+    print("Loading Food/Not-Food Classifier")
+    print("=" * 60)
+
+    try:
+        # Create the architecture
+        model = timm.create_model(
+            "csatv2.r512_in1k",
+            pretrained=False,
+            num_classes=2
+        )
+
+        # Download/load Hugging Face weights
+        weights_path = hf_hub_download(
+            repo_id=NON_FOOD_MODEL_ID,
+            filename="model.safetensors"
+        )
+
+        print(f"Loading weights from: {weights_path}")
+
+        model.load_state_dict(
+            load_file(weights_path)
+        )
+
+        model.to(device)
+        model.eval()
+
+        # Get the preprocessing configuration
+        data_cfg = timm.data.resolve_data_config(
+            model.pretrained_cfg
+        )
+
+        transform = timm.data.create_transform(
+            **data_cfg,
+            is_training=False
+        )
+
+        print("✓ Food/Not-Food model loaded successfully")
+        print("  Architecture: csatv2.r512_in1k")
+        print("  Classes: 2")
+        print("  Device:", device)
+        print("  Parameters:", f"{sum(p.numel() for p in model.parameters()):,}")
+
+        return model, transform
+
+    except Exception as e:
+        print(f"❌ Failed to load Food/Not-Food model: {e}")
+        raise
 
 # ============================================
 # MODEL LOADING & INITIALIZATION
@@ -319,7 +394,18 @@ print("=" * 60)
 classification_model = None
 classification_device = DEVICE
 
+food_not_food_model = None
+food_not_food_transform = None
+
 try:
+    # ----------------------------------------
+    # Load Food/Not-Food classifier
+    # ----------------------------------------
+
+    food_not_food_model, food_not_food_transform = (
+        load_food_not_food_model(DEVICE)
+    )
+
     classification_model, classification_device = load_pytorch_model(
         model_path=MODEL_PATH,
         num_classes=NUM_CLASSES,
@@ -420,6 +506,56 @@ def classify_food_image(
         'image_path': image_path
     }
 
+# ============================================
+# FOOD / NON-FOOD DETECTION
+# ============================================
+
+def detect_food_or_non_food(
+    img: Image.Image,
+    model: nn.Module,
+    transform,
+    device: str
+) -> Dict:
+
+    image = img.convert("RGB")
+    image_tensor = transform(image).unsqueeze(0).to(device)
+
+    with torch.no_grad():
+        outputs = model(image_tensor)
+        probabilities = torch.softmax(outputs, dim=1)
+
+    # Get probability for each class
+    food_probability = float(probabilities[0][0].item())
+    non_food_probability = float(probabilities[0][1].item())
+
+    confidence, class_index = torch.max(probabilities, dim=1)
+
+    class_id = int(class_index.item())
+    confidence = float(confidence.item())
+
+    label = NON_FOOD_LABELS[class_id]
+
+    is_food = label == "food_or_drink"
+
+    print("=" * 50)
+    print("FOOD / NON-FOOD DETECTION")
+    print(f"Food probability     : {food_probability * 100:.2f}%")
+    print(f"Non-food probability : {non_food_probability * 100:.2f}%")
+    print(f"Predicted class      : {class_id}")
+    print(f"Predicted label      : {label}")
+    print(f"Confidence           : {confidence * 100:.2f}%")
+    print(f"Is food              : {is_food}")
+    print("=" * 50)
+
+    return {
+        "is_food": is_food,
+        "label": label,
+        "confidence": round(confidence, 4),
+        "percentage": round(confidence * 100, 2),
+        "class_id": class_id,
+        "food_probability": round(food_probability, 4),
+        "non_food_probability": round(non_food_probability, 4),
+    }
 
 def classify_image_service(img: Image.Image, top_k: int = 5) -> Dict:
     """
@@ -432,6 +568,39 @@ def classify_image_service(img: Image.Image, top_k: int = 5) -> Dict:
     Returns:
         dict: predictions in structured format
     """
+    # ========================================
+    # STAGE 1: FOOD / NON-FOOD
+    # ========================================
+
+    food_check = detect_food_or_non_food(
+        img=img,
+        model=food_not_food_model,
+        transform=food_not_food_transform,
+        device=DEVICE
+    )
+
+    print(
+        f"Food check: {food_check['label']} "
+        f"({food_check['percentage']}%)"
+    )
+
+    # ========================================
+    # REJECT NON-FOOD
+    # ========================================
+
+    if not food_check["is_food"]:
+        return {
+            "success": True,
+            "is_food": False,
+            "rejection_reason": "not_food",
+            "food_check": food_check,
+            "primary_prediction": None,
+            "all_predictions": [],
+        }
+
+    # ========================================
+    # STAGE 2: 120-CLASS FOOD CLASSIFICATION
+    # ========================================
     # Save temporarily (because classify_food_image expects a path)
     with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:
         temp_path = tmp.name
@@ -449,6 +618,8 @@ def classify_image_service(img: Image.Image, top_k: int = 5) -> Dict:
         # Format response similar to segmentation service
         response = {
             'success': True,
+            'is_food': True,
+            'food_check': food_check,
             'primary_prediction': {
                 'food_name': predictions['primary_prediction']['food_name'],
                 'confidence': round(predictions['primary_prediction']['confidence'], 4),
