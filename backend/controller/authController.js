@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require('jsonwebtoken'); 
-const pool = require("../config/db");
+const pool = require("../config/database");
 
 // ============================================
 // VALIDATION HELPERS
