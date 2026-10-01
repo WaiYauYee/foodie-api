@@ -14,4 +14,12 @@ function authenticateToken(req, res, next) {
   });
 }
 
-module.exports = { authenticateToken };
+// Users may only access their own :userId resources
+function authorizeSelf(req, res, next) {
+  if (req.user.userId !== req.params.userId) {
+    return res.status(403).json({ success: false, message: "Forbidden" });
+  }
+  next();
+}
+
+module.exports = { authenticateToken, authorizeSelf };
