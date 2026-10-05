@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, Sparkles, User, ChevronRight, CheckCircle2, ArrowLeft } from 'lucide-react';
-import MakanFitAvatar from './MakanFitAvatar';
+import { Eye, EyeOff, Mail, Lock, User, ChevronRight, CheckCircle2, ArrowLeft } from 'lucide-react';
+import Mascot from './Mascot';
 import { signUp } from '../services/authService';
 import { FaCheck } from 'react-icons/fa';
+import logoImg from '../assets/logo.png';
 
 interface SignUpProps {
   onSignUp: () => void;
@@ -95,11 +96,6 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
 
       // Success! Show success screen
       setIsSuccess(true);
-      
-      // Redirect to login after 3 seconds
-      setTimeout(() => {
-        onNavigateToLogin();
-      }, 3000);
 
     } catch (err) {
       console.error('SignUp error:', err);
@@ -124,13 +120,14 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl -ml-48 -mb-48" />
         
         <div className="relative z-10">
-          <div className="flex items-center space-x-3 mb-12">
+          <div className="flex items-center space-x-3 mb-0 -ml-8">
             <div className="relative">
-              <div className="w-16 h-16 bg-emerald-50 rounded-[40px] flex items-center justify-center border-4 border-white shadow-xl overflow-hidden group">
-                <MakanFitAvatar size={42} className="group-hover:scale-110 transition-transform duration-500" />
-              </div>
+                <img
+                src={logoImg}          
+                alt="MakanFit logo"
+                className="w-[280px] h-[90px] object-cover group-hover:scale-110 transition-transform duration-500"
+              />
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tighter">MAKANFIT</h1>
           </div>
           
           <div className="space-y-10 max-w-lg">
@@ -171,39 +168,76 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
       <div className="flex-1 flex items-center justify-center p-6 md:p-12 bg-gradient-to-br from-[#10B981] md:from-transparent via-[#059669] md:via-transparent to-[#064E3B] md:to-transparent">
         <div className="w-full max-w-md bg-white rounded-[40px] md:rounded-none shadow-2xl md:shadow-none p-8 md:p-0">
           
+          {!isSuccess && (
+            <>
           <div className="md:hidden flex flex-col items-center mb-8">
-             <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4">
-                <Sparkles className="w-8 h-8 text-emerald-600" />
-             </div>
-             <h1 className="text-3xl font-black text-gray-900 tracking-tighter">MAKANFIT</h1>
+             <div className="relative">
+                <img
+                src={logoImg}          
+                alt="MakanFit logo"
+                className="w-[200px] h-[60px] object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
           </div>
-
+         
           <div className="space-y-2 mb-8 text-center md:text-left">
             <h3 className="text-3xl font-black text-gray-900 tracking-tight">Create Account</h3>
             <p className="text-gray-400 font-medium">Join us and start tracking your makan today!</p>
           </div>
+          </>
+          )}
 
           {isSuccess ? (
-            <div className="animate-in zoom-in fade-in duration-500 flex flex-col items-center text-center space-y-6 py-10">
-              <div className="relative">
-                <div className="absolute inset-0 bg-emerald-100 rounded-full animate-ping opacity-25" />
-                <div className="relative w-32 h-32 md:w-40 md:h-40 bg-emerald-50 rounded-[48px] flex items-center justify-center border-4 border-white shadow-2xl overflow-hidden">
-                   <MakanFitAvatar size={100} className="animate-bounce-slow" />
-                </div>
+            <div className="animate-in zoom-in fade-in duration-500 flex flex-col items-center text-center py-6">
+              {/* Avatar with soft rings + check badge */}
+              <div className="relative mb-8">
+                {/* Soft rings behind the mascot */}
+                <div className="absolute inset-x-2 top-8 bottom-4 rounded-full bg-emerald-100/60 animate-pulse" />
+                <div className="absolute -inset-x-2 top-4 -bottom-2 rounded-full bg-emerald-50/60" />
+
+                {/* Mascot only, no square */}
+                <Mascot animationState="idle" className="relative w-32 h-40" />
+
+                {/* Check badge */}
+                {/* <div className="absolute bottom-2 right-0 w-11 h-11 bg-emerald-500 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-40">
+                  <FaCheck className="text-white text-sm" />
+                </div> */}
               </div>
-              
-              <div className="space-y-3">
-                <h4 className="text-3xl font-black text-gray-900 tracking-tight">Success!</h4>
-                <p className="text-gray-500 font-bold leading-relaxed max-w-[280px] mx-auto">
-                  Account created for <span className="text-emerald-600">{formData.firstName} {formData.lastName}</span>. Redirecting you to login...
+
+              {/* Message */}
+              <div className="space-y-3 mb-8">
+                <h4 className="text-3xl font-black text-gray-900 tracking-tight">
+                  Welcome, {formData.firstName}!
+                </h4>
+                <p className="text-gray-500 font-medium leading-relaxed max-w-[300px] mx-auto">
+                  Your account has been created successfully. You're all set to start tracking your makan.
                 </p>
               </div>
 
-              <div className="w-full max-w-[200px] pt-6">
-                <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 animate-progress-fast" />
+              {/* Account summary card */}
+              <div className="w-full bg-emerald-50/60 border border-emerald-100 rounded-2xl p-4 mb-8 flex items-center space-x-4 text-left">
+                <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center text-white font-black text-lg flex-shrink-0">
+                  {formData.firstName.charAt(0).toUpperCase()}
+                  {formData.lastName.charAt(0).toUpperCase()}
                 </div>
+                <div className="min-w-0">
+                  <p className="font-bold text-gray-900 truncate">
+                    {formData.firstName} {formData.lastName}
+                  </p>
+                  <p className="text-sm text-gray-500 font-medium truncate">{formData.email}</p>
+                </div>
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 flex-shrink-0 ml-auto" />
               </div>
+
+              {/* CTA */}
+              <button
+                type="button"
+                onClick={onNavigateToLogin}
+                className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
+              >
+                <span>Get Started</span>
+                <ChevronRight size={22} strokeWidth={3} />
+              </button>
             </div>
           ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -382,15 +416,6 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
           )}
         </div>
       </div>
-      <style>{`
-        @keyframes progress-fast {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
-        .animate-progress-fast {
-          animation: progress-fast 2s linear forwards;
-        }
-      `}</style>
     </div>
   );
 };
