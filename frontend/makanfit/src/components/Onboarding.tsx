@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { completeOnboarding, getCurrentUser } from "../services/authService";
 import StoryCategoryIcon from "./StoryCategoryIcon";
+import { motion } from "motion/react";
 
 interface OnboardingProps {
   onComplete: (data: OnboardingData) => void;
@@ -204,7 +205,14 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
           )}
 
           {isSuccess ? (
-            <div className="animate-in zoom-in fade-in duration-500 flex flex-col items-center text-center space-y-6 py-10">
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.25 }}
+              className="animate-in zoom-in fade-in duration-500 flex flex-col items-center text-center space-y-6 py-10"
+            >
               {/* <div className="relative">
                 <div className="absolute inset-0 bg-emerald-100 rounded-full animate-ping opacity-25" />
                 <div className="relative w-32 h-32 md:w-40 md:h-40 bg-emerald-50 rounded-[48px] flex items-center justify-center border-4 border-white shadow-2xl overflow-hidden">
@@ -226,19 +234,26 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                   <div className="h-full bg-emerald-500 animate-progress-fast" />
                 </div>
               </div>
-            </div>
+            </motion.div>
           ) : (
-            <div className="relative z-10">
+            <motion.div
+              key={`onboarding-step-${step}`}
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.22 }}
+              className="relative z-10"
+            >
               {step === 1 && (
                 <div className="space-y-8 animate-in fade-in slide-in-from-right duration-500">
                   <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-5 text-center md:text-left">
                     {/* Onboarding Icon */}
                     <div className="flex justify-center md:justify-start shrink-0">
                       <StoryCategoryIcon
-                          type="onboarding"
-                          size={80}
-                          className="!w-16 !h-16 !rounded-full shadow-md"
-                        />
+                        type="onboarding"
+                        size={80}
+                        className="!w-16 !h-16 !rounded-full shadow-md"
+                      />
                     </div>
                     <div className="text-center md:text-left space-y-2">
                       <h2 className="text-3xl font-black text-gray-900 tracking-tight">
@@ -659,7 +674,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                   )}
                 </button>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

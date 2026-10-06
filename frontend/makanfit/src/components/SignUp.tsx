@@ -5,7 +5,6 @@ import {
   Mail,
   Lock,
   User,
-  ChevronRight,
   CheckCircle2,
 } from "lucide-react";
 import Mascot from "./Mascot";
