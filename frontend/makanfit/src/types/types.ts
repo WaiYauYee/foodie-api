@@ -288,10 +288,21 @@ export interface UpdateProfileGoalsData {
   targetFiberG?: number;
 }
 
-type ActivityLevel = 'Sedentary' | 'Lightly Active' | 'Moderately Active' | 'Very Active' | 'Extra Active';
-type dietaryGoal = 'Maintain Weight' | 'Gradual Gain Weight' | 'Rapid Gain Weight' | 'Gradual Lose Weight' | 'Rapid Lose Weight';
+export type ActivityLevel =
+  | 'sedentary'
+  | 'lightly_active'
+  | 'moderately_active'
+  | 'very_active'
+  | 'extra_active';
+
+export type DietaryGoal =
+  | 'maintain'
+  | 'gradual_gain'
+  | 'rapid_gain'
+  | 'gradual_lose'
+  | 'rapid_lose';
 export type PrimaryGoal = 'healthier' | 'energy' | 'consistency' | 'body';
-type dietType = 'Classic' | 'Pescatarian' | 'Vegetarian' | 'Vegan';
+export type DietType = 'classic' | 'pescatarian' | 'vegetarian' | 'vegan';
 
 export interface OnboardingData {
   birthDate: string;
@@ -299,10 +310,23 @@ export interface OnboardingData {
   heightCm: number;
   startWeight: number;
   goalWeight: number;
-  dietaryGoal: dietaryGoal;
+  dietaryGoal: DietaryGoal;
   activityLevel: ActivityLevel;
   triedOtherApps: boolean;
-  dietType: dietType;
+  dietType: DietType;
+  primaryGoal: PrimaryGoal;
+}
+
+export interface CompleteOnboardingData {
+  birthDate: string;
+  gender: Gender;
+  heightCm: number;
+  startWeight: number;
+  goalWeight: number;
+  dietaryGoal: DietaryGoal;
+  activityLevel: ActivityLevel;
+  triedOtherApps: boolean;
+  dietType: DietType;
   primaryGoal: PrimaryGoal;
 }
 

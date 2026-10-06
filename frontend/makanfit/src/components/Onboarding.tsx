@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { OnboardingData } from "../types/types";
+import { CompleteOnboardingData, OnboardingData } from "../types/types";
 import {
   ChevronRight,
   ChevronLeft,
@@ -10,18 +10,16 @@ import {
   Check,
   CalendarCheck,
 } from "lucide-react";
-import { completeOnboarding, getCurrentUser } from "../services/authService";
 import StoryCategoryIcon from "./StoryCategoryIcon";
 import { motion } from "motion/react";
 
 interface OnboardingProps {
-  onComplete: (data: OnboardingData) => void;
+  onComplete: (data: CompleteOnboardingData) => void;
   onBack?: () => void;
 }
 
 const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
   const [step, setStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<OnboardingData>({
@@ -30,10 +28,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
     heightCm: 165,
     startWeight: 60,
     goalWeight: 55,
-    dietaryGoal: "Maintain Weight",
-    activityLevel: "Moderately Active",
+    dietaryGoal: "maintain",
+    activityLevel: "moderately_active",
     triedOtherApps: false,
-    dietType: "Classic",
+    dietType: "classic",
     primaryGoal: "healthier",
   });
 
@@ -57,35 +55,9 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
     if (error) setError(null);
   };
 
-  const handleFinish = async () => {
-    try {
-      setIsLoading(true);
-      const userId = getCurrentUser()?.userId; // Get from auth context or localStorage
-
-      if (!userId) {
-        setError("User not found. Please log in again.");
-        setIsLoading(false);
-        return;
-      }
-
-      // Call backend API
-      const response = await completeOnboarding(userId, formData);
-
-      if (!response.success) {
-        setError(response.message);
-        setIsLoading(false);
-        return;
-      }
-
-      // Mark onboarding as complete
-      localStorage.setItem("makanfit_onboarding_done", "true");
-      setIsSuccess(true);
-      onComplete(formData);
-    } catch (error) {
-      console.error("Onboarding error:", error);
-      setError("An unexpected error occurred.");
-      setIsLoading(false);
-    }
+  const handleFinish = () => {
+    setIsSuccess(true);
+    onComplete(formData);
   };
 
   const renderProgress = () => (
@@ -332,18 +304,25 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                       Do you follow a specific diet?
                     </label>
                     <div className="grid grid-cols-2 gap-3">
-                      {["Classic", "Pescatarian", "Vegetarian", "Vegan"].map(
-                        (diet) => (
-                          <button
-                            key={diet}
-                            onClick={() => handleInputChange("dietType", diet)}
-                            className={`py-4 rounded-2xl border-2 font-black transition-all flex items-center justify-center space-x-2 ${formData.dietType === diet ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-gray-50 bg-gray-50 text-gray-400"}`}
-                          >
-                            {formData.dietType === diet && <Check size={14} />}
-                            <span>{diet}</span>
-                          </button>
-                        ),
-                      )}
+                      {[
+                        { value: "classic", label: "Classic" },
+                        { value: "pescatarian", label: "Pescatarian" },
+                        { value: "vegetarian", label: "Vegetarian" },
+                        { value: "vegan", label: "Vegan" },
+                      ].map((diet) => (
+                        <button
+                          key={diet.value}
+                          onClick={() =>
+                            handleInputChange("dietType", diet.value)
+                          }
+                          className={`py-4 rounded-2xl border-2 font-black transition-all flex items-center justify-center space-x-2 ${formData.dietType === diet.value ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-gray-50 bg-gray-50 text-gray-400"}`}
+                        >
+                          {formData.dietType === diet.value && (
+                            <Check size={14} />
+                          )}
+                          <span>{diet.label}</span>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
@@ -545,11 +524,13 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                           }
                           className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-transparent rounded-2xl p-4 font-bold text-gray-800 focus:border-emerald-500 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
                         >
-                          <option>Sedentary</option>
-                          <option>Lightly Active</option>
-                          <option>Moderately Active</option>
-                          <option>Very Active</option>
-                          <option>Extra Active</option>
+                          <option value="sedentary">Sedentary</option>
+                          <option value="lightly_active">Lightly Active</option>
+                          <option value="moderately_active">
+                            Moderately Active
+                          </option>
+                          <option value="very_active">Very Active</option>
+                          <option value="extra_active">Extra Active</option>
                         </select>
                         <ChevronRight
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 rotate-90"
@@ -579,19 +560,19 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                           appearance-none cursor-pointer
                         "
                         >
-                          <option value="Maintain Weight">
+                          <option value="maintain">
                             Maintain Weight
                           </option>
-                          <option value="Gradual Gain Weight">
+                          <option value="gradual_gain">
                             Gradual Gain Weight
                           </option>
-                          <option value="Rapid Gain Weight">
+                          <option value="rapid_gain">
                             Rapid Gain Weight
                           </option>
-                          <option value="Gradual Lose Weight">
+                          <option value="gradual_lose">
                             Gradual Lose Weight
                           </option>
-                          <option value="Rapid Lose Weight">
+                          <option value="rapid_lose">
                             Rapid Lose Weight
                           </option>
                         </select>
@@ -651,7 +632,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                 {(step > 1 || onBack) && (
                   <button
                     onClick={prevStep}
-                    disabled={isLoading}
                     className="w-16 bg-gray-100 md:bg-gray-50 text-gray-400 hover:text-emerald-500 font-black rounded-2xl transition-all active:scale-95 flex items-center justify-center border-2 border-transparent hover:border-emerald-100"
                   >
                     <ChevronLeft size={24} />
@@ -659,19 +639,12 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                 )}
                 <button
                   onClick={step === totalSteps ? handleFinish : nextStep}
-                  disabled={isLoading}
                   className="flex-1 bg-[#1A2A33] text-white font-black py-5 rounded-2xl shadow-xl active:scale-[0.98] transition-all flex items-center justify-center space-x-3 hover:bg-black"
                 >
-                  {isLoading ? (
-                    <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      <span>
-                        {step === totalSteps ? "Complete Setup" : "Next Step"}
-                      </span>
-                      <ChevronRight size={22} strokeWidth={3} />
-                    </>
-                  )}
+                  <span>
+                    {step === totalSteps ? "Complete Setup" : "Next Step"}
+                  </span>
+                  <ChevronRight size={22} strokeWidth={3} />
                 </button>
               </div>
             </motion.div>

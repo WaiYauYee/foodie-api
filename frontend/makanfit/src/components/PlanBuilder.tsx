@@ -8,7 +8,6 @@ import {
   ChevronLeft,
   Pencil,
   Check,
-  Sparkles,
   Calendar,
   TrendingDown,
   TrendingUp,
@@ -294,7 +293,6 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                 )}
 
                 <div className="flex items-center space-x-1.5 text-emerald-600 font-black text-xs uppercase tracking-widest">
-                  <Sparkles size={14} />
                   <span>Custom Plan Ready</span>
                 </div>
 
@@ -312,13 +310,6 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
               <div className="space-y-5 my-auto py-2">
                 {/* Header Summary */}
                 <div className="text-center space-y-1.5">
-                  <div className="flex justify-center mb-2">
-                    <StoryCategoryIcon
-                      type="nutrition"
-                      size={76}
-                      className="!w-18 !h-18 !rounded-3xl bg-emerald-50/80 border border-emerald-100 shadow-xs"
-                    />
-                  </div>
                   <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                     Your customized plan is ready!
                   </h1>

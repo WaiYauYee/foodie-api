@@ -1,37 +1,51 @@
-
 //App.tsx
-import React, { useState, useEffect, useMemo } from 'react';
-import { Page, User, WeightEntry, Food, MealEntry, MealType } from './types/types';
-import Dashboard from './components/Dashboard';
-import Diary from './components/Diary';
-import Profile from './components/Profile';
-import PersonalInfo from './components/PersonalInfo';
-import ChangePassword from './components/ChangePassword';
-import Goal from './components/Goal';
-import PrivacyPolicy from './components/PrivacyPolicy';
-import TermOfService from './components/TermOfService';
-import AddWeight from './components/AddWeight';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
-import Onboarding from './components/Onboarding';
-import { Flame, Heart, LayoutDashboard, User as UserIcon, Utensils } from 'lucide-react';
-import AccountSetting from './components/AccountSetting';
-import NotificationSettings from './components/NotificationSettings';
-import Pal from './components/Pal';
-import StreakModal from './components/StreakModal';
-import { calculateStreak } from './utils/streak';
-import WelcomeStoryboard from './components/WelcomeStoryboard';
-import PlanBuilder from './components/PlanBuilder';
-import { OnboardingData } from './types/types';
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  Page,
+  User,
+  WeightEntry,
+  Food,
+  MealEntry,
+  MealType,
+  CompleteOnboardingData,
+} from "./types/types";
+import Dashboard from "./components/Dashboard";
+import Diary from "./components/Diary";
+import Profile from "./components/Profile";
+import PersonalInfo from "./components/PersonalInfo";
+import ChangePassword from "./components/ChangePassword";
+import Goal from "./components/Goal";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import TermOfService from "./components/TermOfService";
+import AddWeight from "./components/AddWeight";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
+import Onboarding from "./components/Onboarding";
+import {
+  Flame,
+  Heart,
+  LayoutDashboard,
+  User as UserIcon,
+  Utensils,
+} from "lucide-react";
+import AccountSetting from "./components/AccountSetting";
+import NotificationSettings from "./components/NotificationSettings";
+import Pal from "./components/Pal";
+import StreakModal from "./components/StreakModal";
+import { calculateStreak } from "./utils/streak";
+import WelcomeStoryboard from "./components/WelcomeStoryboard";
+import PlanBuilder from "./components/PlanBuilder";
+import { OnboardingData } from "./types/types";
+import { completeOnboarding, CompleteOnboardingPayload } from "./services/authService";
 
 const INITIAL_USER: User = {
-  userId: 'u1',
-  email: 'user@example.com',
-  firstName: 'John',
-  lastName: 'Doe',
-  passwordHash: 'hashed_password_here',
-  gender: 'male',             // 'male' | 'female'
-  birthDate: '1990-01-01',    // ISO string
+  userId: "u1",
+  email: "user@example.com",
+  firstName: "John",
+  lastName: "Doe",
+  passwordHash: "hashed_password_here",
+  gender: "male", // 'male' | 'female'
+  birthDate: "1990-01-01", // ISO string
   heightCm: 175,
   isActive: true,
 
@@ -39,19 +53,19 @@ const INITIAL_USER: User = {
   startWeight: 65,
   currentWeight: 65,
   goalWeight: 55,
-  activityLevel: 'Sedentary',
-  dietaryGoal: 'Gradual Lose Weight',
-  goalOrigin: 'standard',
+  activityLevel: "sedentary",
+  dietaryGoal: "Gradual Lose Weight",
+  goalOrigin: "standard",
   targetCalories: 2000,
   targetProtein: 100,
   targetCarbs: 250,
   targetFat: 65,
   targetFiber: 20,
-  macroGoalOrigin: 'standard',
+  macroGoalOrigin: "standard",
   onboardingComplete: false,
   triedOtherApps: false,
-  primaryGoal: 'healthier',
-  dietType: 'Classic',
+  primaryGoal: "healthier",
+  dietType: "Classic",
 
   // Timestamps
   createdAt: Date.now(),
@@ -61,19 +75,20 @@ const INITIAL_USER: User = {
 
 const MOCK_MEALS: MealEntry[] = [
   {
-    id: 'm1',
-    userId: 'u1',
-    foodId: '1',                  // id of main dish food
-    food: {                        // full Food object for the main dish
-      id: '1',
-      name: 'Nasi Lemak Biasa',
-      group: 'Rice Dishes',
+    id: "m1",
+    userId: "u1",
+    foodId: "1", // id of main dish food
+    food: {
+      // full Food object for the main dish
+      id: "1",
+      name: "Nasi Lemak Biasa",
+      group: "Rice Dishes",
       servingSize: 200,
-      servingUnit: 'g',
+      servingUnit: "g",
       createdAt: Date.now(),
       updatedAt: Date.now(),
       nutrients: {
-        foodId: '1',
+        foodId: "1",
         calories: 450,
         protein: 12,
         carbs: 60,
@@ -83,20 +98,20 @@ const MOCK_MEALS: MealEntry[] = [
       },
       ingredients: [], // optional nested ingredients
     },
-    mealType: 'breakfast',        // matches MealType
-    consumedAt: Date.now(),       // timestamp
+    mealType: "breakfast", // matches MealType
+    consumedAt: Date.now(), // timestamp
     createdAt: Date.now(),
     ingredients: [
       {
-        id: '1',
-        name: 'Nasi Lemak Biasa',
-        group: 'Rice Dishes',
+        id: "1",
+        name: "Nasi Lemak Biasa",
+        group: "Rice Dishes",
         servingSize: 200,
-        servingUnit: 'g',
+        servingUnit: "g",
         createdAt: Date.now(),
         updatedAt: Date.now(),
         nutrients: {
-          foodId: '1',
+          foodId: "1",
           calories: 450,
           protein: 12,
           carbs: 60,
@@ -105,50 +120,59 @@ const MOCK_MEALS: MealEntry[] = [
           updatedAt: Date.now(),
         },
         ingredients: [], // optional
-      }
+      },
     ],
     estimatedCalories: 450,
     actualProtein_g: 12,
     actualCarbs_g: 60,
     actualFat_g: 18,
     actualFiber_g: 10,
-    photoUrl: '',                 // optional
-    photoAnalysisStatus: 1,       // optional
-  }
-];
-
-const MOCK_WEIGHTS: WeightEntry[] = [
-  { 
-    id: 'w1',
-    userId: 'user1',            // you need a userId
-    weight: 65,                 // matches the interface
-    recordedAt: new Date('2026-01-24T10:00:00').getTime(), // timestamp
-    createdAt: Date.now(),      // or some fixed timestamp
+    photoUrl: "", // optional
+    photoAnalysisStatus: 1, // optional
   },
 ];
 
-type AuthPageState = 'welcome' | 'onboarding' | 'login' | 'signup' | 'privacy' | 'terms' | "plan_builder";
+const MOCK_WEIGHTS: WeightEntry[] = [
+  {
+    id: "w1",
+    userId: "user1", // you need a userId
+    weight: 65, // matches the interface
+    recordedAt: new Date("2026-01-24T10:00:00").getTime(), // timestamp
+    createdAt: Date.now(), // or some fixed timestamp
+  },
+];
+
+type AuthPageState =
+  | "welcome"
+  | "onboarding"
+  | "login"
+  | "signup"
+  | "privacy"
+  | "terms"
+  | "plan_builder";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
-  const [authPage, setAuthPage] = useState<AuthPageState>('welcome');
+  const [authPage, setAuthPage] = useState<AuthPageState>("welcome");
   const [currentPage, setCurrentPage] = useState<Page>(Page.DASHBOARD);
   const [meals, setMeals] = useState<MealEntry[]>(MOCK_MEALS);
-  const [weightHistory, setWeightHistory] = useState<WeightEntry[]>(MOCK_WEIGHTS);
+  const [weightHistory, setWeightHistory] =
+    useState<WeightEntry[]>(MOCK_WEIGHTS);
   const [user, setUser] = useState<User>(INITIAL_USER);
 
   const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
   const streakInfo = useMemo(() => calculateStreak(meals), [meals]);
 
-  const [pendingOnboardingData, setPendingOnboardingData] = useState<OnboardingData | null>(null);
+  const [pendingOnboardingData, setPendingOnboardingData] =
+    useState<CompleteOnboardingData | null>(null);
 
   useEffect(() => {
-    const savedAuth = localStorage.getItem('makanfit_auth') === 'true';
+    const savedAuth = localStorage.getItem("makanfit_auth") === "true";
     setIsAuthenticated(savedAuth);
 
     // FIXED: Check onboarding status from user object, not just localStorage flag
-    const savedUser = localStorage.getItem('makanfit_user');
+    const savedUser = localStorage.getItem("makanfit_user");
     if (savedUser) {
       try {
         const userData = JSON.parse(savedUser) as User;
@@ -156,34 +180,36 @@ const App: React.FC = () => {
         // Use the user's onboardingComplete property
         setHasCompletedOnboarding(userData.onboardingComplete === true);
       } catch (error) {
-        console.error('Error parsing user:', error);
+        console.error("Error parsing user:", error);
         // Fallback to localStorage flag
-        const onboardingDone = localStorage.getItem('makanfit_onboarding_done') === 'true';
+        const onboardingDone =
+          localStorage.getItem("makanfit_onboarding_done") === "true";
         setHasCompletedOnboarding(onboardingDone);
       }
     } else {
       // No saved user, check localStorage flag as fallback
-      const onboardingDone = localStorage.getItem('makanfit_onboarding_done') === 'true';
+      const onboardingDone =
+        localStorage.getItem("makanfit_onboarding_done") === "true";
       setHasCompletedOnboarding(onboardingDone);
     }
 
-    const savedMeals = localStorage.getItem('makanfit_meals');
+    const savedMeals = localStorage.getItem("makanfit_meals");
     if (savedMeals) setMeals(JSON.parse(savedMeals));
 
-    const savedWeights = localStorage.getItem('makanfit_weights');
+    const savedWeights = localStorage.getItem("makanfit_weights");
     if (savedWeights) setWeightHistory(JSON.parse(savedWeights));
   }, []);
 
   useEffect(() => {
-  localStorage.setItem('makanfit_meals', JSON.stringify(meals));
-}, [meals]);
+    localStorage.setItem("makanfit_meals", JSON.stringify(meals));
+  }, [meals]);
 
   // FIXED: Improved handleLogin with proper onboarding status detection
   const handleLogin = () => {
     setIsAuthenticated(true);
 
     // Get the user data from localStorage (set by authService.ts during login)
-    const savedUser = localStorage.getItem('makanfit_user');
+    const savedUser = localStorage.getItem("makanfit_user");
     if (savedUser) {
       try {
         const userData = JSON.parse(savedUser) as User;
@@ -192,9 +218,10 @@ const App: React.FC = () => {
         // Backend returns onboardingComplete as true/false
         setHasCompletedOnboarding(userData.onboardingComplete === true);
       } catch (error) {
-        console.error('Error parsing user:', error);
+        console.error("Error parsing user:", error);
         // Fallback: check localStorage flag
-        const onboardingDone = localStorage.getItem('makanfit_onboarding_done') === 'true';
+        const onboardingDone =
+          localStorage.getItem("makanfit_onboarding_done") === "true";
         setHasCompletedOnboarding(onboardingDone);
       }
     }
@@ -206,75 +233,126 @@ const App: React.FC = () => {
   const handleLogout = () => {
     setIsAuthenticated(false);
     setHasCompletedOnboarding(false);
-    localStorage.removeItem('makanfit_auth');
-    localStorage.removeItem('makanfit_onboarding_done');
-    setAuthPage('login');
+    localStorage.removeItem("makanfit_auth");
+    localStorage.removeItem("makanfit_onboarding_done");
+    setAuthPage("login");
   };
 
   const handleOnboardingComplete = (data: OnboardingData) => {
     setPendingOnboardingData(data);
     if (!isAuthenticated) {
-      setAuthPage('plan_builder');
+      setAuthPage("plan_builder");
     }
   };
 
-  const handleConfirmPlan = (planValues: Partial<User>) => {
+  const handleConfirmPlan = async (planValues: Partial<User>) => {
     const mergedData = {
       ...(pendingOnboardingData || {}),
       ...planValues,
     };
 
-    const updatedUser: User = {
-      ...user,
-      ...mergedData,
-      currentWeight: pendingOnboardingData?.startWeight ?? user.currentWeight,
-      onboardingComplete: true,
+    // ============================================
+    // USER IS ALREADY LOGGED IN
+    // ============================================
+    if (isAuthenticated && user.userId) {
+      try {
+        // Convert PlanBuilder field names
+        // into the names expected by the backend
+        const onboardingPayload: CompleteOnboardingPayload = {
+          birthDate: pendingOnboardingData?.birthDate || "",
+          gender: pendingOnboardingData?.gender || "female",
+          heightCm: pendingOnboardingData?.heightCm ?? 165,
+          startWeight: pendingOnboardingData?.startWeight ?? 60,
+          goalWeight: pendingOnboardingData?.goalWeight ?? 55,
+          dietaryGoal: pendingOnboardingData?.dietaryGoal || "maintain",
+          activityLevel:
+            pendingOnboardingData?.activityLevel || "moderately_active",
+          triedOtherApps: pendingOnboardingData?.triedOtherApps ?? false,
+          dietType: pendingOnboardingData?.dietType || "classic",
+          primaryGoal: pendingOnboardingData?.primaryGoal || "healthier",
+
+          targetCalories: planValues.targetCalories!,
+          targetProteinG: planValues.targetProtein!,
+          targetCarbsG: planValues.targetCarbs!,
+          targetFatG: planValues.targetFat!,
+          targetFiberG: planValues.targetFiber!,
+          targetWaterMl: planValues.targetWater!,
+
+          goalOrigin: planValues.goalOrigin || "standard",
+          macroGoalOrigin: planValues.macroGoalOrigin || "standard",
+        };
+
+        const response = await completeOnboarding(
+          user.userId,
+          onboardingPayload,
+        );
+
+        if (!response.success) {
+          console.error("Complete onboarding failed:", response.message);
+          return;
+        }
+
+        // Backend returns the updated user
+        if (response.user) {
+          setUser(response.user);
+          localStorage.setItem("makanfit_user", JSON.stringify(response.user));
+        }
+
+        setHasCompletedOnboarding(true);
+
+        localStorage.setItem("makanfit_onboarding_done", "true");
+
+        setPendingOnboardingData(null);
+
+        setCurrentPage(Page.DASHBOARD);
+      } catch (error) {
+        console.error("Complete onboarding error:", error);
+      }
+
+      return;
+    }
+
+    // ============================================
+    // USER IS NOT LOGGED IN YET
+    // ============================================
+    localStorage.setItem(
+      "makanfit_pending_onboarding",
+      JSON.stringify(mergedData),
+    );
+
+    // Do NOT mark onboarding as completed yet.
+    // The user still needs to sign up first.
+    setAuthPage("signup");
+  };
+
+  const handleAddMeal = (food: Food, mealType: MealType = "breakfast") => {
+    const newMeal: MealEntry = {
+      id: Math.random().toString(36).substr(2, 9),
+      userId: user.userId,
+      foodId: food.id,
+      food,
+      mealType: mealType,
+      consumedAt: Date.now(),
+      createdAt: Date.now(),
+      ingredients: [food], // main dish as ingredient
+      estimatedCalories: food.nutrients?.calories,
+      actualProtein_g: food.nutrients?.protein,
+      actualCarbs_g: food.nutrients?.carbs,
+      actualFat_g: food.nutrients?.fat,
+      actualFiber_g: food.nutrients?.fiber,
     };
 
-    setUser(updatedUser);
-    setHasCompletedOnboarding(true);
-    localStorage.setItem('makanfit_onboarding_done', 'true');
-    localStorage.setItem('makanfit_pending_onboarding', JSON.stringify(mergedData));
-    localStorage.setItem('makanfit_user', JSON.stringify(updatedUser));
-    setPendingOnboardingData(null);
-
-    if (!isAuthenticated) {
-      setAuthPage('signup');
-    } else {
-      setCurrentPage(Page.DASHBOARD);
-    }
+    setMeals((prev) => [newMeal, ...prev]);
   };
 
- const handleAddMeal = (food: Food, mealType: MealType = 'breakfast') => {
-  const newMeal: MealEntry = {
-    id: Math.random().toString(36).substr(2, 9),
-    userId: user.userId,
-    foodId: food.id,
-    food,
-    mealType: mealType,
-    consumedAt: Date.now(),
-    createdAt: Date.now(),
-    ingredients: [food],      // main dish as ingredient
-    estimatedCalories: food.nutrients?.calories,
-    actualProtein_g: food.nutrients?.protein,
-    actualCarbs_g: food.nutrients?.carbs,
-    actualFat_g: food.nutrients?.fat,
-    actualFiber_g: food.nutrients?.fiber,
+  const handleUpdateMeal = (updatedMeal: MealEntry) => {
+    setMeals((prev) =>
+      prev.map((meal) => (meal.id === updatedMeal.id ? updatedMeal : meal)),
+    );
   };
-
-  setMeals(prev => [newMeal, ...prev]);
-};
-
-const handleUpdateMeal = (updatedMeal: MealEntry) => {
-  setMeals(prev =>
-    prev.map(meal =>
-      meal.id === updatedMeal.id ? updatedMeal : meal
-    )
-  );
-};
 
   const handleDeleteMeal = (id: string) => {
-    setMeals(prev => prev.filter(m => m.id !== id));
+    setMeals((prev) => prev.filter((m) => m.id !== id));
   };
 
   // const handleAddWeight = (weight: number) => {
@@ -290,67 +368,69 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
   // };
 
   const handleAddWeight = (weight: number) => {
-  const now = Date.now();
+    const now = Date.now();
 
-  const newEntry: WeightEntry = {
-    id: Math.random().toString(36).substr(2, 9),
-    userId: user.userId,
-    weight,
-    recordedAt: now,
-    createdAt: now,
+    const newEntry: WeightEntry = {
+      id: Math.random().toString(36).substr(2, 9),
+      userId: user.userId,
+      weight,
+      recordedAt: now,
+      createdAt: now,
+    };
+
+    setWeightHistory((prev) => [newEntry, ...prev]);
+
+    setUser((prev) => ({
+      ...prev,
+      currentWeight: weight,
+      updatedAt: now,
+    }));
   };
-
-  setWeightHistory(prev => [newEntry, ...prev]);
-
-  setUser(prev => ({
-    ...prev,
-    currentWeight: weight,
-    updatedAt: now,
-  }));
-};
 
   const handleUpdateUser = (updatedFields: Partial<User>) => {
-    setUser(prev => ({ ...prev, ...updatedFields }));
+    setUser((prev) => ({ ...prev, ...updatedFields }));
   };
 
-    if (!isAuthenticated) {
-      if (authPage === 'privacy') return <PrivacyPolicy onBack={() => setAuthPage('signup')} />;
-      if (authPage === 'terms') return <TermOfService onBack={() => setAuthPage('signup')} />;
+  if (!isAuthenticated) {
+    if (authPage === "privacy")
+      return <PrivacyPolicy onBack={() => setAuthPage("signup")} />;
+    if (authPage === "terms")
+      return <TermOfService onBack={() => setAuthPage("signup")} />;
 
-      if (authPage === 'welcome') {
+    if (authPage === "welcome") {
       return (
         <WelcomeStoryboard
-          onStartOnboarding={() => setAuthPage('onboarding')}
-          onNavigateToSignUp={() => setAuthPage('signup')}
-          onNavigateToLogin={() => setAuthPage('login')}
+          onStartOnboarding={() => setAuthPage("onboarding")}
+          onNavigateToSignUp={() => setAuthPage("signup")}
+          onNavigateToLogin={() => setAuthPage("login")}
         />
       );
     }
-    if (authPage === 'onboarding') {
+    if (authPage === "onboarding") {
       return (
         <Onboarding
           onComplete={handleOnboardingComplete}
-          onBack={() => setAuthPage('welcome')}
+          onBack={() => setAuthPage("welcome")}
         />
       );
     }
-    if (authPage === 'plan_builder' && pendingOnboardingData) {
+    if (authPage === "plan_builder" && pendingOnboardingData) {
       return (
         <PlanBuilder
           onboardingData={pendingOnboardingData}
           onConfirmPlan={handleConfirmPlan}
-          onBackToOnboarding={() => setAuthPage('onboarding')}
+          onBackToOnboarding={() => setAuthPage("onboarding")}
           isAuthenticated={false}
         />
       );
     }
-    if (authPage === 'signup') {
+    if (authPage === "signup") {
       return (
         <SignUp
           onSignUp={handleLogin}
-          onNavigateToLogin={() => setAuthPage('login')}
-          onNavigateToPrivacy={() => setAuthPage('privacy')}
-          onNavigateToTerms={() => setAuthPage('terms')}
+          onNavigateToLogin={() => setAuthPage("login")}
+          onNavigateToPrivacy={() => setAuthPage("privacy")}
+          onNavigateToTerms={() => setAuthPage("terms")}
           // onBackToWelcome={() => setAuthPage('welcome')}
         />
       );
@@ -358,11 +438,11 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
     return (
       <Login
         onLogin={handleLogin}
-        onNavigateToSignUp={() => setAuthPage('signup')}
-        onBackToWelcome={() => setAuthPage('welcome')}
+        onNavigateToSignUp={() => setAuthPage("signup")}
+        onBackToWelcome={() => setAuthPage("welcome")}
       />
     );
-    }
+  }
 
   // Only after user is authenticated
   if (!hasCompletedOnboarding) {
@@ -383,30 +463,37 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
     switch (currentPage) {
       case Page.DASHBOARD:
         return (
-          <Dashboard 
-            meals={meals} 
-            user={user} 
-            weightHistory={weightHistory} 
-            onNavigateToAddWeight={() => setCurrentPage(Page.ADD_WEIGHT)} 
+          <Dashboard
+            meals={meals}
+            user={user}
+            weightHistory={weightHistory}
+            onNavigateToAddWeight={() => setCurrentPage(Page.ADD_WEIGHT)}
           />
         );
       case Page.DIARY:
-        return <Diary meals={meals} onAddMeal={handleAddMeal} onDeleteMeal={handleDeleteMeal} onUpdateMeal={handleUpdateMeal} />;
+        return (
+          <Diary
+            meals={meals}
+            onAddMeal={handleAddMeal}
+            onDeleteMeal={handleDeleteMeal}
+            onUpdateMeal={handleUpdateMeal}
+          />
+        );
       case Page.PAL:
         return <Pal meals={meals} user={user} />;
       case Page.PAL:
         return (
-          <Pal 
-            meals={meals} 
-            user={user} 
+          <Pal
+            meals={meals}
+            user={user}
             onNavigateToLogMeal={() => setCurrentPage(Page.DIARY)}
             onOpenStreakModal={() => setIsStreakModalOpen(true)}
           />
         );
       case Page.PROFILE:
         return (
-          <Profile 
-            user={user} 
+          <Profile
+            user={user}
             onNavigateToAccount={() => setCurrentPage(Page.PERSONAL_INFO)}
             onNavigateToSetting={() => setCurrentPage(Page.ACCOUNT_SETTING)}
             onNavigateToSecurity={() => setCurrentPage(Page.CHANGE_PASSWORD)}
@@ -417,49 +504,79 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
           />
         );
       case Page.PERSONAL_INFO:
-        return <PersonalInfo user={user} onBack={() => setCurrentPage(Page.PROFILE)} onSave={handleUpdateUser} />;
+        return (
+          <PersonalInfo
+            user={user}
+            onBack={() => setCurrentPage(Page.PROFILE)}
+            onSave={handleUpdateUser}
+          />
+        );
       case Page.ACCOUNT_SETTING:
-        return <AccountSetting user={user} onBack={() => setCurrentPage(Page.PROFILE)} onSave={handleUpdateUser} />;
+        return (
+          <AccountSetting
+            user={user}
+            onBack={() => setCurrentPage(Page.PROFILE)}
+            onSave={handleUpdateUser}
+          />
+        );
       case Page.CHANGE_PASSWORD:
-        return <ChangePassword onBack={() => setCurrentPage(Page.PROFILE)} onSave={() => console.log('Password saved')} />;
+        return (
+          <ChangePassword
+            onBack={() => setCurrentPage(Page.PROFILE)}
+            onSave={() => console.log("Password saved")}
+          />
+        );
       case Page.GOAL:
-        return <Goal user={user} onBack={() => setCurrentPage(Page.PROFILE)} onSave={handleUpdateUser} />;
+        return (
+          <Goal
+            user={user}
+            onBack={() => setCurrentPage(Page.PROFILE)}
+            onSave={handleUpdateUser}
+          />
+        );
       case Page.PRIVACY_POLICY:
         return <PrivacyPolicy onBack={() => setCurrentPage(Page.PROFILE)} />;
       case Page.NOTIFICATIONS:
-      return (
-        <NotificationSettings onBack={() => setCurrentPage(Page.PROFILE)} />
-      );
+        return (
+          <NotificationSettings onBack={() => setCurrentPage(Page.PROFILE)} />
+        );
       case Page.ADD_WEIGHT:
         return (
-          <AddWeight 
-            currentWeight={user.currentWeight} 
-            onBack={() => setCurrentPage(Page.DASHBOARD)} 
-            onAdd={handleAddWeight} 
+          <AddWeight
+            currentWeight={user.currentWeight}
+            onBack={() => setCurrentPage(Page.DASHBOARD)}
+            onAdd={handleAddWeight}
           />
         );
       default:
-        return <Dashboard meals={meals} user={user} weightHistory={weightHistory} onNavigateToAddWeight={() => setCurrentPage(Page.ADD_WEIGHT)} />;
+        return (
+          <Dashboard
+            meals={meals}
+            user={user}
+            weightHistory={weightHistory}
+            onNavigateToAddWeight={() => setCurrentPage(Page.ADD_WEIGHT)}
+          />
+        );
     }
   };
 
   // const NavItems = () => (
   //   <div className="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-gray-100 flex items-center justify-around px-8 z-[50]">
-  //     <button 
+  //     <button
   //       onClick={() => setCurrentPage(Page.DASHBOARD)}
   //       className={`flex flex-col items-center space-y-1 transition-all ${[Page.DASHBOARD, Page.ADD_WEIGHT].includes(currentPage) ? 'text-emerald-600' : 'text-gray-300'}`}
   //     >
   //       <LayoutDashboard className="w-6 h-6" />
   //       <span className="text-[10px] font-black uppercase tracking-widest">Home</span>
   //     </button>
-  //     <button 
+  //     <button
   //       onClick={() => setCurrentPage(Page.DIARY)}
   //       className={`flex flex-col items-center space-y-1 transition-all ${currentPage === Page.DIARY ? 'text-emerald-600' : 'text-gray-300'}`}
   //     >
   //       <Utensils className="w-6 h-6" />
   //       <span className="text-[10px] font-black uppercase tracking-widest">Diary</span>
   //     </button>
-  //     <button 
+  //     <button
   //       onClick={() => setCurrentPage(Page.PROFILE)}
   //       className={`flex flex-col items-center space-y-1 transition-all ${[Page.PROFILE, Page.PERSONAL_INFO, Page.CHANGE_PASSWORD, Page.GOAL, Page.PRIVACY_POLICY].includes(currentPage) ? 'text-emerald-600' : 'text-gray-300'}`}
   //     >
@@ -470,7 +587,8 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
   // );
 
   const NavItems = () => (
-  <div className="
+    <div
+      className="
     fixed md:static bottom-0 left-0 right-0
     h-20 md:h-auto
     bg-white
@@ -480,83 +598,109 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
     md:space-y-2
     px-8 md:px-2
     z-[50]
-  ">
-    {/* Home */}
-    <button 
-      onClick={() => setCurrentPage(Page.DASHBOARD)}
-      className={`flex flex-col md:flex-row items-center md:justify-start
+  "
+    >
+      {/* Home */}
+      <button
+        onClick={() => setCurrentPage(Page.DASHBOARD)}
+        className={`flex flex-col md:flex-row items-center md:justify-start
         space-y-1 md:space-y-0 md:space-x-4
         px-4 py-3 rounded-xl transition-all
-        ${[Page.DASHBOARD, Page.ADD_WEIGHT].includes(currentPage)
-          ? 'text-emerald-600 md:bg-emerald-50'
-          : 'text-gray-300 hover:text-emerald-600 hover:bg-gray-50'
+        ${
+          [Page.DASHBOARD, Page.ADD_WEIGHT].includes(currentPage)
+            ? "text-emerald-600 md:bg-emerald-50"
+            : "text-gray-300 hover:text-emerald-600 hover:bg-gray-50"
         }`}
-    >
-      <LayoutDashboard className="w-6 h-6 md:w-7 md:h-7" />
-      <span className="text-[10px] md:text-base font-black md:font-bold uppercase md:normal-case tracking-widest md:tracking-normal">
-        Home
-      </span>
-    </button>
-
-    {/* Diary */}
-    <button 
-      onClick={() => setCurrentPage(Page.DIARY)}
-      className={`flex flex-col md:flex-row items-center md:justify-start
-        space-y-1 md:space-y-0 md:space-x-4
-        px-4 py-3 rounded-xl transition-all
-        ${currentPage === Page.DIARY
-          ? 'text-emerald-600 md:bg-emerald-50'
-          : 'text-gray-300 hover:text-emerald-600 hover:bg-gray-50'
-        }`}
-    >
-      <Utensils className="w-6 h-6 md:w-7 md:h-7" />
-      <span className="text-[10px] md:text-base font-black md:font-bold uppercase md:normal-case tracking-widest md:tracking-normal">
-        Diary
-      </span>
-    </button>
-
-    <button onClick={() => setCurrentPage(Page.PAL)} className={`flex flex-col md:flex-row items-center md:justify-start space-y-1 md:space-y-0 md:space-x-4 px-4 py-3 rounded-xl transition-all ${currentPage === Page.PAL ? 'text-emerald-600 md:bg-emerald-50' : 'text-gray-300'}`}>
-        <Heart className={`w-6 h-6 md:w-7 md:h-7 ${currentPage === Page.PAL ? 'fill-emerald-600' : ''}`} /><span className="text-[10px] md:text-base font-black uppercase md:normal-case tracking-widest">Pal</span>
+      >
+        <LayoutDashboard className="w-6 h-6 md:w-7 md:h-7" />
+        <span className="text-[10px] md:text-base font-black md:font-bold uppercase md:normal-case tracking-widest md:tracking-normal">
+          Home
+        </span>
       </button>
 
-    {/* Me */}
-    <button 
-      onClick={() => setCurrentPage(Page.PROFILE)}
-      className={`flex flex-col md:flex-row items-center md:justify-start
+      {/* Diary */}
+      <button
+        onClick={() => setCurrentPage(Page.DIARY)}
+        className={`flex flex-col md:flex-row items-center md:justify-start
         space-y-1 md:space-y-0 md:space-x-4
         px-4 py-3 rounded-xl transition-all
-        ${[Page.PROFILE, Page.PERSONAL_INFO, Page.CHANGE_PASSWORD, Page.GOAL, Page.PRIVACY_POLICY].includes(currentPage)
-          ? 'text-emerald-600 md:bg-emerald-50'
-          : 'text-gray-300 hover:text-emerald-600 hover:bg-gray-50'
+        ${
+          currentPage === Page.DIARY
+            ? "text-emerald-600 md:bg-emerald-50"
+            : "text-gray-300 hover:text-emerald-600 hover:bg-gray-50"
         }`}
-    >
-      <UserIcon className="w-6 h-6 md:w-7 md:h-7" />
-      <span className="text-[10px] md:text-base font-black md:font-bold uppercase md:normal-case tracking-widest md:tracking-normal">
-        Me
-      </span>
-    </button>
-  </div>
-);
+      >
+        <Utensils className="w-6 h-6 md:w-7 md:h-7" />
+        <span className="text-[10px] md:text-base font-black md:font-bold uppercase md:normal-case tracking-widest md:tracking-normal">
+          Diary
+        </span>
+      </button>
 
+      <button
+        onClick={() => setCurrentPage(Page.PAL)}
+        className={`flex flex-col md:flex-row items-center md:justify-start space-y-1 md:space-y-0 md:space-x-4 px-4 py-3 rounded-xl transition-all ${currentPage === Page.PAL ? "text-emerald-600 md:bg-emerald-50" : "text-gray-300"}`}
+      >
+        <Heart
+          className={`w-6 h-6 md:w-7 md:h-7 ${currentPage === Page.PAL ? "fill-emerald-600" : ""}`}
+        />
+        <span className="text-[10px] md:text-base font-black uppercase md:normal-case tracking-widest">
+          Pal
+        </span>
+      </button>
+
+      {/* Me */}
+      <button
+        onClick={() => setCurrentPage(Page.PROFILE)}
+        className={`flex flex-col md:flex-row items-center md:justify-start
+        space-y-1 md:space-y-0 md:space-x-4
+        px-4 py-3 rounded-xl transition-all
+        ${
+          [
+            Page.PROFILE,
+            Page.PERSONAL_INFO,
+            Page.CHANGE_PASSWORD,
+            Page.GOAL,
+            Page.PRIVACY_POLICY,
+          ].includes(currentPage)
+            ? "text-emerald-600 md:bg-emerald-50"
+            : "text-gray-300 hover:text-emerald-600 hover:bg-gray-50"
+        }`}
+      >
+        <UserIcon className="w-6 h-6 md:w-7 md:h-7" />
+        <span className="text-[10px] md:text-base font-black md:font-bold uppercase md:normal-case tracking-widest md:tracking-normal">
+          Me
+        </span>
+      </button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen md:flex-row mx-auto bg-gray-50 relative overflow-x-hidden shadow-2xl">
       {/* Sidebar - Desktop Only */}
       <aside className="hidden md:flex flex-col w-72 h-screen fixed left-0 top-0 bg-white border-r border-gray-100 p-6 z-50">
         <div className="mb-10 px-4 flex items-center justify-between">
-          <h1 className="text-2xl font-black text-emerald-600 tracking-tight">MAKANFIT</h1>
-          
+          <h1 className="text-2xl font-black text-emerald-600 tracking-tight">
+            MAKANFIT
+          </h1>
+
           {/* Desktop Streak Button */}
           <button
             onClick={() => setIsStreakModalOpen(true)}
             className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-full border transition-all text-xs font-bold cursor-pointer hover:scale-105 active:scale-95 ${
               streakInfo.hasLoggedToday
-                ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200/80'
-                : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200/80'
+                ? "bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200/80"
+                : "bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200/80"
             }`}
             title={`${streakInfo.streak}-Day Streak (${streakInfo.statusBadge}) - Tap to view streak calendar`}
           >
-            <Flame size={14} className={streakInfo.hasLoggedToday ? "fill-orange-500 text-orange-500" : "fill-amber-400 text-amber-500"} />
+            <Flame
+              size={14}
+              className={
+                streakInfo.hasLoggedToday
+                  ? "fill-orange-500 text-orange-500"
+                  : "fill-amber-400 text-amber-500"
+              }
+            />
             <span>{streakInfo.streak}d</span>
           </button>
         </div>
@@ -564,24 +708,33 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
           <NavItems />
         </nav>
       </aside>
-      
+
       {/* Main Wrapper */}
       <div className="flex-1 flex flex-col md:ml-72 min-h-screen">
         {/* Mobile Header Only */}
         <header className="md:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md px-6 py-4 flex justify-between items-center border-b border-gray-100">
-          <h1 className="text-xl font-black text-emerald-600 tracking-tight">MAKANFIT</h1>
+          <h1 className="text-xl font-black text-emerald-600 tracking-tight">
+            MAKANFIT
+          </h1>
 
           {/* Mobile Streak Button */}
           <button
             onClick={() => setIsStreakModalOpen(true)}
             className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full border transition-all text-xs font-bold cursor-pointer hover:scale-105 active:scale-95 ${
               streakInfo.hasLoggedToday
-                ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200/80'
-                : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200/80'
+                ? "bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200/80"
+                : "bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200/80"
             }`}
             title={`${streakInfo.streak}-Day Streak (${streakInfo.statusBadge}) - Tap to view streak calendar`}
           >
-            <Flame size={15} className={streakInfo.hasLoggedToday ? "fill-orange-500 text-orange-500" : "fill-amber-400 text-amber-500"} />
+            <Flame
+              size={15}
+              className={
+                streakInfo.hasLoggedToday
+                  ? "fill-orange-500 text-orange-500"
+                  : "fill-amber-400 text-amber-500"
+              }
+            />
             <span>{streakInfo.streak}d</span>
             {streakInfo.isPending && (
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
@@ -591,9 +744,7 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
 
         {/* Content Area */}
         <main className="flex-1 pb-24 md:pb-8 md:p-8">
-          <div className="max-w-6xl mx-auto w-full">
-            {renderPage()}
-          </div>
+          <div className="max-w-6xl mx-auto w-full">{renderPage()}</div>
         </main>
 
         {/* Bottom Nav - Mobile Only */}

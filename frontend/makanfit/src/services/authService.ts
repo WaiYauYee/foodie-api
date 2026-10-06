@@ -14,32 +14,16 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 console.log('API_BASE_URL:', API_BASE_URL);
 
-// export interface User {
-//   userId: string;
-//   email: string;
-//   firstName: string;
-//   lastName: string;
-//   profile?: UserProfile;
-// }
-
-// export interface UserProfile {
-//   profileId: string;
-//   userId: string;
-//   startWeightKg?: number;
-//   currentWeightKg?: number;
-//   goalWeightKg?: number;
-//   activityLevel?: string;
-//   dietaryGoal?: string;
-//   goalOrigin?: string;
-//   targetCalories?: number;
-//   targetProteinG?: number;
-//   targetCarbsG?: number;
-//   targetFatG?: number;
-//   targetFiberG?: number;
-//   macroGoalOrigin?: string;
-//   createdAt?: string;
-//   updatedAt?: string;
-// }
+export interface CompleteOnboardingPayload extends OnboardingData {
+  targetCalories: number;
+  targetProteinG: number;
+  targetCarbsG: number;
+  targetFatG: number;
+  targetFiberG: number;
+  targetWaterMl: number;
+  goalOrigin: 'standard' | 'custom';
+  macroGoalOrigin: 'standard' | 'custom';
+}
 
 // ============================================
 // SIGNUP
@@ -69,8 +53,32 @@ export const signUp = async (data: SignUpData): Promise<AuthResponse> => {
       };
     }
 
-    // After signup, user needs onboarding
-    localStorage.setItem('makanfit_onboarding_done', 'false');
+    if (result.user && result.token) {
+      localStorage.setItem(
+        'makanfit_user',
+        JSON.stringify(result.user)
+      );
+
+      localStorage.setItem(
+        'makanfit_userId',
+        result.user.userId
+      );
+
+      localStorage.setItem(
+        'makanfit_token',
+        result.token
+      );
+
+      localStorage.setItem(
+        'makanfit_auth',
+        'true'
+      );
+
+      localStorage.setItem(
+        'makanfit_onboarding_done',
+        'false'
+      );
+    }
 
     return result;
   } catch (error) {
@@ -146,40 +154,57 @@ export const login = async (
 
 export const completeOnboarding = async (
   userId: string,
-  data: OnboardingData
+  data: CompleteOnboardingPayload
 ): Promise<AuthResponse> => {
   const token = localStorage.getItem('makanfit_token');
+
   if (!token) {
-    return { success: false, message: 'Unauthorized. Please log in.' };
+    return {
+      success: false,
+      message: 'Unauthorized. Please log in.',
+    };
   }
 
   try {
-  const response = await fetch(`${API_BASE_URL}/api/auth/onboarding/${userId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
+    const response = await fetch(
+      `${API_BASE_URL}/api/auth/onboarding/${userId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
-  const result = await response.json();
+    const result = await response.json();
 
-  // FIXED: After successful onboarding, update localStorage
     if (response.ok && result.user) {
-      // Update user object with onboarding_completed = true
-      const updatedUser = {
-        ...JSON.parse(localStorage.getItem('makanfit_user') || '{}'),
-        ...result.user,
-        onboardingComplete: true,
-      };
-      localStorage.setItem('makanfit_user', JSON.stringify(updatedUser));
-      localStorage.setItem('makanfit_onboarding_done', 'true');
+      localStorage.setItem(
+        'makanfit_user',
+        JSON.stringify(result.user)
+      );
+
+      localStorage.setItem(
+        'makanfit_userId',
+        result.user.userId
+      );
+
+      localStorage.setItem(
+        'makanfit_onboarding_done',
+        'true'
+      );
     }
 
-  return { success: response.ok, message: result.message, ...result };
+    return {
+      success: response.ok,
+      message: result.message,
+      ...result,
+    };
   } catch (error) {
     console.error('Onboarding Error:', error);
+
     return {
       success: false,
       message: 'Network error. Please try again.',

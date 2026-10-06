@@ -47,11 +47,11 @@ export const calculateNutritionPlan = (data: OnboardingData): CalculatedNutritio
 
   // 3. Activity Multiplier (TDEE)
   const activityMultipliers: Record<string, number> = {
-    'Sedentary': 1.2,
-    'Lightly Active': 1.375,
-    'Moderately Active': 1.55,
-    'Very Active': 1.725,
-    'Extra Active': 1.9,
+    sedentary: 1.2,
+    lightly_active: 1.375,
+    moderately_active: 1.55,
+    very_active: 1.725,
+    extra_active: 1.9,
   };
   const multiplier = activityMultipliers[data.activityLevel] || 1.375;
   const tdee = Math.round(bmr * multiplier);
@@ -61,23 +61,23 @@ export const calculateNutritionPlan = (data: OnboardingData): CalculatedNutritio
   let weeklyRateKg = 0;
 
   switch (data.dietaryGoal) {
-    case 'Gradual Lose Weight':
+    case 'gradual_lose':
       calorieDelta = -350;
       weeklyRateKg = 0.35;
       break;
-    case 'Rapid Lose Weight':
+    case 'rapid_lose':
       calorieDelta = -600;
       weeklyRateKg = 0.6;
       break;
-    case 'Gradual Gain Weight':
+    case 'gradual_gain':
       calorieDelta = 300;
       weeklyRateKg = 0.3;
       break;
-    case 'Rapid Gain Weight':
+    case 'rapid_gain':
       calorieDelta = 500;
       weeklyRateKg = 0.5;
       break;
-    case 'Maintain Weight':
+    case 'maintain':
     default:
       calorieDelta = 0;
       weeklyRateKg = 0;
@@ -93,7 +93,7 @@ export const calculateNutritionPlan = (data: OnboardingData): CalculatedNutritio
   let proteinRatio = 0.25;
   let fatRatio = 0.30;
 
-  if (data.dietType === 'Vegetarian' || data.dietType === 'Vegan') {
+  if (data.dietType === 'vegetarian' || data.dietType === 'vegan') {
     carbsRatio = 0.50;
     proteinRatio = 0.22;
     fatRatio = 0.28;
