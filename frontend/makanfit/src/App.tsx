@@ -21,6 +21,8 @@ import Pal from './components/Pal';
 import StreakModal from './components/StreakModal';
 import { calculateStreak } from './utils/streak';
 import WelcomeStoryboard from './components/WelcomeStoryboard';
+import PlanBuilder from './components/PlanBuilder';
+import { OnboardingData } from './types/types';
 
 const INITIAL_USER: User = {
   userId: 'u1',
@@ -125,7 +127,7 @@ const MOCK_WEIGHTS: WeightEntry[] = [
   },
 ];
 
-type AuthPageState = 'welcome' | 'onboarding' | 'login' | 'signup' | 'privacy' | 'terms';
+type AuthPageState = 'welcome' | 'onboarding' | 'login' | 'signup' | 'privacy' | 'terms' | "plan_builder";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -138,6 +140,8 @@ const App: React.FC = () => {
 
   const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
   const streakInfo = useMemo(() => calculateStreak(meals), [meals]);
+
+  const [pendingOnboardingData, setPendingOnboardingData] = useState<OnboardingData | null>(null);
 
   useEffect(() => {
     const savedAuth = localStorage.getItem('makanfit_auth') === 'true';
@@ -207,21 +211,38 @@ const App: React.FC = () => {
     setAuthPage('login');
   };
 
-  // FIXED: Improved onboarding completion handler
-  const handleOnboardingComplete = (data: Partial<User>) => {
-    const updatedUser = { 
-      ...user, 
-      ...data, 
-      onboardingComplete: true  // Mark onboarding as complete
+  const handleOnboardingComplete = (data: OnboardingData) => {
+    setPendingOnboardingData(data);
+    if (!isAuthenticated) {
+      setAuthPage('plan_builder');
+    }
+  };
+
+  const handleConfirmPlan = (planValues: Partial<User>) => {
+    const mergedData = {
+      ...(pendingOnboardingData || {}),
+      ...planValues,
     };
+
+    const updatedUser: User = {
+      ...user,
+      ...mergedData,
+      currentWeight: pendingOnboardingData?.startWeight ?? user.currentWeight,
+      onboardingComplete: true,
+    };
+
     setUser(updatedUser);
     setHasCompletedOnboarding(true);
-    
-    // FIXED: Sync with localStorage
     localStorage.setItem('makanfit_onboarding_done', 'true');
+    localStorage.setItem('makanfit_pending_onboarding', JSON.stringify(mergedData));
     localStorage.setItem('makanfit_user', JSON.stringify(updatedUser));
-    
-    setCurrentPage(Page.DASHBOARD);
+    setPendingOnboardingData(null);
+
+    if (!isAuthenticated) {
+      setAuthPage('signup');
+    } else {
+      setCurrentPage(Page.DASHBOARD);
+    }
   };
 
  const handleAddMeal = (food: Food, mealType: MealType = 'breakfast') => {
@@ -313,6 +334,16 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
         />
       );
     }
+    if (authPage === 'plan_builder' && pendingOnboardingData) {
+      return (
+        <PlanBuilder
+          onboardingData={pendingOnboardingData}
+          onConfirmPlan={handleConfirmPlan}
+          onBackToOnboarding={() => setAuthPage('onboarding')}
+          isAuthenticated={false}
+        />
+      );
+    }
     if (authPage === 'signup') {
       return (
         <SignUp
@@ -335,6 +366,16 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
 
   // Only after user is authenticated
   if (!hasCompletedOnboarding) {
+    if (pendingOnboardingData) {
+      return (
+        <PlanBuilder
+          onboardingData={pendingOnboardingData}
+          onConfirmPlan={handleConfirmPlan}
+          onBackToOnboarding={() => setPendingOnboardingData(null)}
+          isAuthenticated={true}
+        />
+      );
+    }
     return <Onboarding onComplete={handleOnboardingComplete} />;
   }
 
