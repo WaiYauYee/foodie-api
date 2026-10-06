@@ -237,7 +237,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                       <StoryCategoryIcon
                           type="onboarding"
                           size={80}
-                          className="!w-16 !h-16 rounded-full bg-white shadow-md"
+                          className="!w-16 !h-16 !rounded-full shadow-md"
                         />
                     </div>
                     <div className="text-center md:text-left space-y-2">

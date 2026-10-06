@@ -296,7 +296,7 @@ const Login: React.FC<LoginProps> = ({
                   <StoryCategoryIcon
                     type="companion"
                     size={80}
-                    className="!w-16 !h-16 rounded-full bg-white shadow-md"
+                    className="!w-16 !h-16 !rounded-full shadow-md"
                   />
                 </div>
                 <div className="space-y-2">

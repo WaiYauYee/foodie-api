@@ -201,7 +201,7 @@ const SignUp: React.FC<SignUpProps> = ({
                 <StoryCategoryIcon
                   type="signup"
                   size={80}
-                  className="!w-16 !h-16 rounded-full bg-white shadow-md"
+                  className="!w-16 !h-16 !rounded-full shadow-md"
                 />
               </div>
 
@@ -267,10 +267,9 @@ const SignUp: React.FC<SignUpProps> = ({
               <button
                 type="button"
                 onClick={onNavigateToLogin}
-                className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
+                className="w-[180px] h-[60px] bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
               >
                 <span>Get Started</span>
-                <ChevronRight size={22} strokeWidth={3} />
               </button>
             </div>
           ) : (
