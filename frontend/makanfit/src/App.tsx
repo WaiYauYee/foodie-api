@@ -20,6 +20,7 @@ import NotificationSettings from './components/NotificationSettings';
 import Pal from './components/Pal';
 import StreakModal from './components/StreakModal';
 import { calculateStreak } from './utils/streak';
+import WelcomeStoryboard from './components/WelcomeStoryboard';
 
 const INITIAL_USER: User = {
   userId: 'u1',
@@ -124,10 +125,12 @@ const MOCK_WEIGHTS: WeightEntry[] = [
   },
 ];
 
+type AuthPageState = 'welcome' | 'onboarding' | 'login' | 'signup' | 'privacy' | 'terms';
+
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
-  const [authPage, setAuthPage] = useState<'login' | 'signup' | 'privacy' | 'terms'>('login');
+  const [authPage, setAuthPage] = useState<AuthPageState>('welcome');
   const [currentPage, setCurrentPage] = useState<Page>(Page.DASHBOARD);
   const [meals, setMeals] = useState<MealEntry[]>(MOCK_MEALS);
   const [weightHistory, setWeightHistory] = useState<WeightEntry[]>(MOCK_WEIGHTS);
@@ -290,18 +293,45 @@ const handleUpdateMeal = (updatedMeal: MealEntry) => {
   };
 
     if (!isAuthenticated) {
-    if (authPage === 'privacy') return <PrivacyPolicy onBack={() => setAuthPage('signup')} />;
-    if (authPage === 'terms') return <TermOfService onBack={() => setAuthPage('signup')} />;
+      if (authPage === 'privacy') return <PrivacyPolicy onBack={() => setAuthPage('signup')} />;
+      if (authPage === 'terms') return <TermOfService onBack={() => setAuthPage('signup')} />;
 
-    return authPage === 'login' 
-      ? <Login onLogin={handleLogin} onNavigateToSignUp={() => setAuthPage('signup')} />
-      : <SignUp 
+      if (authPage === 'welcome') {
+      return (
+        <WelcomeStoryboard
+          onStartOnboarding={() => setAuthPage('onboarding')}
+          onNavigateToSignUp={() => setAuthPage('signup')}
+          onNavigateToLogin={() => setAuthPage('login')}
+        />
+      );
+    }
+    if (authPage === 'onboarding') {
+      return (
+        <Onboarding
+          onComplete={handleOnboardingComplete}
+          onBack={() => setAuthPage('welcome')}
+        />
+      );
+    }
+    if (authPage === 'signup') {
+      return (
+        <SignUp
           onSignUp={handleLogin}
           onNavigateToLogin={() => setAuthPage('login')}
           onNavigateToPrivacy={() => setAuthPage('privacy')}
           onNavigateToTerms={() => setAuthPage('terms')}
-        />;
-  }
+          // onBackToWelcome={() => setAuthPage('welcome')}
+        />
+      );
+    }
+    return (
+      <Login
+        onLogin={handleLogin}
+        onNavigateToSignUp={() => setAuthPage('signup')}
+        onBackToWelcome={() => setAuthPage('welcome')}
+      />
+    );
+    }
 
   // Only after user is authenticated
   if (!hasCompletedOnboarding) {

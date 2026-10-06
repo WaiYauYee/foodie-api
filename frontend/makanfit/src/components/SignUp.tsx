@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, User, ChevronRight, CheckCircle2, ArrowLeft } from 'lucide-react';
-import Mascot from './Mascot';
-import { signUp } from '../services/authService';
-import { FaCheck } from 'react-icons/fa';
-import logoImg from '../assets/logo.png';
+import React, { useState } from "react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  ChevronRight,
+  CheckCircle2,
+} from "lucide-react";
+import Mascot from "./Mascot";
+import { signUp } from "../services/authService";
+import { FaCheck } from "react-icons/fa";
+import StoryCategoryIcon from "./StoryCategoryIcon";
 
 interface SignUpProps {
   onSignUp: () => void;
@@ -12,17 +20,21 @@ interface SignUpProps {
   onNavigateToTerms: () => void;
 }
 
-const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, onNavigateToPrivacy }) => {
+const SignUp: React.FC<SignUpProps> = ({
+  onNavigateToLogin,
+  onNavigateToTerms,
+  onNavigateToPrivacy,
+}) => {
   // const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -46,7 +58,7 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
   // HANDLE INPUT CHANGE
   // ============================================
   const handleInputChange = (field: keyof typeof formData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (error) setError(null);
   };
@@ -73,20 +85,26 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
       // Check if signup was successful
       if (!response.success) {
         // Determine which field has the error
-      let field = 'general';
-      if (response.message?.includes('email') || response.message?.includes('Email')) {
-        field = 'email';
-      } else if (response.message?.includes('Password') || response.message?.includes('password')) {
-        field = 'password';
-      } else if (response.message?.includes('match')) {
-        field = 'confirmPassword';
-      } else if (response.message?.includes('First name')) {
-        field = 'firstName';
-      } else if (response.message?.includes('Last name')) {
-        field = 'lastName';
-      }
+        let field = "general";
+        if (
+          response.message?.includes("email") ||
+          response.message?.includes("Email")
+        ) {
+          field = "email";
+        } else if (
+          response.message?.includes("Password") ||
+          response.message?.includes("password")
+        ) {
+          field = "password";
+        } else if (response.message?.includes("match")) {
+          field = "confirmPassword";
+        } else if (response.message?.includes("First name")) {
+          field = "firstName";
+        } else if (response.message?.includes("Last name")) {
+          field = "lastName";
+        }
 
-        setError(response.message || 'Failed to create account');
+        setError(response.message || "Failed to create account");
         // Show error for 5 seconds then clear
         // setTimeout(() => setError(null), 5000);
         setFieldError(field);
@@ -96,11 +114,10 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
 
       // Success! Show success screen
       setIsSuccess(true);
-
     } catch (err) {
-      console.error('SignUp error:', err);
-      setError('An unexpected error occurred. Please try again.');
-      setFieldError('general');
+      console.error("SignUp error:", err);
+      setError("An unexpected error occurred. Please try again.");
+      setFieldError("general");
       setIsLoading(false);
     }
   };
@@ -118,31 +135,30 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#10B981] via-[#059669] to-[#064E3B] p-16 flex-col justify-between relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl -ml-48 -mb-48" />
-        
+
         <div className="relative z-10">
-          <div className="flex items-center space-x-3 mb-0 -ml-8">
-            <div className="relative">
-                <img
-                src={logoImg}          
-                alt="MakanFit logo"
-                className="w-[280px] h-[90px] object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-            </div>
+          <div className="mb-10">
+            <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 border border-white/15 text-emerald-50 text-xs font-black tracking-wider">
+              MALAYSIAN FOOD • AI • WELLNESS
+            </span>
           </div>
-          
+
           <div className="space-y-10 max-w-lg">
             <h2 className="text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight">
               Start your <br />
               <span className="text-emerald-200">health journey.</span>
             </h2>
-            
+
             <div className="space-y-6">
               {[
                 "AI Photo Recognition for Malaysian Food",
                 "Personalized weight & nutrition tracking",
-                "Smart nutrition insights for your meals"
+                "Smart nutrition insights for your meals",
               ].map((text, i) => (
-                <div key={i} className="flex items-center space-x-4 text-emerald-50">
+                <div
+                  key={i}
+                  className="flex items-center space-x-4 text-emerald-50"
+                >
                   <CheckCircle2 className="w-6 h-6 text-emerald-300 flex-shrink-0" />
                   <span className="text-lg font-medium">{text}</span>
                 </div>
@@ -151,7 +167,7 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
           </div>
         </div>
 
-        <div className="relative z-10 flex items-center space-x-4">
+        {/* <div className="relative z-10 flex items-center space-x-4">
           {!isSuccess && (
           <button 
             onClick={onNavigateToLogin}
@@ -161,30 +177,45 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
             <span>Already have an account? Log In</span>
           </button>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* Right Pane - Form */}
       <div className="flex-1 flex items-center justify-center p-6 md:p-12 bg-gradient-to-br from-[#10B981] md:from-transparent via-[#059669] md:via-transparent to-[#064E3B] md:to-transparent">
         <div className="w-full max-w-md bg-white rounded-[40px] md:rounded-none shadow-2xl md:shadow-none p-8 md:p-0">
-          
+          {/* {!isSuccess && onBackToWelcome && (
+            <button
+              type="button"
+              onClick={onBackToWelcome}
+              className="flex items-center space-x-1.5 text-sm font-bold text-slate-400 hover:text-emerald-600 mb-6 transition-colors cursor-pointer"
+            >
+              <ChevronLeft size={20} />
+              <span>Back to Intro</span>
+            </button>
+          )} */}
+
           {!isSuccess && (
-            <>
-          <div className="md:hidden flex flex-col items-center mb-8">
-             <div className="relative">
-                <img
-                src={logoImg}          
-                alt="MakanFit logo"
-                className="w-[200px] h-[60px] object-cover group-hover:scale-110 transition-transform duration-500"
-              />
+            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-5 mb-8 text-center md:text-left">
+              {/* Signup Icon */}
+              <div className="flex justify-center md:justify-start shrink-0">
+                <StoryCategoryIcon
+                  type="signup"
+                  size={80}
+                  className="!w-16 !h-16 rounded-full bg-white shadow-md"
+                />
+              </div>
+
+              {/* Heading */}
+              <div className="space-y-2">
+                <h3 className="text-3xl font-black text-gray-900 tracking-tight">
+                  Create Account
+                </h3>
+
+                <p className="text-gray-400 font-medium">
+                  Join us and start tracking your makan today!
+                </p>
+              </div>
             </div>
-          </div>
-         
-          <div className="space-y-2 mb-8 text-center md:text-left">
-            <h3 className="text-3xl font-black text-gray-900 tracking-tight">Create Account</h3>
-            <p className="text-gray-400 font-medium">Join us and start tracking your makan today!</p>
-          </div>
-          </>
           )}
 
           {isSuccess ? (
@@ -210,7 +241,8 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
                   Welcome, {formData.firstName}!
                 </h4>
                 <p className="text-gray-500 font-medium leading-relaxed max-w-[300px] mx-auto">
-                  Your account has been created successfully. You're all set to start tracking your makan.
+                  Your account has been created successfully. You're all set to
+                  start tracking your makan.
                 </p>
               </div>
 
@@ -224,7 +256,9 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
                   <p className="font-bold text-gray-900 truncate">
                     {formData.firstName} {formData.lastName}
                   </p>
-                  <p className="text-sm text-gray-500 font-medium truncate">{formData.email}</p>
+                  <p className="text-sm text-gray-500 font-medium truncate">
+                    {formData.email}
+                  </p>
                 </div>
                 <CheckCircle2 className="w-6 h-6 text-emerald-500 flex-shrink-0 ml-auto" />
               </div>
@@ -240,9 +274,9 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
               </button>
             </div>
           ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* error check */}
-            {/* {error && (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* error check */}
+              {/* {error && (
               <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded">
                 <div className="flex">
                   <div className="flex-shrink-0">
@@ -256,163 +290,231 @@ const SignUp: React.FC<SignUpProps> = ({ onNavigateToLogin, onNavigateToTerms, o
                 </div>
               </div>
             )} */}
-            {/* error check */}
-            {error && (
-              <div className="fixed top-4 right-4 max-w-sm z-50 p-4 bg-red-50 border-l-4 border-red-500 rounded shadow-lg">
-                <div className="flex items-center gap-3">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
+              {/* error check */}
+              {error && (
+                <div className="fixed top-4 right-4 max-w-sm z-50 p-4 bg-red-50 border-l-4 border-red-500 rounded shadow-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-red-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-sm font-medium text-red-800 flex-1">
+                      {error}
+                    </p>
+                    <button
+                      onClick={() => setError(null)}
+                      className="text-red-500 hover:text-red-700 transition-colors flex-shrink-0"
+                    >
+                      ✕
+                    </button>
                   </div>
-                  <p className="text-sm font-medium text-red-800 flex-1">{error}</p>
+                </div>
+              )}
+
+              {/* Name Fields - Side by Side */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="relative group">
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                    <User size={20} />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    placeholder="First Name"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                    className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
+                  />
+                </div>
+
+                <div className="relative group">
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                    <User size={20} />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Last Name"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
+                    className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
+                  />
+                </div>
+              </div>
+
+              <div className="relative group">
+                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                  <Mail size={20} />
+                </div>
+                <input
+                  type="email"
+                  required
+                  placeholder="Email address"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "email" ? "border-red-500" : "border-gray-100"}`}
+                />
+              </div>
+
+              <div className="space-y-3">
+                <div className="relative group">
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                    <Lock size={20} />
+                  </div>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      handleInputChange("password", e.target.value)
+                    }
+                    className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "password" ? "border-red-500" : "border-gray-100"}`}
+                  />
                   <button
-                    onClick={() => setError(null)}
-                    className="text-red-500 hover:text-red-700 transition-colors flex-shrink-0"
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    ✕
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
+                {/* Password Requirement Checklist */}
+                {formData.password &&
+                  !(
+                    requirements.length &&
+                    requirements.uppercase &&
+                    requirements.number
+                  ) && (
+                    <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
+                      <span>
+                        {requirements.length &&
+                          requirements.uppercase &&
+                          requirements.number && (
+                            <FaCheck className="text-emerald-500 inline mr-1" />
+                          )}
+                        Password must be at least{" "}
+                        <span
+                          className={
+                            requirements.length
+                              ? "text-emerald-500 font-bold"
+                              : ""
+                          }
+                        >
+                          8+ characters
+                        </span>
+                        , include{" "}
+                        <span
+                          className={
+                            requirements.uppercase
+                              ? "text-emerald-500 font-bold"
+                              : ""
+                          }
+                        >
+                          one uppercase letter
+                        </span>
+                        , and{" "}
+                        <span
+                          className={
+                            requirements.number
+                              ? "text-emerald-500 font-bold"
+                              : ""
+                          }
+                        >
+                          one number
+                        </span>
+                        .
+                      </span>
+                    </div>
+                  )}
               </div>
-            )}
 
-            {/* Name Fields - Side by Side */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="relative group">
-                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                  <User size={20} />
-                </div>
-                <input
-                  type="text"
-                  required
-                  placeholder="First Name"
-                  value={formData.firstName}
-                  onChange={(e) => handleInputChange('firstName', e.target.value)}
-                  className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
-                />
-              </div>
-
-              <div className="relative group">
-                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                  <User size={20} />
-                </div>
-                <input
-                  type="text"
-                  required
-                  placeholder="Last Name"
-                  value={formData.lastName}
-                  onChange={(e) => handleInputChange('lastName', e.target.value)}
-                  className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
-                />
-              </div>
-            </div>
-
-            <div className="relative group">
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                <Mail size={20} />
-              </div>
-              <input
-                type="email"
-                required
-                placeholder="Email address"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === 'email' ? 'border-red-500' : 'border-gray-100'}`}
-              />
-            </div>
-
-            <div className="space-y-3">
               <div className="relative group">
                 <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
                   <Lock size={20} />
                 </div>
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   required
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
-                  className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === 'password' ? 'border-red-500' : 'border-gray-100'}`}
+                  placeholder="Confirm Password"
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
+                  className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "confirmPassword" ? "border-red-500" : "border-gray-100"}`}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
-            {/* Password Requirement Checklist */}
-              {formData.password && !(requirements.length && requirements.uppercase && requirements.number) && (
-                <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
-                  <span>
-                    {requirements.length && requirements.uppercase && requirements.number && (
-                      <FaCheck className="text-emerald-500 inline mr-1" />
-                    )}
-                    Password must be at least{' '}
-                    <span className={requirements.length ? 'text-emerald-500 font-bold' : ''}>
-                      8+ characters
-                    </span>
-                    , include{' '}
-                    <span className={requirements.uppercase ? 'text-emerald-500 font-bold' : ''}>
-                      one uppercase letter
-                    </span>
-                    , and{' '}
-                    <span className={requirements.number ? 'text-emerald-500 font-bold' : ''}>
-                      one number
-                    </span>
-                    .
-                  </span>
-                </div>
-              )}
-            </div>
 
-            <div className="relative group">
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                <Lock size={20} />
+              <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
+                By signing up, you agree to our{" "}
+                <button
+                  type="button"
+                  onClick={onNavigateToTerms}
+                  className="text-emerald-600 font-bold hover:underline"
+                >
+                  Terms of Service
+                </button>{" "}
+                and{" "}
+                <button
+                  type="button"
+                  onClick={onNavigateToPrivacy}
+                  className="text-emerald-600 font-bold hover:underline"
+                >
+                  Privacy Policy
+                </button>
+                .
               </div>
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                required
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === 'confirmPassword' ? 'border-red-500' : 'border-gray-100'}`}
-              />
+
               <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3 disabled:opacity-70"
               >
-                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {isLoading ? (
+                  <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span>Create Account</span>
+                  </>
+                )}
               </button>
-            </div>
-
-            <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
-              By signing up, you agree to our <button type="button" onClick={onNavigateToTerms} className="text-emerald-600 font-bold hover:underline">Terms of Service</button> and <button type="button" onClick={onNavigateToPrivacy} className="text-emerald-600 font-bold hover:underline">Privacy Policy</button>.
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3 disabled:opacity-70"
-            >
-              {isLoading ? (
-                <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <span>Create Account</span>
-                  <ChevronRight size={22} strokeWidth={3} />
-                </>
-              )}
-            </button>
-          </form>
+            </form>
           )}
 
           {!isSuccess && (
-          <p className="mt-10 text-center text-gray-400 font-medium">
-            Already have an account? <button onClick={onNavigateToLogin} className="text-emerald-600 font-black hover:underline">Log In</button>
-          </p>
+            <p className="mt-10 text-center text-gray-400 font-medium">
+              Already have an account?{" "}
+              <button
+                onClick={onNavigateToLogin}
+                className="text-emerald-600 font-black hover:underline"
+              >
+                Log In
+              </button>
+            </p>
           )}
         </div>
       </div>

@@ -1,33 +1,49 @@
-
-import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, Sparkles, ChevronRight, ChevronLeft } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  Sparkles,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 // import MakanFitAvatar from './MakanFitAvatar';
-import { login, requestPasswordReset, resetPassword } from '../services/authService';
-import OTPInput from './OTPInput';
-import { FaCheck } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
-import logoImg from '../assets/logo.png';
+import {
+  login,
+  requestPasswordReset,
+  resetPassword,
+} from "../services/authService";
+import OTPInput from "./OTPInput";
+import { FaCheck } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import StoryCategoryIcon from "./StoryCategoryIcon";
 
 interface LoginProps {
   onLogin: () => void;
   onNavigateToSignUp: () => void;
+  onBackToWelcome?: () => void;
 }
 
-type LoginView = 'login' | 'forgot' | 'otp' | 'reset';
+type LoginView = "login" | "forgot" | "otp" | "reset";
 
-const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
-  const [view, setView] = useState<LoginView>('login')
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const Login: React.FC<LoginProps> = ({
+  onLogin,
+  onNavigateToSignUp,
+  onBackToWelcome,
+}) => {
+  const [view, setView] = useState<LoginView>("login");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [resetEmail, setResetEmail] = useState('');
+  const [resetEmail, setResetEmail] = useState("");
   const [resetEmailSent, setResetEmailSent] = useState(false);
-  const [resetToken, setResetToken] = useState('');
+  const [resetToken, setResetToken] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -110,20 +126,20 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
       if (result.success) {
         // Password reset successful
         setIsSuccess(true);
-        
+
         // Clear form
-        setNewPassword('');
-        setConfirmPassword('');
-        setResetToken('');
-        setResetEmail('');
-        
+        setNewPassword("");
+        setConfirmPassword("");
+        setResetToken("");
+        setResetEmail("");
+
         // Auto-redirect to login after 3 seconds
         setTimeout(() => {
           setIsSuccess(false);
-          setView('login');
+          setView("login");
         }, 3000);
       } else {
-        setError(result.message || 'Failed to reset password');
+        setError(result.message || "Failed to reset password");
       }
     } catch (error) {
       console.error("Reset password failed:", error);
@@ -137,10 +153,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
     e.preventDefault();
     // Validation: Token provided
     if (!resetToken.trim()) {
-      setError("Reset token is required. Please check your email for the reset code.");
+      setError(
+        "Reset token is required. Please check your email for the reset code.",
+      );
       return;
     }
-    setView('reset');
+    setView("reset");
     setError(null);
   };
 
@@ -155,14 +173,14 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
       if (result.success) {
         // Email sent successfully
         setResetEmailSent(true);
-        
+
         // Auto-transition to reset view after 2 seconds
         setTimeout(() => {
-          setView('otp');
+          setView("otp");
           setResetEmailSent(false);
         }, 2000);
       } else {
-        setError(result.message || 'Failed to request password reset');
+        setError(result.message || "Failed to request password reset");
       }
     } catch (error) {
       console.error("Request reset failed:", error);
@@ -176,104 +194,119 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
     <div className="min-h-screen w-full flex flex-col md:flex-row bg-white">
       {/* Left Pane - Brand / Marketing (Visible on md and up) bg-[#F8FAFC] */}
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#10B981] via-[#059669] to-[#064E3B] p-16 flex-col justify-between relative overflow-hidden">
-        
         <div className="relative z-10">
-          <div className="flex items-center space-x-3 mb-0 -ml-8">
-            {/* <div className="relative">
-              <div className="w-16 h-16 bg-emerald-100 rounded-[40px] flex items-center justify-center shadow-xl overflow-hidden group">
-                <MakanFitAvatar size={42} className="group-hover:scale-110 transition-transform duration-500" />
-              </div>
-            </div>
-            <h1 className="text-3xl font-black text-white tracking-tighter">MakanFit</h1> */}
-            <div className="relative">
-                <img
-                src={logoImg}          
-                alt="MakanFit logo"
-                className="w-[280px] h-[90px] object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-            </div>
+          <div className="mb-10">
+            <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 border border-white/15 text-emerald-50 text-xs font-black tracking-wider">
+              MALAYSIAN FOOD • AI • WELLNESS
+            </span>
           </div>
-          
+
           <div className="space-y-6 max-w-lg">
             <h2 className="text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight">
               Eat smarter, <br />
               <span className="text-emerald-200">live better.</span>
             </h2>
             <p className="text-emerald-50/80 text-lg font-medium leading-relaxed">
-              Machine learning model trained exclusively on Malaysian dishes. 
-            Snap, recognize, and track your nutrition with MakanFit.
+              Machine learning model trained exclusively on Malaysian dishes.
+              Snap, recognize, and track your nutrition with MakanFit.
             </p>
           </div>
         </div>
 
         <div className="relative z-10 space-y-6">
-            <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center">
-                    <span className="text-xs font-black text-emerald-900">✓</span>
-                </div>
-                <p className="text-white/80 font-bold">AI-powered Malaysian food recognition</p>
-                </div>
-                <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center">
-                    <span className="text-xs font-black text-emerald-900">✓</span>
-                </div>
-                <p className="text-white/80 font-bold">Adjust ingredients & portions manually</p>
-                </div>
-                <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center">
-                    <span className="text-xs font-black text-emerald-900">✓</span>
-                </div>
-                <p className="text-white/80 font-bold">Nutrition tailored for Malaysian cuisine</p>
-                </div>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center">
+                <span className="text-xs font-black text-emerald-900">✓</span>
+              </div>
+              <p className="text-white/80 font-bold">
+                AI-powered Malaysian food recognition
+              </p>
             </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center">
+                <span className="text-xs font-black text-emerald-900">✓</span>
+              </div>
+              <p className="text-white/80 font-bold">
+                Adjust ingredients & portions manually
+              </p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center">
+                <span className="text-xs font-black text-emerald-900">✓</span>
+              </div>
+              <p className="text-white/80 font-bold">
+                Nutrition tailored for Malaysian cuisine
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Right Pane - Form (Mobile gets the full green background here) */}
       <div className="flex-1 flex items-center justify-center p-6 md:p-12 bg-gradient-to-br from-[#10B981] md:from-transparent via-[#059669] md:via-transparent to-[#064E3B] md:to-transparent">
         <div className="w-full max-w-md bg-white rounded-[40px] md:rounded-none shadow-2xl md:shadow-none p-8 md:p-0 overflow-hidden relative">
-          
-          <div className="md:hidden flex flex-col items-center mb-10">
-             {/* <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4">
-                <MakanFitAvatar size={42} className="group-hover:scale-110 transition-transform duration-500" />
-             </div>
-             <h1 className="text-3xl font-black text-gray-900 tracking-tighter">MakanFit</h1> */}
-             <div className="relative">
-                <img
-                src={logoImg}          
-                alt="MakanFit logo"
-                className="w-[200px] h-[60px] object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-            </div>
-          </div>
+          {onBackToWelcome && (
+            <button
+              type="button"
+              onClick={onBackToWelcome}
+              className="flex items-center space-x-1.5 text-sm font-bold text-slate-400 hover:text-emerald-600 mb-6 transition-colors cursor-pointer"
+            >
+              <ChevronLeft size={20} />
+              <span>Back to Intro</span>
+            </button>
+          )}
 
           {/* error check */}
-            {error && (
-              <div className="fixed top-4 right-4 max-w-sm z-50 p-4 bg-red-50 border-l-4 border-red-500 rounded shadow-lg">
-                <div className="flex items-center gap-3">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <p className="text-sm font-medium text-red-800 flex-1">{error}</p>
-                  <button
-                    onClick={() => setError(null)}
-                    className="text-red-500 hover:text-red-700 transition-colors flex-shrink-0"
+          {error && (
+            <div className="fixed top-4 right-4 max-w-sm z-50 p-4 bg-red-50 border-l-4 border-red-500 rounded shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-red-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
                   >
-                    ✕
-                  </button>
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                 </div>
+                <p className="text-sm font-medium text-red-800 flex-1">
+                  {error}
+                </p>
+                <button
+                  onClick={() => setError(null)}
+                  className="text-red-500 hover:text-red-700 transition-colors flex-shrink-0"
+                >
+                  ✕
+                </button>
               </div>
-            )}
+            </div>
+          )}
 
           {/* VIEW 1: LOGIN */}
-          {view === 'login' ? (
+          {view === "login" ? (
             <div className="animate-in fade-in slide-in-from-right duration-500">
-              <div className="space-y-2 mb-8 text-center md:text-left">
-                <h3 className="text-3xl font-black text-gray-900 tracking-tight">Welcome back</h3>
-                <p className="text-gray-400 font-medium">Please enter your details to continue</p>
+              <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-5 mb-8 text-center md:text-left">
+                {/* Login Icon */}
+                <div className="flex justify-center md:justify-start shrink-0">
+                  <StoryCategoryIcon
+                    type="companion"
+                    size={80}
+                    className="!w-16 !h-16 rounded-full bg-white shadow-md"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-3xl font-black text-gray-900 tracking-tight">
+                    Welcome back!
+                  </h3>
+                  <p className="text-gray-400 font-medium">
+                    Please enter your details to continue
+                  </p>
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -281,11 +314,21 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                   <div className="fixed top-4 right-4 max-w-sm z-50 p-4 bg-red-50 border-l-4 border-red-500 rounded shadow-lg">
                     <div className="flex items-center gap-3">
                       <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        <svg
+                          className="h-5 w-5 text-red-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       </div>
-                      <p className="text-sm font-medium text-red-800 flex-1">{error}</p>
+                      <p className="text-sm font-medium text-red-800 flex-1">
+                        {error}
+                      </p>
                       <button
                         onClick={() => setError(null)}
                         className="text-red-500 hover:text-red-700 transition-colors flex-shrink-0"
@@ -316,7 +359,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                       <Lock size={20} />
                     </div>
                     <input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       required
                       placeholder="Password"
                       value={password}
@@ -338,14 +381,18 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                     <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
                     <span className="text-sm font-bold text-gray-400">Remember me</span>
                   </label> */}
-                  <button type="button"
-                  onClick={() => {
-                      setView('forgot');
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setView("forgot");
                       setError(null);
-                      setResetEmail('');
+                      setResetEmail("");
                       setResetEmailSent(false);
                     }}
-                  className="text-sm font-bold text-emerald-600 hover:text-emerald-700 transition-colors">Forgot Password?</button>
+                    className="text-sm font-bold text-emerald-600 hover:text-emerald-700 transition-colors"
+                  >
+                    Forgot Password?
+                  </button>
                 </div>
 
                 <button
@@ -358,7 +405,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                   ) : (
                     <>
                       <span>Sign In</span>
-                      <ChevronRight size={22} strokeWidth={3} />
                     </>
                   )}
                 </button>
@@ -370,7 +416,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                   <div className="w-full border-t border-slate-200" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase tracking-wider font-bold">
-                  <span className="bg-white px-3 text-slate-400">Or continue with</span>
+                  <span className="bg-white px-3 text-slate-400">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 
@@ -387,74 +435,84 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
               </div>
 
               <p className="mt-10 text-center text-gray-400 font-medium">
-                Don't have an account? <button onClick={onNavigateToSignUp} className="text-emerald-600 font-black hover:underline">Sign Up</button>
+                Don't have an account?{" "}
+                <button
+                  onClick={onNavigateToSignUp}
+                  className="text-emerald-600 font-black hover:underline"
+                >
+                  Sign Up
+                </button>
               </p>
-            {/* Bottom Terms & Privacy Note */}
-            <div className="pt-6 text-center text-xs text-gray-400">
-              <span>By continuing, you agree to MakanFit's </span>
-              <a href="#" className="underline hover:text-gray-400">
-                Terms of Service
-              </a>
-              <span> & </span>
-              <a href="#" className="underline hover:text-gray-400">
-                Privacy Policy
-              </a>
+              {/* Bottom Terms & Privacy Note */}
+              <div className="pt-6 text-center text-xs text-gray-400">
+                <span>By continuing, you agree to MakanFit's </span>
+                <a href="#" className="underline hover:text-gray-400">
+                  Terms of Service
+                </a>
+                <span> & </span>
+                <a href="#" className="underline hover:text-gray-400">
+                  Privacy Policy
+                </a>
+              </div>
             </div>
-        </div>
-          ) : view === 'forgot' ? (
+          ) : view === "forgot" ? (
             <div className="animate-in fade-in slide-in-from-left duration-500">
               {!resetEmailSent && (
                 <>
-                <div className="space-y-2 mb-8 text-center md:text-left">
-                  <button 
-                    onClick={() => {
-                      setView('login');
-                      setError(null);
-                      setResetEmail('');
-                    }}
-                    className="flex items-center space-x-2 text-emerald-600 font-bold mb-4 hover:text-emerald-700 transition-colors"
-                  >
-                    <ChevronLeft size={20} />
-                    <span>Back</span>
-                  </button>
-                  <h3 className="text-3xl font-black text-gray-900 tracking-tight">Forgot Password?</h3>
-                  <p className="text-gray-400 font-medium">Enter your email and we'll send a code.</p>
-                </div>
-
-                <form onSubmit={handleRequestReset} className="space-y-6">
-                  <div className="relative group">
-                    <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                      <Mail size={20} />
-                    </div>
-                    <input
-                      type="email"
-                      required
-                      placeholder="Enter your email"
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
-                      className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all"
-                    />
+                  <div className="space-y-2 mb-8 text-center md:text-left">
+                    <button
+                      onClick={() => {
+                        setView("login");
+                        setError(null);
+                        setResetEmail("");
+                      }}
+                      className="flex items-center space-x-2 text-emerald-600 font-bold mb-4 hover:text-emerald-700 transition-colors"
+                    >
+                      <ChevronLeft size={20} />
+                      <span>Back</span>
+                    </button>
+                    <h3 className="text-3xl font-black text-gray-900 tracking-tight">
+                      Forgot Password?
+                    </h3>
+                    <p className="text-gray-400 font-medium">
+                      Enter your email and we'll send a code.
+                    </p>
                   </div>
 
-                  <p className="text-xs text-gray-400 text-center">
-                    We'll send a password reset code to your email address
-                  </p>
+                  <form onSubmit={handleRequestReset} className="space-y-6">
+                    <div className="relative group">
+                      <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                        <Mail size={20} />
+                      </div>
+                      <input
+                        type="email"
+                        required
+                        placeholder="Enter your email"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all"
+                      />
+                    </div>
 
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3 disabled:opacity-70"
-                  >
-                    {isLoading ? (
-                      <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span>Send Code</span>
-                        <ChevronRight size={22} strokeWidth={3} />
-                      </>
-                    )}
-                  </button>
-                </form>
+                    <p className="text-xs text-gray-400 text-center">
+                      We'll send a password reset code to your email address
+                    </p>
+
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3 disabled:opacity-70"
+                    >
+                      {isLoading ? (
+                        <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <>
+                          <span>Send Code</span>
+                          <ChevronRight size={22} strokeWidth={3} />
+                        </>
+                      )}
+                    </button>
+                  </form>
                 </>
               )}
 
@@ -463,36 +521,48 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                   <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white mx-auto shadow-lg shadow-emerald-200">
                     <Mail size={32} />
                   </div>
-                  <h4 className="text-xl font-black text-emerald-800">Email Sent!</h4>
+                  <h4 className="text-xl font-black text-emerald-800">
+                    Email Sent!
+                  </h4>
                   <p className="text-emerald-600 font-medium">
-                    Check your email at <span className="font-bold">{resetEmail}</span> for the reset code. 
-                    Redirecting shortly...
+                    Check your email at{" "}
+                    <span className="font-bold">{resetEmail}</span> for the
+                    reset code. Redirecting shortly...
                   </p>
                 </div>
               )}
-              </div>
-            ): view === 'otp' ? (
-                <div className="animate-in fade-in slide-in-from-right duration-500">
+            </div>
+          ) : view === "otp" ? (
+            <div className="animate-in fade-in slide-in-from-right duration-500">
               <div className="space-y-2 mb-8 text-center md:text-left">
-                <button 
+                <button
                   onClick={() => {
-                    setView('forgot');
+                    setView("forgot");
                     setError(null);
-                    setResetEmail('');
+                    setResetEmail("");
                   }}
                   className="flex items-center space-x-2 text-emerald-600 font-bold mb-4 hover:text-emerald-700 transition-colors"
                 >
                   <ChevronLeft size={20} />
                   <span>Back</span>
                 </button>
-                
-                <h3 className="text-3xl font-black text-gray-900 tracking-tight">Verify Code</h3>
-                <p className="text-gray-400 font-medium leading-relaxed">We sent a reset code to <span className="text-gray-900 font-bold">{resetEmail}</span></p>
+
+                <h3 className="text-3xl font-black text-gray-900 tracking-tight">
+                  Verify Code
+                </h3>
+                <p className="text-gray-400 font-medium leading-relaxed">
+                  We sent a reset code to{" "}
+                  <span className="text-gray-900 font-bold">{resetEmail}</span>
+                </p>
               </div>
 
               <form onSubmit={handleVerifyOTP} className="space-y-6">
                 <div className="py-4">
-                  <OTPInput value={resetToken} onChange={setResetToken} length={6} />
+                  <OTPInput
+                    value={resetToken}
+                    onChange={setResetToken}
+                    length={6}
+                  />
                 </div>
                 <button
                   type="submit"
@@ -500,27 +570,40 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                 >
                   Verify Code
                 </button>
-                <p className="text-center text-sm text-gray-400">Didn't get a code? <button type="button" onClick={handleRequestReset} className="text-emerald-600 font-bold hover:underline">Resend</button></p>
+                <p className="text-center text-sm text-gray-400">
+                  Didn't get a code?{" "}
+                  <button
+                    type="button"
+                    onClick={handleRequestReset}
+                    className="text-emerald-600 font-bold hover:underline"
+                  >
+                    Resend
+                  </button>
+                </p>
               </form>
             </div>
-            ): (
-              <div className="animate-in fade-in slide-in-from-left duration-500">
-                <button 
-                  onClick={() => {
-                      setView('otp');
-                      setResetToken('');
-                      setNewPassword('');
-                      setConfirmPassword('');
-                      setError(null);
-                    }}
-                  className="flex items-center space-x-2 text-emerald-600 font-bold mb-4 hover:text-emerald-700 transition-colors"
-                >
-                  <ChevronLeft size={20} />
-                  <span>Back</span>
-                </button>
+          ) : (
+            <div className="animate-in fade-in slide-in-from-left duration-500">
+              <button
+                onClick={() => {
+                  setView("otp");
+                  setResetToken("");
+                  setNewPassword("");
+                  setConfirmPassword("");
+                  setError(null);
+                }}
+                className="flex items-center space-x-2 text-emerald-600 font-bold mb-4 hover:text-emerald-700 transition-colors"
+              >
+                <ChevronLeft size={20} />
+                <span>Back</span>
+              </button>
               <div className="space-y-2 mb-8 text-center md:text-left">
-                <h3 className="text-3xl font-black text-gray-900 tracking-tight">Create New Password</h3>
-                <p className="text-gray-400 font-medium">Create a strong password for your account</p>
+                <h3 className="text-3xl font-black text-gray-900 tracking-tight">
+                  Create New Password
+                </h3>
+                <p className="text-gray-400 font-medium">
+                  Create a strong password for your account
+                </p>
               </div>
 
               {isSuccess ? (
@@ -528,8 +611,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                   <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white mx-auto shadow-lg shadow-emerald-200">
                     <Sparkles size={32} />
                   </div>
-                  <h4 className="text-xl font-black text-emerald-800">Password Changed!</h4>
-                  <p className="text-emerald-600 font-medium">Your password has been reset successfully. Redirecting to login...</p>
+                  <h4 className="text-xl font-black text-emerald-800">
+                    Password Changed!
+                  </h4>
+                  <p className="text-emerald-600 font-medium">
+                    Your password has been reset successfully. Redirecting to
+                    login...
+                  </p>
                 </div>
               ) : (
                 <form onSubmit={handleResetPassword} className="space-y-6">
@@ -555,7 +643,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                         <Lock size={20} />
                       </div>
                       <input
-                        type={showNewPassword ? 'text' : 'password'}
+                        type={showNewPassword ? "text" : "password"}
                         required
                         placeholder="New Password"
                         value={newPassword}
@@ -567,7 +655,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                         onClick={() => setShowNewPassword(!showNewPassword)}
                         className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                       >
-                        {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        {showNewPassword ? (
+                          <EyeOff size={20} />
+                        ) : (
+                          <Eye size={20} />
+                        )}
                       </button>
                     </div>
 
@@ -577,7 +669,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                         <Lock size={20} />
                       </div>
                       <input
-                        type={showConfirmPassword ? 'text' : 'password'}
+                        type={showConfirmPassword ? "text" : "password"}
                         required
                         placeholder="Confirm New Password"
                         value={confirmPassword}
@@ -586,10 +678,16 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                       />
                       <button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                       >
-                        {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        {showConfirmPassword ? (
+                          <EyeOff size={20} />
+                        ) : (
+                          <Eye size={20} />
+                        )}
                       </button>
                     </div>
 
@@ -597,19 +695,39 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                     {newPassword.length > 0 && (
                       <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
                         <span>
-                          {requirements.length && requirements.uppercase && requirements.number && (
-                            <FaCheck className="text-emerald-500 inline mr-1" />
-                          )}
-                          Password must be at least{' '}
-                          <span className={requirements.length ? 'text-emerald-500 font-bold' : ''}>
+                          {requirements.length &&
+                            requirements.uppercase &&
+                            requirements.number && (
+                              <FaCheck className="text-emerald-500 inline mr-1" />
+                            )}
+                          Password must be at least{" "}
+                          <span
+                            className={
+                              requirements.length
+                                ? "text-emerald-500 font-bold"
+                                : ""
+                            }
+                          >
                             8+ characters
                           </span>
-                          , include{' '}
-                          <span className={requirements.uppercase ? 'text-emerald-500 font-bold' : ''}>
+                          , include{" "}
+                          <span
+                            className={
+                              requirements.uppercase
+                                ? "text-emerald-500 font-bold"
+                                : ""
+                            }
+                          >
                             one uppercase letter
                           </span>
-                          , and{' '}
-                          <span className={requirements.number ? 'text-emerald-500 font-bold' : ''}>
+                          , and{" "}
+                          <span
+                            className={
+                              requirements.number
+                                ? "text-emerald-500 font-bold"
+                                : ""
+                            }
+                          >
                             one number
                           </span>
                           .
@@ -636,10 +754,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignUp }) => {
                 </form>
               )}
             </div>
-            )}
-          </div>
+          )}
+        </div>
 
-          {/* <div className="mt-10">
+        {/* <div className="mt-10">
             <div className="relative mb-8">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-100" />
