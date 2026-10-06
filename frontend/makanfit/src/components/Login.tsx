@@ -246,7 +246,7 @@ const Login: React.FC<LoginProps> = ({
       {/* Right Pane - Form (Mobile gets the full green background here) */}
       <div className="flex-1 flex items-center justify-center p-6 md:p-12 bg-gradient-to-br from-[#10B981] md:from-transparent via-[#059669] md:via-transparent to-[#064E3B] md:to-transparent">
         <div className="w-full max-w-md bg-white rounded-[40px] md:rounded-none shadow-2xl md:shadow-none p-8 md:p-0 overflow-hidden relative">
-          {onBackToWelcome && (
+          {onBackToWelcome && view === "login" && (
             <button
               type="button"
               onClick={onBackToWelcome}

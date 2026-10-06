@@ -304,7 +304,6 @@ const sendPasswordResetEmail = async (email, resetToken) => {
 };
 
 const requestPasswordReset = async (req, res) => {
-
   try {
     const { email } = req.body;
 
@@ -316,45 +315,59 @@ const requestPasswordReset = async (req, res) => {
       });
     }
 
+    // 2. FIND USER
     const user = await UserModel.findByEmail(email);
 
-    // 2. FIND USER BY EMAIL
-    // Same response whether or not the email exists
+    // Keep response generic for security
     const genericResponse = {
       success: true,
-      message: "If this email exists, you'll receive a password reset link",
+      message: "If this email exists, you'll receive a password reset code",
     };
-    if (!user) return res.status(200).json(genericResponse);
 
-    const token = crypto.randomBytes(32).toString("hex");
+    if (!user) {
+      return res.status(200).json(genericResponse);
+    }
+
+    // 3. GENERATE 6-DIGIT OTP
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // 4. HASH OTP BEFORE STORING
+    const codeHash = hashToken(code);
+
+    // 5. STORE RESET CODE
     await PasswordResetTokenModel.create({
       userId: user.user_id,
-      tokenHash: hashToken(token),
-      expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour
+      codeHash,
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      requestedIp: req.ip,
     });
- 
-    await sendPasswordResetEmail(user.email, token);
- 
+
+    // 6. SEND OTP TO USER
+    await sendPasswordResetEmail(user.email, code);
+
+    // 7. GENERIC RESPONSE
     return res.status(200).json(genericResponse);
 
   } catch (error) {
+    console.error("Request Password Reset Error:", error);
+
     return serverError(res, "Request Password Reset Error", error);
   }
 };
 
 const resetPassword = async (req, res) => {
-
   try {
-    const { token, newPassword } = req.body;
+    const { code, newPassword } = req.body;
 
-    // 1. VALIDATE INPUT
-    if (!token || !token.trim()) {
+    // 1. VALIDATE OTP
+    if (!code || !/^\d{6}$/.test(code)) {
       return res.status(400).json({
         success: false,
-        message: "Reset token is required",
+        message: "Valid 6-digit reset code is required",
       });
     }
 
+    // 2. VALIDATE PASSWORD
     if (!newPassword) {
       return res.status(400).json({
         success: false,
@@ -362,8 +375,9 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    // 2. VALIDATE PASSWORD STRENGTH
+    // 3. VALIDATE PASSWORD STRENGTH
     const passwordValidation = validatePassword(newPassword);
+
     if (!passwordValidation.valid) {
       return res.status(400).json({
         success: false,
@@ -371,32 +385,75 @@ const resetPassword = async (req, res) => {
       });
     }
 
+    // 4. HASH NEW PASSWORD
     const passwordHash = await bcrypt.hash(newPassword, saltRounds);
- 
+
+    // 5. FIND OTP + UPDATE PASSWORD IN ONE TRANSACTION
     const outcome = await withTransaction(async (client) => {
-      const resetToken = await PasswordResetTokenModel.findValid(hashToken(token), client);
-      if (!resetToken) return "INVALID_TOKEN";
- 
-      const updated = await UserModel.updatePassword(resetToken.user_id, passwordHash, client);
-      if (!updated) return "USER_NOT_FOUND";
- 
-      await PasswordResetTokenModel.markUsed(resetToken.token_id, client);
+      const resetToken = await PasswordResetTokenModel.findValid(
+        hashToken(code),
+        client
+      );
+
+      if (!resetToken) {
+        return "INVALID_CODE";
+      }
+
+      // Optional: prevent excessive attempts
+      if (resetToken.attempts >= 5) {
+        return "TOO_MANY_ATTEMPTS";
+      }
+
+      const updated = await UserModel.updatePassword(
+        resetToken.user_id,
+        passwordHash,
+        client
+      );
+
+      if (!updated) {
+        return "USER_NOT_FOUND";
+      }
+
+      await PasswordResetTokenModel.markUsed(
+        resetToken.id,
+        client
+      );
+
       return "OK";
     });
- 
-    if (outcome === "INVALID_TOKEN") {
-      return res.status(400).json({ success: false, message: "Invalid or expired reset token" });
+
+    // 6. HANDLE RESULT
+    if (outcome === "INVALID_CODE") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset code",
+      });
     }
+
+    if (outcome === "TOO_MANY_ATTEMPTS") {
+      return res.status(429).json({
+        success: false,
+        message: "Too many attempts. Please request a new reset code.",
+      });
+    }
+
     if (outcome === "USER_NOT_FOUND") {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
- 
+
+    // 7. SUCCESS
     return res.status(200).json({
       success: true,
-      message: "Password reset successfully. You can now log in with your new password.",
+      message:
+        "Password reset successfully. You can now log in with your new password.",
     });
 
   } catch (error) {
+    console.error("Reset Password Error:", error);
+
     return serverError(res, "Reset Password Error", error);
   }
 };

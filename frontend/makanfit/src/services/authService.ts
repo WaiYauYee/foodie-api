@@ -577,13 +577,13 @@ export const requestPasswordReset = async (
 // ============================================
 
 /**
- * Reset password with reset token
- * @param token - Password reset token
+ * Reset password with 6-digit reset code
+ * @param code - 6-digit password reset code
  * @param newPassword - New password
  * @returns Promise with reset result
  */
 export const resetPassword = async (
-  token: string,
+  code: string,
   newPassword: string
 ): Promise<AuthResponse> => {
   try {
@@ -594,7 +594,10 @@ export const resetPassword = async (
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token, newPassword }),
+        body: JSON.stringify({
+          code,
+          newPassword,
+        }),
       }
     );
 
@@ -610,6 +613,7 @@ export const resetPassword = async (
     return result;
   } catch (error) {
     console.error('Reset Password Error:', error);
+
     return {
       success: false,
       message: 'Network error. Please try again.',
