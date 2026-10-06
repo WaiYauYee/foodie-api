@@ -34,7 +34,6 @@ import {
   Mic,
 } from "lucide-react";
 // import Fuse from 'fuse.js';
-import MakanFitAvatar from "./MakanFitAvatar";
 import CameraScanner from "./CameraScanner";
 import MealCategoryIcon from "./MealCategoryIcon";
 import { segmentFoodImage } from "../services/foodSegmentationService";
@@ -45,6 +44,7 @@ import {
 } from "../services/foodCalorieEstimation";
 import VoiceInputDialog from "./VoiceInputDialog";
 import { SEARCHABLE_FOODS } from "../data/foodDatabase";
+import StoryCategoryIcon from "./StoryCategoryIcon";
 
 interface DiaryProps {
   meals: MealEntry[];
@@ -2283,10 +2283,11 @@ const [rejectionInfo, setRejectionInfo] = useState<{
             <div className="absolute -bottom-4 -right-4 bg-transparent p-4 rounded-2xl text-white shadow-lg animate-bounce">
               <div className="relative">
                 <div className="w-16 h-16 bg-emerald-50 rounded-[40px] flex items-center justify-center border-4 border-white shadow-xl overflow-hidden group">
-                  <MakanFitAvatar
-                    size={42}
-                    className="group-hover:scale-110 transition-transform duration-500"
-                  />
+                  <StoryCategoryIcon
+                    type="nutrition"
+                    size={80}
+                    className="!w-16 !h-16 !rounded-3xl shadow-md"
+                />
                 </div>
               </div>
             </div>
