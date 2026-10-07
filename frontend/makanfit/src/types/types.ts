@@ -250,8 +250,6 @@ export interface AuthResponse {
 }
 
 export interface LoginResponse extends AuthResponse {
-  user?: User;
-  token?: string;
   onboardingRequired?: boolean;
 }
 
