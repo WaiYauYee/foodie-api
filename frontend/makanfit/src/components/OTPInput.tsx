@@ -78,7 +78,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ length = 6, value, onChange }) => {
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
           className={`
-            w-12 h-14 md:w-14 md:h-16 
+            w-10 h-12 sm:w-11 sm:h-13 md:w-14 md:h-16 
             text-2xl md:text-3xl font-black text-center 
             bg-white border-2 border-gray-100 rounded-xl
             shadow-[0_4px_0_0_#e2e8f0]
