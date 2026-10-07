@@ -251,7 +251,7 @@ const SignUp: React.FC<SignUpProps> = ({
                   {formData.firstName.charAt(0).toUpperCase()}
                   {formData.lastName.charAt(0).toUpperCase()}
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="font-bold text-gray-900 truncate">
                     {formData.firstName} {formData.lastName}
                   </p>
@@ -266,7 +266,7 @@ const SignUp: React.FC<SignUpProps> = ({
               <button
                 type="button"
                 onClick={onNavigateToLogin}
-                className="w-[180px] h-[60px] bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
+                className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
               >
                 <span>Get Started</span>
               </button>
