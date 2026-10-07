@@ -475,7 +475,7 @@ const Login: React.FC<LoginProps> = ({
                       Forgot Password?
                     </h3>
                     <p className="text-gray-400 font-medium">
-                      Enter your email and we'll send a code.
+                      Please enter the email address linked to your account.
                     </p>
                   </div>
 
@@ -508,7 +508,6 @@ const Login: React.FC<LoginProps> = ({
                       ) : (
                         <>
                           <span>Send Code</span>
-                          <ChevronRight size={22} strokeWidth={3} />
                         </>
                       )}
                     </button>
@@ -548,10 +547,10 @@ const Login: React.FC<LoginProps> = ({
                 </button>
 
                 <h3 className="text-3xl font-black text-gray-900 tracking-tight">
-                  Verify Code
+                  OTP Verification
                 </h3>
                 <p className="text-gray-400 font-medium leading-relaxed">
-                  We sent a reset code to{" "}
+                  Please enter the verification reset code sent to your email,{" "}
                   <span className="text-gray-900 font-bold">{resetEmail}</span>
                 </p>
               </div>
@@ -568,7 +567,7 @@ const Login: React.FC<LoginProps> = ({
                   type="submit"
                   className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl active:scale-[0.98] transition-all flex items-center justify-center"
                 >
-                  Verify Code
+                  Verify
                 </button>
                 <p className="text-center text-sm text-gray-400">
                   Didn't get a code?{" "}
@@ -746,8 +745,7 @@ const Login: React.FC<LoginProps> = ({
                       <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
                       <>
-                        <span>Save Password</span>
-                        <ChevronRight size={22} strokeWidth={3} />
+                        <span>Reset</span>
                       </>
                     )}
                   </button>
