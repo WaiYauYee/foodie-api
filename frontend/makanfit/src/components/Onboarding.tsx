@@ -57,7 +57,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
 
   const handleFinish = () => {
     setIsSuccess(true);
-    onComplete(formData);
   };
 
   const renderProgress = () => (
@@ -197,14 +196,18 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                   Perfect!
                 </h4>
                 <p className="text-gray-500 font-bold leading-relaxed max-w-[280px] mx-auto">
-                  Your profile is all set. Let's start tracking your makan!
+                  Your profile is all set. Let's build your personalized plan!
                 </p>
               </div>
 
-              <div className="w-full max-w-[200px] pt-6">
-                <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 animate-progress-fast" />
-                </div>
+              <div className="w-full max-w-[280px] pt-6">
+                <button
+                  type="button"
+                  onClick={() => onComplete(formData)}
+                  className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-2xl shadow-xl active:scale-[0.98] transition-all flex items-center justify-center space-x-3 hover:bg-black"
+                >
+                  <span>Continue</span>
+                </button>
               </div>
             </motion.div>
           ) : (
@@ -560,21 +563,15 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                           appearance-none cursor-pointer
                         "
                         >
-                          <option value="maintain">
-                            Maintain Weight
-                          </option>
+                          <option value="maintain">Maintain Weight</option>
                           <option value="gradual_gain">
                             Gradual Gain Weight
                           </option>
-                          <option value="rapid_gain">
-                            Rapid Gain Weight
-                          </option>
+                          <option value="rapid_gain">Rapid Gain Weight</option>
                           <option value="gradual_lose">
                             Gradual Lose Weight
                           </option>
-                          <option value="rapid_lose">
-                            Rapid Lose Weight
-                          </option>
+                          <option value="rapid_lose">Rapid Lose Weight</option>
                         </select>
 
                         {/* Chevron icon */}
@@ -644,7 +641,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
                   <span>
                     {step === totalSteps ? "Complete Setup" : "Next Step"}
                   </span>
-                  <ChevronRight size={22} strokeWidth={3} />
                 </button>
               </div>
             </motion.div>
