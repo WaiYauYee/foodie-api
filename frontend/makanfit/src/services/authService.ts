@@ -53,32 +53,33 @@ export const signUp = async (data: SignUpData): Promise<AuthResponse> => {
       };
     }
 
-    if (result.user && result.token) {
-      localStorage.setItem(
-        'makanfit_user',
-        JSON.stringify(result.user)
-      );
+    // for automatic login purpose, is for automatically authenticating the user after signup
+    // if (result.user && result.token) {
+    //   localStorage.setItem(
+    //     'makanfit_user',
+    //     JSON.stringify(result.user)
+    //   );
 
-      localStorage.setItem(
-        'makanfit_userId',
-        result.user.userId
-      );
+    //   localStorage.setItem(
+    //     'makanfit_userId',
+    //     result.user.userId
+    //   );
 
-      localStorage.setItem(
-        'makanfit_token',
-        result.token
-      );
+    //   localStorage.setItem(
+    //     'makanfit_token',
+    //     result.token
+    //   );
 
-      localStorage.setItem(
-        'makanfit_auth',
-        'true'
-      );
+    //   localStorage.setItem(
+    //     'makanfit_auth',
+    //     'true'
+    //   );
 
-      localStorage.setItem(
-        'makanfit_onboarding_done',
-        'false'
-      );
-    }
+    //   localStorage.setItem(
+    //     'makanfit_onboarding_done',
+    //     'false'
+    //   );
+    // }
 
     return result;
   } catch (error) {
