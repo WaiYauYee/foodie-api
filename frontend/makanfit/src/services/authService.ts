@@ -124,18 +124,20 @@ export const login = async (
 
     // Store user data and JWT token
     if (result.user && result.token) {
-      localStorage.setItem('makanfit_user', JSON.stringify(result.user));
-      localStorage.setItem('makanfit_userId', result.user.userId);
+      // Copy the backend's answer into the user object so App.tsx can see it
+      const userWithFlag = {
+        ...result.user,
+        onboardingComplete: !result.onboardingRequired,
+      };
+
+      localStorage.setItem('makanfit_user', JSON.stringify(userWithFlag));
+      localStorage.setItem('makanfit_userId', userWithFlag.userId);
       localStorage.setItem('makanfit_token', result.token);
       localStorage.setItem('makanfit_auth', 'true');
-
-      // FIXED: Use backend's onboarding status to set localStorage flag
-      // The backend returns onboardingRequired = true if onboarding_completed = false
-      if (result.onboardingRequired) {
-        localStorage.setItem('makanfit_onboarding_done', 'false');
-      } else {
-        localStorage.setItem('makanfit_onboarding_done', 'true');
-      }
+      localStorage.setItem(
+        'makanfit_onboarding_done',
+        String(userWithFlag.onboardingComplete)
+      );
     }
 
     return result;
@@ -181,6 +183,8 @@ export const completeOnboarding = async (
     const result = await response.json();
 
     if (response.ok && result.user) {
+      result.user = { ...result.user, onboardingComplete: true };
+
       localStorage.setItem(
         'makanfit_user',
         JSON.stringify(result.user)

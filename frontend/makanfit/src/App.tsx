@@ -204,29 +204,76 @@ const App: React.FC = () => {
     localStorage.setItem("makanfit_meals", JSON.stringify(meals));
   }, [meals]);
 
-  // FIXED: Improved handleLogin with proper onboarding status detection
-  const handleLogin = () => {
-    setIsAuthenticated(true);
+  const submitPendingOnboarding = async (userId: string): Promise<User | null> => {
+    const raw = localStorage.getItem("makanfit_pending_onboarding");
+    if (!raw) return null;
 
-    // Get the user data from localStorage (set by authService.ts during login)
+    try {
+      const p = JSON.parse(raw);
+
+      const payload: CompleteOnboardingPayload = {
+        birthDate: p.birthDate || "",
+        gender: p.gender || "female",
+        heightCm: p.heightCm ?? 165,
+        startWeight: p.startWeight ?? 60,
+        goalWeight: p.goalWeight ?? 55,
+        dietaryGoal: p.dietaryGoal || "maintain",
+        activityLevel: p.activityLevel || "moderately_active",
+        triedOtherApps: p.triedOtherApps ?? false,
+        dietType: p.dietType || "classic",
+        primaryGoal: p.primaryGoal || "healthier",
+
+        targetCalories: p.targetCalories,
+        targetProteinG: p.targetProtein,
+        targetCarbsG: p.targetCarbs,
+        targetFatG: p.targetFat,
+        targetFiberG: p.targetFiber,
+        targetWaterMl: p.targetWater,
+
+        goalOrigin: p.goalOrigin || "standard",
+        macroGoalOrigin: p.macroGoalOrigin || "standard",
+      };
+
+      const response = await completeOnboarding(userId, payload);
+
+      if (response.success && response.user) {
+        localStorage.removeItem("makanfit_pending_onboarding");
+        return response.user;
+      }
+    } catch (error) {
+      console.error("Submit pending onboarding failed:", error);
+    }
+    return null;
+  };
+
+  const handleLogin = async () => {
     const savedUser = localStorage.getItem("makanfit_user");
+
     if (savedUser) {
       try {
-        const userData = JSON.parse(savedUser) as User;
+        let userData = JSON.parse(savedUser) as User;
+
+        // Not onboarded on the backend yet, but guest answers exist → submit them now
+        if (userData.onboardingComplete !== true) {
+          const updatedUser = await submitPendingOnboarding(userData.userId);
+          if (updatedUser) userData = updatedUser;
+        }
+
         setUser(userData);
-        // Check the backend's onboarding status
-        // Backend returns onboardingComplete as true/false
-        setHasCompletedOnboarding(userData.onboardingComplete === true);
+        const done = userData.onboardingComplete === true;
+        setHasCompletedOnboarding(done);
+
+        if (done) {
+          setPendingOnboardingData(null);
+          localStorage.removeItem("makanfit_pending_onboarding");
+        }
       } catch (error) {
         console.error("Error parsing user:", error);
-        // Fallback: check localStorage flag
-        const onboardingDone =
-          localStorage.getItem("makanfit_onboarding_done") === "true";
-        setHasCompletedOnboarding(onboardingDone);
+        setHasCompletedOnboarding(false);
       }
     }
 
-    // Navigate to dashboard - Onboarding component will show if needed
+    setIsAuthenticated(true); // set last, so no plan builder flash
     setCurrentPage(Page.DASHBOARD);
   };
 

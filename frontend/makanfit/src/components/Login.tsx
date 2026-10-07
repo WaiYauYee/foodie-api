@@ -5,7 +5,6 @@ import {
   Mail,
   Lock,
   Sparkles,
-  ChevronRight,
   ChevronLeft,
 } from "lucide-react";
 // import MakanFitAvatar from './MakanFitAvatar';
