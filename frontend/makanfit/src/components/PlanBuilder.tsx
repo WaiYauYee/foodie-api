@@ -81,7 +81,6 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
 
         if (next >= 100) {
           clearInterval(timer);
-          setTimeout(() => setStage('reveal'), 450);
         }
         return next;
       });
@@ -220,10 +219,12 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
 
               <div className="space-y-2 mb-8">
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                  Building a plan for you...
+                  {progress >= 100 ? 'Your plan is ready!' : 'Building a plan for you...'}
                 </h2>
                 <p className="text-sm font-medium text-slate-400">
-                  Tailoring your daily calories & macros to your body metrics
+                  {progress >= 100
+                    ? 'All calculations complete. Tap Next to view your personalized targets.'
+                    : 'Tailoring your daily calories & macros to your body metrics'}
                 </p>
               </div>
 
@@ -264,6 +265,32 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                     </div>
                   );
                 })}
+              </div>
+
+              {/* Explicit Next Button */}
+              <div className="w-full flex space-x-3 mt-5">
+                {onBackToOnboarding && (
+                  <button
+                    type="button"
+                    onClick={onBackToOnboarding}
+                    className="w-14 h-14 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-all active:scale-95 cursor-pointer shrink-0"
+                    aria-label="Back to onboarding"
+                  >
+                    <ChevronLeft size={22} />
+                  </button>
+                )}
+                <button
+                  type="button"
+                  disabled={progress < 100}
+                  onClick={() => setStage('reveal')}
+                  className={`flex-1 py-4 px-6 rounded-2xl font-black text-sm uppercase tracking-wider flex items-center justify-center space-x-2 transition-all ${
+                    progress >= 100
+                      ? 'bg-[#1A2A33] hover:bg-black text-white shadow-xl active:scale-[0.98] cursor-pointer'
+                      : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                  }`}
+                >
+                  <span>{progress >= 100 ? 'Next' : `Calculating (${Math.round(progress)}%)`}</span>
+                </button>
               </div>
             </motion.div>
           ) : (
