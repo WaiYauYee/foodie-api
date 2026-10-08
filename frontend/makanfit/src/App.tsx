@@ -726,8 +726,8 @@ const App: React.FC = () => {
       {/* Sidebar - Desktop Only */}
       <aside className="hidden md:flex flex-col w-72 h-screen fixed left-0 top-0 bg-white border-r border-gray-100 p-6 z-50">
         <div className="mb-10 px-4 flex items-center justify-between">
-          <h1 className="text-2xl font-black text-emerald-600 tracking-tight">
-            MAKANFIT
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            makan<span className="text-emerald-600">fit</span>
           </h1>
 
           {/* Desktop Streak Button */}
@@ -760,8 +760,8 @@ const App: React.FC = () => {
       <div className="flex-1 flex flex-col md:ml-72 min-h-screen">
         {/* Mobile Header Only */}
         <header className="md:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md px-6 py-4 flex justify-between items-center border-b border-gray-100">
-          <h1 className="text-xl font-black text-emerald-600 tracking-tight">
-            MAKANFIT
+          <h1 className="text-xl font-black text-slate-900 tracking-tight">
+            makan<span className="text-emerald-600">fit</span>
           </h1>
 
           {/* Mobile Streak Button */}
