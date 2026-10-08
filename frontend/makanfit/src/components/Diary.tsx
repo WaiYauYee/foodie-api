@@ -441,7 +441,7 @@ export const Diary: React.FC<DiaryProps> = ({
     startWeight: 72.0, // starting weight in kg
     currentWeight: 70.0, // current weight
     goalWeight: 65.0, // target weight
-    activityLevel: "Sedentary", // ActivityLevel type
+    activityLevel: "sedentary", // ActivityLevel type
     dietaryGoal: "Gradual Lose Weight",
     goalOrigin: "standard", // 'standard' | 'custom'
     targetCalories: 2000,
