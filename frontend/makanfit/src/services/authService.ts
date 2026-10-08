@@ -588,6 +588,7 @@ export const requestPasswordReset = async (
  * @returns Promise with reset result
  */
 export const resetPassword = async (
+  email: string,
   code: string,
   newPassword: string
 ): Promise<AuthResponse> => {
@@ -600,6 +601,7 @@ export const resetPassword = async (
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          email, 
           code,
           newPassword,
         }),
@@ -623,5 +625,32 @@ export const resetPassword = async (
       success: false,
       message: 'Network error. Please try again.',
     };
+  }
+};
+
+export const verifyResetCode = async (
+  email: string,
+  code: string
+): Promise<AuthResponse> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/auth/verify-reset-code`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, code }),
+    });
+
+    const result = (await response.json()) as AuthResponse;
+
+    if (!response.ok) {
+      return {
+        success: false,
+        message: result.message || 'Invalid or expired reset code',
+      };
+    }
+
+    return result;
+  } catch (error) {
+    console.error('Verify Reset Code Error:', error);
+    return { success: false, message: 'Network error. Please try again.' };
   }
 };

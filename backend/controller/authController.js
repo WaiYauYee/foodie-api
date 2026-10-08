@@ -13,6 +13,7 @@ const {
   validateSignUpData,
   validateOnboardingData,
 } = require("../utils/validators");
+const { sendPasswordResetEmail } = require("../utils/mailer");
 
 const saltRounds = 10;
 
@@ -293,15 +294,15 @@ const hashToken = (token) => crypto.createHash("sha256").update(token).digest("h
  * @param {string} email - User email
  * @param {string} resetToken - Plain reset token (for email)
  */
-const sendPasswordResetEmail = async (email, resetToken) => {
-  // TODO: Implement email sending using nodemailer or similar
-  // Example:
-  // const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-  // await sendEmail(email, 'Password Reset Request', resetLink);
+// const sendPasswordResetEmail = async (email, resetToken) => {
+//   // TODO: Implement email sending using nodemailer or similar
+//   // Example:
+//   // const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+//   // await sendEmail(email, 'Password Reset Request', resetLink);
   
-  console.log(`[EMAIL] Password reset token for ${email}: ${resetToken}`);
-  // For now, just log it for testing
-};
+//   console.log(`[EMAIL] Password reset token for ${email}: ${resetToken}`);
+//   // For now, just log it for testing
+// };
 
 const requestPasswordReset = async (req, res) => {
   try {
@@ -318,14 +319,12 @@ const requestPasswordReset = async (req, res) => {
     // 2. FIND USER
     const user = await UserModel.findByEmail(email);
 
-    // Keep response generic for security
-    const genericResponse = {
-      success: true,
-      message: "If this email exists, you'll receive a password reset code",
-    };
-
+    // Email is not registered
     if (!user) {
-      return res.status(200).json(genericResponse);
+      return res.status(404).json({
+        success: false,
+        message: "This email is not registered",
+      });
     }
 
     // 3. GENERATE 6-DIGIT OTP
@@ -334,19 +333,29 @@ const requestPasswordReset = async (req, res) => {
     // 4. HASH OTP BEFORE STORING
     const codeHash = hashToken(code);
 
-    // 5. STORE RESET CODE
+    // 5. INVALIDATE OLD CODES, THEN STORE NEW ONE
+    await PasswordResetTokenModel.invalidateAllForUser(user.user_id);
     await PasswordResetTokenModel.create({
       userId: user.user_id,
       codeHash,
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
       requestedIp: req.ip,
     });
 
-    // 6. SEND OTP TO USER
-    await sendPasswordResetEmail(user.email, code);
+    // 6. SEND EMAIL (a failure must not change the generic response)
+    try {
+      console.log("Sending reset email to:", user.email);
+      await sendPasswordResetEmail(user.email, code);
+      console.log("Reset email sent");
+    } catch (mailError) {
+      console.error("Send reset email failed:", mailError);
+    }
 
-    // 7. GENERIC RESPONSE
-    return res.status(200).json(genericResponse);
+    // 7. SUCCESS RESPONSE
+    return res.status(200).json({
+      success: true,
+      message: "Password reset code sent to your email",
+    });
 
   } catch (error) {
     console.error("Request Password Reset Error:", error);
@@ -355,81 +364,36 @@ const requestPasswordReset = async (req, res) => {
   }
 };
 
-const resetPassword = async (req, res) => {
+const verifyResetCode = async (req, res) => {
   try {
-    const { code, newPassword } = req.body;
+    const { email, code } = req.body;
 
-    // 1. VALIDATE OTP
+    if (!email || !validateEmail(email)) {
+      return res.status(400).json({ success: false, message: "Valid email is required" });
+    }
     if (!code || !/^\d{6}$/.test(code)) {
-      return res.status(400).json({
-        success: false,
-        message: "Valid 6-digit reset code is required",
-      });
+      return res.status(400).json({ success: false, message: "Valid 6-digit reset code is required" });
     }
 
-    // 2. VALIDATE PASSWORD
-    if (!newPassword) {
-      return res.status(400).json({
-        success: false,
-        message: "New password is required",
-      });
-    }
+    const invalid = () =>
+      res.status(400).json({ success: false, message: "Invalid or expired reset code" });
 
-    // 3. VALIDATE PASSWORD STRENGTH
-    const passwordValidation = validatePassword(newPassword);
+    const user = await UserModel.findByEmail(email);
+    if (!user) return invalid();
 
-    if (!passwordValidation.valid) {
-      return res.status(400).json({
-        success: false,
-        message: passwordValidation.message,
-      });
-    }
-
-    // 4. HASH NEW PASSWORD
-    const passwordHash = await bcrypt.hash(newPassword, saltRounds);
-
-    // 5. FIND OTP + UPDATE PASSWORD IN ONE TRANSACTION
     const outcome = await withTransaction(async (client) => {
-      const resetToken = await PasswordResetTokenModel.findValid(
-        hashToken(code),
-        client
-      );
+      const token = await PasswordResetTokenModel.findLatestActive(user.user_id, client);
+      if (!token) return "INVALID_CODE";
+      if (token.attempts >= 5) return "TOO_MANY_ATTEMPTS";
 
-      if (!resetToken) {
+      if (token.code_hash !== hashToken(code)) {
+        await PasswordResetTokenModel.incrementAttempts(token.id, client);
         return "INVALID_CODE";
       }
-
-      // Optional: prevent excessive attempts
-      if (resetToken.attempts >= 5) {
-        return "TOO_MANY_ATTEMPTS";
-      }
-
-      const updated = await UserModel.updatePassword(
-        resetToken.user_id,
-        passwordHash,
-        client
-      );
-
-      if (!updated) {
-        return "USER_NOT_FOUND";
-      }
-
-      await PasswordResetTokenModel.markUsed(
-        resetToken.id,
-        client
-      );
-
-      return "OK";
+      return "OK"; // correct, but NOT marked as used yet
     });
 
-    // 6. HANDLE RESULT
-    if (outcome === "INVALID_CODE") {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid or expired reset code",
-      });
-    }
-
+    if (outcome === "INVALID_CODE") return invalid();
     if (outcome === "TOO_MANY_ATTEMPTS") {
       return res.status(429).json({
         success: false,
@@ -437,23 +401,69 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    if (outcome === "USER_NOT_FOUND") {
-      return res.status(404).json({
+    return res.status(200).json({ success: true, message: "Code verified" });
+  } catch (error) {
+    return serverError(res, "Verify Reset Code Error", error);
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, code, newPassword } = req.body;
+
+    if (!email || !validateEmail(email)) {
+      return res.status(400).json({ success: false, message: "Valid email is required" });
+    }
+    if (!code || !/^\d{6}$/.test(code)) {
+      return res.status(400).json({ success: false, message: "Valid 6-digit reset code is required" });
+    }
+    if (!newPassword) {
+      return res.status(400).json({ success: false, message: "New password is required" });
+    }
+    const passwordValidation = validatePassword(newPassword);
+    if (!passwordValidation.valid) {
+      return res.status(400).json({ success: false, message: passwordValidation.message });
+    }
+
+    const invalid = () =>
+      res.status(400).json({ success: false, message: "Invalid or expired reset code" });
+
+    const user = await UserModel.findByEmail(email);
+    if (!user) return invalid();
+
+    const passwordHash = await bcrypt.hash(newPassword, saltRounds);
+
+    const outcome = await withTransaction(async (client) => {
+      const token = await PasswordResetTokenModel.findLatestActive(user.user_id, client);
+      if (!token) return "INVALID_CODE";
+
+      if (token.attempts >= 5) return "TOO_MANY_ATTEMPTS";
+
+      if (token.code_hash !== hashToken(code)) {
+        await PasswordResetTokenModel.incrementAttempts(token.id, client);
+        return "INVALID_CODE";
+      }
+
+      const updated = await UserModel.updatePassword(user.user_id, passwordHash, client);
+      if (!updated) return "INVALID_CODE";
+
+      await PasswordResetTokenModel.markUsed(token.id, client);
+      return "OK";
+    });
+
+    if (outcome === "INVALID_CODE") return invalid();
+    if (outcome === "TOO_MANY_ATTEMPTS") {
+      return res.status(429).json({
         success: false,
-        message: "User not found",
+        message: "Too many attempts. Please request a new reset code.",
       });
     }
 
-    // 7. SUCCESS
     return res.status(200).json({
       success: true,
-      message:
-        "Password reset successfully. You can now log in with your new password.",
+      message: "Password reset successfully. You can now log in with your new password.",
     });
-
   } catch (error) {
-    console.error("Reset Password Error:", error);
-
     return serverError(res, "Reset Password Error", error);
   }
 };
@@ -472,6 +482,7 @@ module.exports = {
   updateUserProfileGoals,
   completeOnboarding,
   requestPasswordReset,
+  verifyResetCode,
   resetPassword,
   logout
 };

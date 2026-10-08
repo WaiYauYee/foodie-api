@@ -23,32 +23,29 @@ const PasswordResetTokenModel = {
     return rows[0];
   },
 
-  /**
-   * Returns a reset record only if:
-   * - the code/token matches
-   * - it has not expired
-   * - it has not already been used
-   */
-  async findValid(codeHash, db = pool) {
+    // Latest unused, unexpired token for this user (code is NOT matched here)
+  async findLatestActive(userId, db = pool) {
     const { rows } = await db.query(
-      `SELECT
-         id,
-         user_id,
-         code_hash,
-         attempts,
-         created_at,
-         expires_at,
-         used_at
+      `SELECT id, user_id, code_hash, attempts, expires_at
        FROM password_reset_tokens
-       WHERE code_hash = $1
+       WHERE user_id = $1
          AND expires_at > NOW()
          AND used_at IS NULL
        ORDER BY created_at DESC
        LIMIT 1`,
-      [codeHash]
+      [userId]
     );
-
     return rows[0] || null;
+  },
+
+  // Kill older codes when a new one is requested
+  async invalidateAllForUser(userId, db = pool) {
+    await db.query(
+      `UPDATE password_reset_tokens
+       SET used_at = NOW()
+       WHERE user_id = $1 AND used_at IS NULL`,
+      [userId]
+    );
   },
 
   async markUsed(id, db = pool) {

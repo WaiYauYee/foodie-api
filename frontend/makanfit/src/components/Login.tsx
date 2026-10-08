@@ -1,21 +1,15 @@
 import React, { useState } from "react";
-import {
-  Eye,
-  EyeOff,
-  Mail,
-  Lock,
-  Sparkles,
-  ChevronLeft,
-} from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Sparkles, ChevronLeft } from "lucide-react";
 // import MakanFitAvatar from './MakanFitAvatar';
 import {
   login,
   requestPasswordReset,
   resetPassword,
+  verifyResetCode,
 } from "../services/authService";
 import OTPInput from "./OTPInput";
 import { FaCheck } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import StoryCategoryIcon from "./StoryCategoryIcon";
 
 interface LoginProps {
@@ -120,7 +114,7 @@ const Login: React.FC<LoginProps> = ({
     setIsLoading(true);
 
     try {
-      const result = await resetPassword(resetToken, newPassword);
+      const result = await resetPassword(resetEmail, resetToken, newPassword);
 
       if (result.success) {
         // Password reset successful
@@ -148,17 +142,31 @@ const Login: React.FC<LoginProps> = ({
     }
   };
 
-  const handleVerifyOTP = (e: React.FormEvent) => {
+  const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Validation: Token provided
-    if (!resetToken.trim()) {
-      setError(
-        "Reset token is required. Please check your email for the reset code.",
-      );
+    setError(null);
+
+    if (!/^\d{6}$/.test(resetToken)) {
+      setError("Please enter the full 6-digit code.");
       return;
     }
-    setView("reset");
-    setError(null);
+
+    setIsLoading(true);
+    try {
+      const result = await verifyResetCode(resetEmail, resetToken);
+
+      if (result.success) {
+        setView("reset");
+      } else {
+        setError(result.message || "Invalid or expired reset code");
+        setResetToken(""); // clear the boxes so they can retype
+      }
+    } catch (error) {
+      console.error("Verify code failed:", error);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRequestReset = async (e: React.FormEvent) => {
@@ -410,7 +418,7 @@ const Login: React.FC<LoginProps> = ({
               </form>
 
               {/* Social Login Divider */}
-              <div className="relative my-6">
+              {/* <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-slate-200" />
                 </div>
@@ -419,10 +427,10 @@ const Login: React.FC<LoginProps> = ({
                     Or continue with
                   </span>
                 </div>
-              </div>
+              </div> */}
 
               {/* Social Login Buttons */}
-              <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <button
                   type="button"
                   // className="w-1/2 flex items-center justify-center space-x-3 py-3.5 px-4 border-2 border-slate-200 hover:border-slate-300 rounded-2xl bg-white hover:bg-slate-50 transition-all font-semibold text-sm text-slate-700 shadow-sm"
@@ -431,7 +439,7 @@ const Login: React.FC<LoginProps> = ({
                   <FcGoogle size={20} />
                   <span>Google</span>
                 </button>
-              </div>
+              </div> */}
 
               <p className="mt-10 text-center text-gray-400 font-medium">
                 Don't have an account?{" "}
@@ -566,13 +574,20 @@ const Login: React.FC<LoginProps> = ({
                   type="submit"
                   className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl active:scale-[0.98] transition-all flex items-center justify-center"
                 >
-                  Verify
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    "Verify"
+                  )}
                 </button>
                 <p className="text-center text-sm text-gray-400">
                   Didn't get a code?{" "}
                   <button
                     type="button"
-                    onClick={handleRequestReset}
+                    onClick={(e) => {
+                      setResetToken("");
+                      handleRequestReset(e);
+                    }}
                     className="text-emerald-600 font-bold hover:underline"
                   >
                     Resend
