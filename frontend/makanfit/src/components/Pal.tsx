@@ -28,7 +28,7 @@ import PalBackground, {
   BACKGROUND_OPTIONS,
 } from "./PalBackground";
 import StreakModal from "./StreakModal";
-import { SHOP_ITEMS, ITEM_VIEWBOX } from '../data/shopItems';
+import { SHOP_ITEMS, ITEM_VIEWBOX } from "../data/shopItems";
 
 interface PalProps {
   meals?: MealEntry[];
@@ -523,9 +523,19 @@ const QuestCard: React.FC<{
             Claimed
           </span>
         ) : (
-          <div className="flex items-center space-x-1 bg-amber-50 px-2.5 py-1.5 rounded-xl border border-amber-200">
+          <div
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border transition-colors ${
+              isReadyToComplete
+                ? "bg-amber-100 border-amber-300"
+                : "bg-slate-50 border-slate-200"
+            }`}
+          >
             <Coins size={14} className="text-amber-500 fill-amber-400" />
-            <span className="text-xs font-black text-amber-700">
+            <span
+              className={`text-xs font-black ${
+                isReadyToComplete ? "text-amber-700" : "text-slate-400"
+              }`}
+            >
               +{quest.reward}
             </span>
           </div>
@@ -617,26 +627,28 @@ export const Pal: React.FC<PalProps> = ({
     }
   };
 
-  const [backgroundTheme, setBackgroundTheme] = useState<BackgroundTheme>(() => {
-    const saved = localStorage.getItem('makanfit_pal_bg');
-    const validThemes: BackgroundTheme[] = [
-      'garden',
-      'picnic',
-      'forest',
-      'beach',
-      'night',
-      'mamak',
-      'kampung',
-      'kl_lights',
-      'food_court',
-      'raya',
-      'rainy_day',
-    ];
-    if (saved && validThemes.includes(saved as BackgroundTheme)) {
-      return saved as BackgroundTheme;
-    }
-    return 'garden';
-  });
+  const [backgroundTheme, setBackgroundTheme] = useState<BackgroundTheme>(
+    () => {
+      const saved = localStorage.getItem("makanfit_pal_bg");
+      const validThemes: BackgroundTheme[] = [
+        "garden",
+        "picnic",
+        "forest",
+        "beach",
+        "night",
+        "mamak",
+        "kampung",
+        "kl_lights",
+        "food_court",
+        "raya",
+        "rainy_day",
+      ];
+      if (saved && validThemes.includes(saved as BackgroundTheme)) {
+        return saved as BackgroundTheme;
+      }
+      return "garden";
+    },
+  );
 
   /** Read a saved challenge list from localStorage, falling back to the defaults. */
   const loadChallenges = (key: string, fallback: Challenge[]): Challenge[] => {
@@ -1145,7 +1157,7 @@ export const Pal: React.FC<PalProps> = ({
       setShowReward({ amount: quest.reward, title: quest.title });
       setTimeout(() => {
         setTemporaryAnimation(null);
-        setShowReward(null);
+        // setShowReward(null);
       }, 2400);
     }
   };

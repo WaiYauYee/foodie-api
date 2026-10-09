@@ -40,7 +40,7 @@ const MenuGroup: React.FC<{ title: string; items: MenuItem[] }> = ({
     <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-2">
       {title}
     </h3>
-    <div className="bg-white rounded-[32px] overflow-hidden border border-gray-100 shadow-sm divide-y divide-gray-50">
+    <div className="bg-white rounded-[32px] overflow-hidden border border-gray-100 shadow-lg divide-y divide-gray-50">
       {items.map((item) => (
         <button
           key={item.label}
@@ -108,7 +108,7 @@ const Profile: React.FC<ProfileProps> = ({
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
+        <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-lg flex flex-col items-center text-center">
           <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">
             Weight
           </p>
@@ -117,7 +117,7 @@ const Profile: React.FC<ProfileProps> = ({
             <span className="text-sm font-normal text-gray-400">kg</span>
           </p>
         </div>
-        <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
+        <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-lg flex flex-col items-center text-center">
           <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">
             Goal
           </p>
@@ -132,7 +132,7 @@ const Profile: React.FC<ProfileProps> = ({
 
       <button
         onClick={() => setIsLogoutModalOpen(true)}
-        className="w-full bg-red-50 text-red-600 font-black py-5 rounded-3xl flex items-center justify-center space-x-3 border border-red-100 shadow-sm active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
+        className="w-full bg-red-50 text-red-600 font-black py-5 rounded-3xl flex items-center justify-center space-x-3 border border-red-100 shadow-lg active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
       >
         <LogOut className="w-5 h-5" />
         <span>Log Out</span>

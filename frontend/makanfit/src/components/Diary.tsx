@@ -103,6 +103,46 @@ const getSentiment = (calories: number) => {
   }
 };
 
+interface MacroRingProps {
+  label: string;
+  current: number;
+  target: number;
+  color: string;
+}
+
+const MacroRing: React.FC<MacroRingProps> = ({ label, current, target, color }) => {
+  const radius = 24;
+  const circumference = 2 * Math.PI * radius;
+  const progress = target > 0 ? Math.min(current / target, 1) : 0;
+
+  return (
+    <div className="flex flex-col items-center space-y-2">
+      <div className="relative w-14 h-14">
+        <svg className="w-full h-full -rotate-90">
+          <circle cx="28" cy="28" r={radius} stroke="#F3F4F6" strokeWidth="4" fill="transparent" />
+          <circle
+            cx="28"
+            cy="28"
+            r={radius}
+            stroke={color}
+            strokeWidth="4"
+            strokeDasharray={circumference}
+            strokeDashoffset={circumference - progress * circumference}
+            strokeLinecap="round"
+            fill="transparent"
+            className="transition-all duration-700"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-[11px] font-black text-gray-800 leading-none">{Math.round(current)}</span>
+          <span className="text-[9px] text-gray-400 font-bold leading-none">/{target}g</span>
+        </div>
+      </div>
+      <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{label}</span>
+    </div>
+  );
+};
+
 export const Diary: React.FC<DiaryProps> = ({
   meals,
   onAddMeal,
@@ -1165,61 +1205,6 @@ const [rejectionInfo, setRejectionInfo] = useState<{
       setMealToDelete(null);
     }
     setIsDeleteModalOpen(false);
-  };
-
-  const MacroRing = ({
-    label,
-    current,
-    target,
-    color,
-  }: {
-    label: string;
-    current: number;
-    target: number;
-    color: string;
-  }) => {
-    const radius = 24;
-    const circumference = 2 * Math.PI * radius;
-    const progress = Math.min(current / target, 1);
-    const strokeDashoffset = circumference - progress * circumference;
-
-    return (
-      <div className="flex flex-col items-center space-y-2">
-        <div className="relative w-14 h-14">
-          <svg className="w-full h-full transform -rotate-90">
-            <circle
-              cx="28"
-              cy="28"
-              r={radius}
-              stroke="#F3F4F6"
-              strokeWidth="4"
-              fill="transparent"
-            />
-            <circle
-              cx="28"
-              cy="28"
-              r={radius}
-              stroke={color}
-              strokeWidth="4"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
-              strokeLinecap="round"
-              fill="transparent"
-              className="transition-all duration-700"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center transform rotate-0">
-            <span className="text-[11px] font-black text-gray-800 leading-none">
-              {Math.round(current)}
-            </span>
-            <span className="text-[9px] text-gray-400 font-bold leading-none">
-              /{target}g
-            </span>
-          </div>
-        </div>
-        <span className="text-[11px] font-bold text-gray-400">{label}</span>
-      </div>
-    );
   };
 
   const mealCategories: MealType[] = ["breakfast", "lunch", "dinner", "snack"];
