@@ -40,7 +40,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ user, onBack, onSave }) => 
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-300 appearance-none"
+          className="w-full bg-slate-100 shadow-sm border-2 border-slate-100 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none focus:border-emerald-500 transition-all placeholder:text-gray-300 appearance-none"
         />
         {Icon && (
           <div className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-emerald-500 transition-colors pointer-events-none">
@@ -52,18 +52,18 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ user, onBack, onSave }) => 
   );
 
   return (
-    <div className="fixed inset-0 bg-white z-[100] flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 bg-[#F8FAFC] z-[100] flex flex-col animate-in slide-in-from-right duration-300">
       {/* Header */}
-      <div className="px-4 py-6 flex items-center border-b border-transparent">
+      <div className="px-4 py-3 flex items-center border-b border-transparent bg-white">
         <button onClick={onBack} className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors">
           <ChevronLeft className="w-7 h-7" />
         </button>
-        <h2 className="flex-1 text-center text-xl font-extrabold text-slate-900 pr-8">
+        <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-8">
           Personal Information
         </h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 py-0 space-y-6">
+      <div className="flex-1 overflow-y-auto px-6 py-0 space-y-6 mt-3">
         <div className="space-y-2 pb-1">
           <p className="text-gray-400 font-semibold">Keep your physical information updated for accurate tracking.</p>
         </div>
@@ -74,7 +74,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ user, onBack, onSave }) => 
           <div className="grid grid-cols-2 gap-4">
             <button 
               onClick={() => setGender('male')}
-              className={`py-5 px-6 rounded-2xl font-black text-sm uppercase tracking-widest border-2 transition-all flex items-center justify-center space-x-3 ${
+              className={`py-5 px-6 rounded-2xl font-black text-sm uppercase tracking-widest border-2 transition-all flex items-center justify-center space-x-3 shadow-sm ${
                 gender === 'male' 
                   ? 'border-emerald-500 bg-emerald-50 text-emerald-700' 
                   : 'border-gray-100 bg-gray-50 text-gray-400'
@@ -87,7 +87,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ user, onBack, onSave }) => 
             </button>
             <button 
               onClick={() => setGender('female')}
-              className={`py-5 px-6 rounded-2xl font-black text-sm uppercase tracking-widest border-2 transition-all flex items-center justify-center space-x-3 ${
+              className={`py-5 px-6 rounded-2xl font-black text-sm uppercase tracking-widest border-2 transition-all flex items-center justify-center space-x-3 shadow-sm ${
                 gender === 'female' 
                   ? 'border-emerald-500 bg-emerald-50 text-emerald-700' 
                   : 'border-gray-100 bg-gray-50 text-gray-400'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Utensils, Droplet, Scale, Clock, X, Check } from 'lucide-react';
+import { Utensils, Droplet, Scale, Clock, X, Check, ChevronLeft } from 'lucide-react';
 
 interface NotificationSettingsProps {
   onBack: () => void;
@@ -76,16 +76,13 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({ onBack }) =
   const editingMeal = mealTimes.find(m => m.id === editingMealId);
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen pb-24">
+    <div className="fixed inset-0 bg-[#F8FAFC] z-[100] flex flex-col animate-in slide-in-from-right duration-300">
       {/* Header */}
-      <div className="bg-white px-4 py-4 flex items-center space-x-4 shadow-sm sticky top-0 z-10">
-        <button
-          onClick={onBack}
-          className="p-2 hover:bg-gray-50 rounded-full transition-colors active:scale-90"
-        >
-          <ArrowLeft className="w-6 h-6 text-gray-800" />
+      <div className="px-4 py-3 flex items-center bg-white">
+        <button onClick={onBack} className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors">
+          <ChevronLeft className="w-7 h-7" />
         </button>
-        <h2 className="text-lg font-black text-gray-900 tracking-tight">
+        <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-8">
           Manage My Notifications
         </h2>
       </div>

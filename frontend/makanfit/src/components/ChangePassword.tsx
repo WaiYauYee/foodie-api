@@ -33,7 +33,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ onBack, onSave }) => {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-300 appearance-none"
+          className="w-full bg-slate-100 border-2 border-gray-100 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-300 appearance-none"
         />
         <button 
           type="button"
@@ -47,18 +47,18 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ onBack, onSave }) => {
   );
 
   return (
-    <div className="fixed inset-0 bg-white z-[100] flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 bg-[#F8FAFC] z-[100] flex flex-col animate-in slide-in-from-right duration-300">
       {/* Header */}
-      <div className="px-4 py-6 flex items-center">
+      <div className="px-4 py-3 flex items-center bg-white">
         <button onClick={onBack} className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors">
           <ChevronLeft className="w-7 h-7" />
         </button>
-        <h2 className="flex-1 text-center text-xl font-extrabold text-slate-900 pr-8">
+        <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-8">
           Change Password
         </h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 py-0 space-y-6">
+      <div className="flex-1 overflow-y-auto px-6 py-0 space-y-6 mt-3">
         <div className="space-y-2 pb-1">
           <p className="text-gray-400 font-semibold">Your new password must be at least 8 characters long.</p>
         </div>

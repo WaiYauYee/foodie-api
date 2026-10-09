@@ -473,11 +473,11 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
   return (
     <div className="fixed inset-0 bg-[#F8FAFC] z-[200] flex flex-col animate-in slide-in-from-right duration-300">
       {/* Header */}
-      <div className="px-6 py-6 flex items-center bg-white border-b border-gray-50 sticky top-0 z-10">
+      <div className="px-6 py-3 flex items-center bg-white border-b border-gray-50 sticky top-0 z-10">
         <button onClick={onBack} className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors">
           <ChevronLeft className="w-7 h-7" />
         </button>
-        <h2 className="flex-1 text-center text-xl font-extrabold text-slate-900 pr-12">
+        <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-12">
           Goal
         </h2>
       </div>

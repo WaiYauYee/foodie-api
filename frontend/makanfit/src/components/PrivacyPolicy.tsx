@@ -30,13 +30,13 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className="fixed inset-0 bg-white z-[250] flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 bg-[#F8FAFC] z-[250] flex flex-col animate-in slide-in-from-right duration-300">
       {/* Header */}
-      <div className="px-6 py-6 flex items-center border-b border-gray-50 sticky top-0 bg-white z-10">
+      <div className="px-6 py-3 flex items-center border-b border-gray-50 sticky top-0 bg-white z-10">
         <button onClick={onBack} className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors">
           <ChevronLeft size={24} />
         </button>
-        <h2 className="flex-1 text-center text-xl font-extrabold text-slate-900 pr-8">
+        <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-8">
           Privacy Policy
         </h2>
       </div>
