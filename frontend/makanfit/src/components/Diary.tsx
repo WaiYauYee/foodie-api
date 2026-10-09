@@ -1543,7 +1543,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
               <div
                 key={cat}
                 onClick={() => openCategoryView(cat)}
-                className="bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-xs hover:shadow-sm transition-all space-y-3"
+                className="bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-sm transition-all space-y-3"
               >
                 {/* Header Row: Cute Category Icon + Title/Calories + Plus Button */}
                 <div className="flex items-center justify-between">
@@ -1614,7 +1614,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
         </div>
 
         {/* Hydration Tracker Card */}
-        <div className="bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-xs space-y-4">
+        <div className="bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3.5">
               <div className="w-10 h-10 rounded-2xl bg-sky-50 flex items-center justify-center flex-shrink-0">

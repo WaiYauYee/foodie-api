@@ -58,7 +58,7 @@ const Profile: React.FC<ProfileProps> = ({
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
+        <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
           <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">
             Weight
           </p>
@@ -67,7 +67,7 @@ const Profile: React.FC<ProfileProps> = ({
             <span className="text-sm font-normal text-gray-400">kg</span>
           </p>
         </div>
-        <div className="bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
+        <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-sm flex flex-col items-center text-center">
           <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">
             Goal
           </p>
