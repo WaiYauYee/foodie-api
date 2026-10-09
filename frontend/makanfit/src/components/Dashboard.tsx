@@ -506,9 +506,8 @@ const Dashboard: React.FC<DashboardProps> = ({ meals, user, weightHistory, onNav
 
       {/* Weights Saved List */}
       <div className="space-y-3">
-        <h3 onClick={onNavigateToAddWeight} className="text-slate-900 text-lg px-2 cursor-pointer flex items-center justify-between group font-extrabold">
+        <h3 className="text-slate-900 text-lg px-2 cursor-pointer flex items-center justify-between group font-extrabold">
           <span>Weights Logs</span>
-          <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-[#2D3E50]" />
         </h3>
         <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
           {weightHistory.map((entry, idx) => (
