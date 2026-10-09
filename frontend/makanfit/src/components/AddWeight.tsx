@@ -118,7 +118,7 @@ const AddWeight: React.FC<AddWeightProps> = ({
         <button onClick={onBack} className="p-1 text-gray-600">
           <X className="w-6 h-6" />
         </button>
-        <h2 className="flex-1 text-center text-xl font-black text-gray-900 tracking-tight pl-4 tracking-wide text-sm">
+        <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pl-3">
           Log a weight entry
         </h2>
         <div className="w-8" /> {/* Spacer for centering */}
