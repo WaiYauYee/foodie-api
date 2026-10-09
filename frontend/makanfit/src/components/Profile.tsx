@@ -24,6 +24,44 @@ interface ProfileProps {
   onLogout: () => void;
 }
 
+interface MenuItem {
+  icon: React.ElementType;
+  label: string;
+  color: string;
+  bg: string;
+  action: () => void;
+}
+
+const MenuGroup: React.FC<{ title: string; items: MenuItem[] }> = ({
+  title,
+  items,
+}) => (
+  <div className="space-y-2">
+    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-2">
+      {title}
+    </h3>
+    <div className="bg-white rounded-[32px] overflow-hidden border border-gray-100 shadow-sm divide-y divide-gray-50">
+      {items.map((item) => (
+        <button
+          key={item.label}
+          onClick={item.action}
+          className="group w-full flex items-center justify-between p-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+        >
+          <div className="flex items-center space-x-4">
+            <div
+              className={`${item.bg} w-10 h-10 rounded-2xl flex items-center justify-center transition-transform group-active:scale-90`}
+            >
+              <item.icon className={`w-5 h-5 ${item.color}`} />
+            </div>
+            <span className="font-bold text-gray-700">{item.label}</span>
+          </div>
+          <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all" />
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
 const Profile: React.FC<ProfileProps> = ({
   user,
   onNavigateToAccount,
@@ -35,6 +73,18 @@ const Profile: React.FC<ProfileProps> = ({
   onLogout,
 }) => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const accountItems: MenuItem[] = [
+    { icon: User, label: "Profile", color: "text-blue-500", bg: "bg-blue-50", action: onNavigateToAccount },
+    { icon: Settings, label: "Account", color: "text-indigo-500", bg: "bg-indigo-50", action: onNavigateToSetting },
+    { icon: Lock, label: "Security", color: "text-cyan-500", bg: "bg-cyan-50", action: onNavigateToSecurity },
+  ];
+
+  const preferenceItems: MenuItem[] = [
+    { icon: Target, label: "Goals", color: "text-emerald-500", bg: "bg-emerald-50", action: onNavigateToGoal },
+    { icon: Bell, label: "Notifications", color: "text-orange-500", bg: "bg-orange-50", action: onNavigateToNotifications },
+    { icon: Shield, label: "Privacy Policy", color: "text-purple-500", bg: "bg-purple-50", action: onNavigateToPrivacy },
+  ];
 
   return (
     <div className="p-4 pb-24 space-y-6 bg-[#F8FAFC]">
@@ -77,73 +127,8 @@ const Profile: React.FC<ProfileProps> = ({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-2">
-          Account & Security
-        </h3>
-        <div className="bg-white rounded-[32px] overflow-hidden border border-gray-100 shadow-sm divide-y divide-gray-50">
-          {[
-            {
-              icon: User,
-              label: "Profile",
-              color: "text-blue-500",
-              bg: "bg-blue-50",
-              action: onNavigateToAccount,
-            },
-            {
-              icon: Settings,
-              label: "Account",
-              color: "text-indigo-500",
-              bg: "bg-indigo-50",
-              action: onNavigateToSetting,
-            },
-            {
-              icon: Lock,
-              label: "Security",
-              color: "text-cyan-500",
-              bg: "bg-cyan-50",
-              action: onNavigateToSecurity,
-            },
-            {
-              icon: Target,
-              label: "Goals",
-              color: "text-emerald-500",
-              bg: "bg-emerald-50",
-              action: onNavigateToGoal,
-            },
-            {
-              icon: Bell,
-              label: "Notifications",
-              color: "text-orange-500",
-              bg: "bg-orange-50",
-              action: onNavigateToNotifications,
-            },
-            {
-              icon: Shield,
-              label: "Privacy Policy",
-              color: "text-purple-500",
-              bg: "bg-purple-50",
-              action: onNavigateToPrivacy,
-            },
-          ].map((item, idx, arr) => (
-            <button
-              key={item.label}
-              onClick={item.action}
-              className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${idx !== arr.length - 1 ? "border-b border-gray-50" : ""}`}
-            >
-              <div className="flex items-center space-x-4">
-                <div
-                  className={`${item.bg} w-10 h-10 rounded-2xl flex items-center justify-center transition-transform group-active:scale-90`}
-                >
-                  <item.icon className={`w-5 h-5 ${item.color}`} />
-                </div>
-                <span className="font-bold text-gray-700">{item.label}</span>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-200" />
-            </button>
-          ))}
-        </div>
-      </div>
+      <MenuGroup title="Account & Security" items={accountItems} />
+      <MenuGroup title="Preferences & Legal" items={preferenceItems} />
 
       <button
         onClick={() => setIsLogoutModalOpen(true)}
