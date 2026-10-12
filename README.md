@@ -2,6 +2,8 @@
 
 An AI-powered food image analysis system focused on Malaysian cuisine, integrating food classification, ingredient-level segmentation, and calorie estimation through a RESTful API architecture.
 
+<img width="1917" height="905" alt="image" src="https://github.com/user-attachments/assets/904f9547-a489-4026-ad1d-58feabf01364" />
+
 ## Overview
 
 FOODIE explores how computer vision and machine learning can be deployed as practical software services for understanding food images. The project focuses on Malaysian cuisine, where local dishes and their ingredients may be underrepresented in general-purpose food recognition systems.
@@ -28,7 +30,6 @@ FOODIE separates the application layer from the machine-learning layer to make t
 <img width="1651" height="751" alt="endpoint_diagram" src="https://github.com/user-attachments/assets/9c8e9a64-1927-445f-b62a-dbfb5f1f812d" />
 
 # System Design
-<img width="497" height="196" alt="level0" src="https://github.com/user-attachments/assets/cfee8678-5f24-4694-a9e7-4c93691a37a3" />
 <img width="1798" height="383" alt="level1" src="https://github.com/user-attachments/assets/3f51e631-28bd-46f9-a0b9-7ec0afb336bc" />
 
 ## Frontend
