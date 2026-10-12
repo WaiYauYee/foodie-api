@@ -1,25 +1,77 @@
 # FOODIE: Deployment of Models for Food Image Understanding
 
-An integrated RESTful API system for food image analysis that combines food classification, ingredient segmentation, and calorie estimation, with a focus on Malaysian cuisine.
+An AI-powered food image analysis system focused on Malaysian cuisine, integrating food classification, ingredient-level segmentation, and calorie estimation through a RESTful API architecture.
 
 ## Overview
 
-FOODIE addresses the gap in existing food image analysis systems by providing an integrated solution for food classification, ingredient-level segmentation, and accurate calorie estimation tailored to Malaysian dishes. Unlike most commercial systems that focus on globally common Western foods, FOODIE is specifically trained on a custom Malaysian food dataset and incorporates the Malaysian Food Composition Database (MyFCD) for contextually relevant nutritional analysis.
-The system consists of three main components:
+FOODIE explores how computer vision and machine learning can be deployed as practical software services for understanding food images. The project focuses on Malaysian cuisine, where local dishes and their ingredients may be underrepresented in general-purpose food recognition systems.
 
-- Food Image Classification: Custom CNN model trained on 120 Malaysian food categories
-- Ingredient Segmentation: Grounded SAM for open-vocabulary food component detection
-- Calorie Estimation: Hybrid approach combining LLM reasoning with structured nutritional databases
+Rather than treating food classification, segmentation, and nutritional analysis as isolated machine-learning tasks, FOODIE integrates them into an API-based system that connects machine-learning inference with a web interface.
 
-## Features
+The system provides three main capabilities:
 
-- **Malaysian Food Focus:** Custom-trained classification model on MalaysianFood120 dataset (120 classes, 23,707 images)
-- **Unified API:** All three tasks (classification, segmentation, calorie estimation) accessible through RESTful endpoints
-- **Ingredient-Level Segmentation:** Open-vocabulary detection using Grounding DINO + Segment Anything Model (SAM)
-- **Calorie Estimation:** Hybrid approach combining segmentation-based proportions with LLM-guided ingredient recognition
-- **Local CPU Deployment:** Fully functional on CPU without GPU requirements
-- **Malaysian Nutrition Data:** Integration with MyFCD and SG FoodID databases
-- **Comprehensive Web Interface:** Interactive React frontend for food analysis visualization
+- **Food Classification:** Predicts the dish represented in an uploaded image using a custom-trained convolutional neural network (CNN).
+- **Ingredient Segmentation:** Uses open-vocabulary object detection and segmentation models to identify and separate visible food components.
+- **Calorie Estimation:** Combines ingredient recognition, nutritional databases, and LLM-assisted analysis to estimate calories and macronutrients.
+
+## Key Features
+
+- Malaysian Food Recognition: Classification across 120 Malaysian food categories.
+- Ingredient-Level Segmentation: Combines Grounding DINO and Segment Anything Model (SAM) to detect and segment visible food components.
+- Nutritional Analysis: Uses Malaysian and Singaporean food composition data to support ingredient matching and nutritional estimation.
+- RESTful API Integration: Exposes food analysis capabilities through HTTP endpoints.
+- Full-Stack Architecture: Connects a React and TypeScript frontend to a Node.js/Express backend and a Python/Flask machine-learning service.
+
+## System Architecture
+FOODIE separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
+
+flowchart TD
+    A[React + TypeScript Frontend]
+    B[Node.js + Express Backend]
+    C[Python + Flask ML Service]
+    D[Food Classification CNN]
+    E[Grounding DINO + SAM]
+    F[Ingredient Matching + Nutrition Analysis]
+    G[(PostgreSQL Database)]
+    H[MyFCD + SG FoodID]
+
+    A -->|HTTP requests| B
+    B -->|ML service requests| C
+    B <--> G
+    C --> D
+    C --> E
+    E --> F
+    F --> H
+    C -->|Analysis results| B
+    B -->|API responses| A
+
+<img width="497" height="196" alt="level0" src="https://github.com/user-attachments/assets/cfee8678-5f24-4694-a9e7-4c93691a37a3" />
+<img width="1798" height="383" alt="level1" src="https://github.com/user-attachments/assets/3f51e631-28bd-46f9-a0b9-7ec0afb336bc" />
+<img width="1737" height="415" alt="level2a" src="https://github.com/user-attachments/assets/7b2a487d-4346-47fe-afd2-6186d04d8336" />
+<img width="1860" height="374" alt="level2b" src="https://github.com/user-attachments/assets/d9d21902-2d2d-45f2-bf35-2437e3831f02" />
+
+## Frontend
+
+The React and TypeScript frontend provides the interface for uploading food images and displaying classification, segmentation, and nutritional analysis results.
+
+## Backend API
+
+The Node.js and Express backend acts as the application-facing API layer. It handles incoming requests, coordinates calls to the machine-learning service, and supports application functionality such as authentication, file uploads, and database operations.
+
+## Machine-Learning Service
+
+The Python and Flask service hosts the computer vision and nutritional analysis pipeline. Separating this service allows the machine-learning components to use Python-based libraries such as PyTorch and OpenCV without coupling them directly to the main application backend.
+
+## Data Layer
+
+PostgreSQL supports application data persistence. Nutritional information is retrieved from food composition data sources, including the Malaysian Food Composition Database (MyFCD) and Singapore FoodID.
+
+## Machine-Learning Pipeline
+
+1. Food Image Classification
+A custom CNN was trained to recognise Malaysian dishes from food images.
+Dataset: MalaysianFood120
+
 
 ## Tech Stack
 
