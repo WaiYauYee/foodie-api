@@ -36,13 +36,40 @@ FOODIE separates the application layer from the machine-learning layer to make t
 
 The React and TypeScript frontend provides the interface for uploading food images and displaying classification, segmentation, and nutritional analysis results.
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/1633d24c-09b7-4404-b574-8bee02e520df" width="23%" alt="Dashboard page" />
-  <img src="https://github.com/user-attachments/assets/ecd79d7f-808b-4489-9760-e91be16e628b" width="23%" alt="Diary page" />
-  <img src="https://github.com/user-attachments/assets/b9fcf446-3ff9-4477-8e90-b10870de0671" width="23%" alt="Food Pal page" />
-  <img src="https://github.com/user-attachments/assets/9e545832-8146-46c5-9bc1-2bc729869ea3" width="23%" alt="Profile page" />
-</p>
 
+## Frontend
+
+The React and TypeScript frontend provides the interface for uploading food images and displaying classification, segmentation, and nutritional analysis results.
+
+<table>
+  <tr>
+    <td align="center"><strong>Dashboard page</strong></td>
+    <td align="center"><strong>Diary page</strong></td>
+    <td align="center"><strong>Food Pal page</strong></td>
+    <td align="center"><strong>Profile page</strong></td>
+  </tr>
+  <tr>
+    <td align="center" width="25%">
+      <img src="https://github.com/user-attachments/assets/1633d24c-09b7-4404-b574-8bee02e520df" width="23%" alt="Dashboard page" />
+    </td>
+    <td align="center" width="25%">
+      <img src="https://github.com/user-attachments/assets/ecd79d7f-808b-4489-9760-e91be16e628b" width="23%" alt="Diary page" />
+    </td>
+    <td align="center" width="25%">
+      <img src="https://github.com/user-attachments/assets/b9fcf446-3ff9-4477-8e90-b10870de0671" width="23%" alt="Food Pal page" />
+    </td>
+    <td align="center" width="25%">
+      <img src="https://github.com/user-attachments/assets/9e545832-8146-46c5-9bc1-2bc729869ea3" width="23%" alt="Profile page" />
+    </td>
+  </tr>
+</table>
+
+<!-- <p align="center">
+  <img src="https://github.com/user-attachments/assets/1633d24c-09b7-4404-b574-8bee02e520df" width="23%" alt="Food image upload interface" />
+  <img src="https://github.com/user-attachments/assets/ecd79d7f-808b-4489-9760-e91be16e628b" width="23%" alt="Food classification results" />
+  <img src="https://github.com/user-attachments/assets/b9fcf446-3ff9-4477-8e90-b10870de0671" width="23%" alt="Food segmentation interface" />
+  <img src="https://github.com/user-attachments/assets/9e545832-8146-46c5-9bc1-2bc729869ea3" width="23%" alt="Nutritional analysis results" />
+</p> -->
 
 ## Backend API
 
