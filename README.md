@@ -64,12 +64,28 @@ The React and TypeScript frontend provides the interface for uploading food imag
   </tr>
 </table>
 
-<!-- <p align="center">
-  <img src="https://github.com/user-attachments/assets/1633d24c-09b7-4404-b574-8bee02e520df" width="23%" alt="Food image upload interface" />
-  <img src="https://github.com/user-attachments/assets/ecd79d7f-808b-4489-9760-e91be16e628b" width="23%" alt="Food classification results" />
-  <img src="https://github.com/user-attachments/assets/b9fcf446-3ff9-4477-8e90-b10870de0671" width="23%" alt="Food segmentation interface" />
-  <img src="https://github.com/user-attachments/assets/9e545832-8146-46c5-9bc1-2bc729869ea3" width="23%" alt="Nutritional analysis results" />
-</p> -->
+<table>
+  <tr>
+    <td align="center"><strong>Food image upload interface</strong></td>
+    <td align="center"><strong>Result page</strong></td>
+    <td align="center"><strong>Segmentation overlay</strong></td>
+    <td align="center"><strong>Ingredient breakdown</strong></td>
+  </tr>
+  <tr>
+    <td align="center" width="25%">
+      <img width="457" height="755" alt="image" src="https://github.com/user-attachments/assets/a04f0f52-fd86-4d17-8bee-13798f2a286c" />
+    </td>
+    <td align="center" width="25%">
+     <img width="456" height="745" alt="image" src="https://github.com/user-attachments/assets/77c4099e-f053-419f-bd27-dc3c481bcfc0" />
+    </td>
+    <td align="center" width="25%">
+      <img width="467" height="735" alt="image" src="https://github.com/user-attachments/assets/da797368-9cba-406c-a950-dfec815d7e73" />
+    </td>
+    <td align="center" width="25%">
+      <img width="466" height="746" alt="image" src="https://github.com/user-attachments/assets/b447ed62-8e2d-4475-993b-13a347672fda" />
+    </td>
+  </tr>
+</table>
 
 ## Backend API
 
