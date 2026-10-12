@@ -23,28 +23,11 @@ The system provides three main capabilities:
 - Full-Stack Architecture: Connects a React and TypeScript frontend to a Node.js/Express backend and a Python/Flask machine-learning service.
 
 ## System Architecture
+# API Endpoints Architecture
 FOODIE separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
+<img width="1651" height="751" alt="endpoint_diagram" src="https://github.com/user-attachments/assets/9c8e9a64-1927-445f-b62a-dbfb5f1f812d" />
 
-flowchart TD
-    A[React + TypeScript Frontend]
-    B[Node.js + Express Backend]
-    C[Python + Flask ML Service]
-    D[Food Classification CNN]
-    E[Grounding DINO + SAM]
-    F[Ingredient Matching + Nutrition Analysis]
-    G[(PostgreSQL Database)]
-    H[MyFCD + SG FoodID]
-
-    A -->|HTTP requests| B
-    B -->|ML service requests| C
-    B <--> G
-    C --> D
-    C --> E
-    E --> F
-    F --> H
-    C -->|Analysis results| B
-    B -->|API responses| A
-
+# System Design
 <img width="497" height="196" alt="level0" src="https://github.com/user-attachments/assets/cfee8678-5f24-4694-a9e7-4c93691a37a3" />
 <img width="1798" height="383" alt="level1" src="https://github.com/user-attachments/assets/3f51e631-28bd-46f9-a0b9-7ec0afb336bc" />
 <img width="1737" height="415" alt="level2a" src="https://github.com/user-attachments/assets/7b2a487d-4346-47fe-afd2-6186d04d8336" />
@@ -72,35 +55,87 @@ PostgreSQL supports application data persistence. Nutritional information is ret
 A custom CNN was trained to recognise Malaysian dishes from food images.
 Dataset: MalaysianFood120
 
+| Property                  | Details  |
+| --------------------------| -------- |
+| Food categories           |    120   |
+| Total images              |  23,707  |
+| Test accuracy             |  75.60%  |
+| Best validation accuracy  |  76.03%  |
 
-## Tech Stack
+2. Ingredient Segmentation
+FOODIE uses Grounding DINO and the Segment Anything Model (SAM) through a Grounded SAM pipeline to identify and segment visible food components.
 
-### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: PostgreSQL
-- **Authentication**: JWT (JSON Web Tokens), Bcrypt for password hashing
-- **File Upload**: Multer
-- **Email**: Nodemailer
-- **HTTP Client**: Axios
+The pipeline combines:
 
-### Frontend
-- **Framework**: React (with Vite based on package structure)
-- **Type Safety**: TypeScript
-- **Styling**: CSS/Tailwind CSS
+- Grounding DINO: Detects image regions corresponding to text-described food components.
 
-### Machine Learning Service
-- **Framework**: Flask
-- **Deep Learning**: PyTorch
-- **Vision Models**: 
-  - Trained classification model
-  - Segment Anything (SAM) for image segmentation
-  - Grounding DINO for object detection
-- **Image Processing**: OpenCV, Pillow
+- SAM: Generates segmentation masks for detected regions.
 
-### Database & Data
-- Nutritional Data: Malaysian Food Composition Database (MyFCD), Singapore Food Composition Database (SG FoodID)
-- Model Storage: In-memory caching for segmentation results (demonstration setup)
+- Post-processing: Refines detections and segmentation results for downstream ingredient analysis.
+
+The resulting masks and ingredient labels provide information that can be used by the nutritional analysis pipeline.
+
+**Key challenge:** Malaysian dishes often contain overlapping, layered, or visually similar ingredients. Segmentation quality also depends on the text prompts and the visibility of individual components.
+
+3. Calorie and Macronutrient Estimation
+FOODIE implements a hybrid nutritional estimation pipeline that combines vision-language model analysis, computer vision-based segmentation, and structured nutritional databases to estimate the calorie and macronutrient content of a meal.
+<img width="1255" height="882" alt="calorie-estimation-framework" src="https://github.com/user-attachments/assets/b9d40914-a708-4d10-933c-b3fa6d398db5" />
+
+The estimation process consists of the following steps:
+
+a. **Food and Ingredient Analysis:** A vision-language model analyses the input image and generates structured JSON containing the food name, visible ingredients, estimated serving weight, and nutritional information.
+
+b. **Food Component Segmentation:** Grounded SAM, combining Grounding DINO and the Segment Anything Model (SAM), uses the identified ingredient names to detect and generate pixel-level masks for visible food components.
+
+c. **Ingredient Weight Estimation:** The system calculates the relative pixel-area proportion of each segmented ingredient and uses it as a visual proxy for ingredient quantity. These proportions are combined with the estimated total serving weight to derive ingredient-level weight estimates. For ingredients that cannot be segmented successfully, the system falls back to the vision-language model's weight estimates.
+
+d. **Nutritional Data Matching:** Ingredient names are normalised and converted into vector embeddings using a sentence-transformer model. Cosine similarity is used to match each ingredient against available nutritional records from MyFCD and SG FoodID. If no suitable match is found, the system falls back to the nutritional estimates generated by the vision-language model.
+
+e. **Calorie and Macronutrient Calculation:** The estimated ingredient weights are combined with their corresponding per-100g nutritional values to calculate calories and aggregate nutritional estimates, including protein, carbohydrates, fat, and fibre.
+
+f. **Calorie Range Estimation:** To account for uncertainty, the system compares the segmentation-based calorie estimate with the vision-language model estimate and reports a calorie range based on the lower and upper estimates.
+
+This hybrid approach combines visual evidence, model-generated nutritional estimates, and structured food composition data to provide more informative estimates of meal nutrition.
+
+**Important limitation:** A two-dimensional image does not directly reveal food weight, depth, hidden ingredients, or preparation methods. Consequently, estimated quantities and calorie values are approximate and should not be treated as verified nutritional measurements.
+
+## API Endpoints
+
+FOODIE exposes its main image-analysis capabilities through RESTful endpoints.
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `POST` | `/api/v1/vision/classify` | Classifies an uploaded food image and returns predictions with confidence scores. Returns predicted dish name, confidence score, top-5 predictions |
+| `POST` | `/api/v1/vision/segment` | Detects and segments visible food components and returns segmentation results. Returns segmentation masks, ingredient labels, overlay visualization |
+| `POST` | `/api/v1/vision/segment/:seg_id/calorie` | Retrieves nutritional estimates associated with a segmentation result. Returns per-ingredient calories, macronutrients (protein, carbs, fats, fiber) |
+
+Classification
+
+The classification endpoint accepts a food image and returns the predicted dish, confidence information, and alternative predictions.
+
+Segmentation
+
+The segmentation endpoint processes an image to produce food-component labels and segmentation visualisations. A segmentation identifier can be used to retrieve the associated nutritional analysis.
+
+Nutritional Analysis
+
+The calorie endpoint returns estimated calories and macronutrients for the associated segmentation result. Estimates may be expressed as ranges to reflect uncertainty in ingredient identification and quantity estimation.
+
+## Technology Stack
+
+| Component | Technologies |
+|---|---|
+| Frontend | React, TypeScript, Vite, CSS, Tailwind CSS |
+| Backend | Node.js, Express.js |
+| Database | PostgreSQL |
+| Authentication | JWT, bcrypt |
+| Email Service | Nodemailer |
+| Machine Learning API | Python, Flask |
+| Deep Learning | PyTorch |
+| Computer Vision | Grounding DINO, Segment Anything Model (SAM), OpenCV, Pillow |
+| HTTP Communication | Axios |
+| Nutritional Data | MyFCD, SG FoodID |
+| Ingredient Matching | Text Embeddings, Semantic Similarity |
 
 ## Project Structure
 
@@ -133,135 +168,76 @@ foodie-api/
 └── .gitignore
 ```
 
-## Dataset Details
-
-### MalaysianFood120 Dataset
-The project curated a comprehensive Malaysian food dataset:
-- Total Images: 23,707
-- Food Classes: 120 distinct Malaysian dishes
-- Image Specifications: 640×640 pixels, JPG format
-- Data Split: Training (68%), Validation (12%), Test (20%)
+# Getting Started
 
 ## Installation & Setup
 
-### Backend Setup
-
-#### Clone repository
+#### 1. Clone repository
 ```
 git clone https://github.com/WaiYauYee/foodie-api.git
-cd ml-service
+cd foodie-api
 ```
-
-#### Create Python virtual environment
+#### 2. Configure the Backend
 ```
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-#### Install dependencies
-```
-pip install -r requirements.txt
-```
-
-#### Start ML service (runs on port 5000)
-```
-python app2.py
-```
-
-### Frontend Setup
-
-```
-cd frontend
-```
-
-#### Install dependencies
-```
+cd backend
 npm install
 ```
+Create a .env file in the backend directory and configure the variables required by the application.
+```
+PORT=3001
+NODE_ENV=development
 
-#### Start development server (runs on http://localhost:5173)
+JWT_SECRET=your_local_secret
+JWT_EXPIRE=your_token_expiry
+
+# PostgreSQL connection settings
+# Use the variable names expected by config/db.js.
+
+# Machine-learning service URL
+FLASK_ML_SERVICE_URL=http://localhost:5000
+
+# Configure email credentials only if email features are enabled.
+EMAIL_USER=your_email
+EMAIL_PASS=your_email_app_password
+```
+Create the PostgreSQL database and configure the connection using the settings expected by the backend. Do not commit actual credentials or secret values.
+
+Start the backend:
 ```
 npm run dev
 ```
 
-### Server Setup
+#### 3. Configure the Machine-Learning Service
+Open a separate terminal:
+```
+cd ml-service
+python -m venv venv
+```
+Activate the virtual environment on Windows:
+```
+.\venv\Scripts\Activate.ps1
+```
+Install the Python dependencies:
+```
+pip install -r requirements.txt
+```
+Ensure that the required model weights, configuration files, and data assets are available at the paths expected by the implementation.
 
+Start the Flask service:
 ```
-cd backend
+python app2.py
 ```
+The ML service is configured to run on port 5000 in the local development setup.
 
-#### Install dependencies
+#### 4. Start the Frontend
+Open another terminal:
 ```
+cd frontend/makanfit
 npm install
+npm run dev
 ```
 
-#### Start backend server
-```
-npm run dev  # Development with auto-reload
-npm start   # Production mode
-```
-
-## API Endpoints
-
-### Food Analysis
-1. `POST /api/v1/vision/classify`
-- Upload image for food classification
-- Returns: predicted dish name, confidence score, top-5 predictions
-2. `POST /api/v1/vision/segment`
-- Performs ingredient segmentation on food image
-- Returns: segmentation masks, ingredient labels, overlay visualization
-- Stores results with unique segmentation ID for subsequent queries
-3. `POST /api/v1/vision/segment/<seg_id>/calorie`
-- Retrieves pre-computed nutritional data for a segmentation result
-- Returns: per-ingredient calories, macronutrients (protein, carbs, fats, fiber)
-- Provides calorie range estimates reflecting uncertainty
-
-## Key ML Models & Algorithms
-
-### Classification
-- Pre-trained food classification model using PyTorch
-- Identifies the type of food/dish from images
-- Supports 1000+ food categories
-
-### Segmentation
-- **Grounding DINO**: Object detection for precise food item localization
-- **Segment Anything (SAM)**: Instance segmentation to separate food components
-- **Calorie Estimation**: Calculates portion size and calories based on segmented regions
-
-### Ingredient Matching
-- Embeddings-based ingredient matching for accurate nutrition lookup
-- Retrieves nutritional data for identified ingredients
-
-## Environment Variables
-
-### Backend (.env)
-```env
-PORT                    # Server port (default: 3001)
-JWT_SECRET             # Secret key for JWT signing
-JWT_EXPIRE             # JWT token expiration time
-EMAIL_USER             # Email for sending notifications
-EMAIL_PASS             # Email app password
-FLASK_ML_SERVICE_URL   # URL of the ML service
-NODE_ENV               # Environment (development/production)
-```
-
-### ML Service (.env)
-```env
-FLASK_ENV      # Flask environment
-FLASK_DEBUG    # Debug mode
-PORT           # Flask port (default: 5000)
-```
-
-## Performance Considerations
-
-- **Image Processing**: Large images are automatically resized to optimize inference speed
-- **Caching**: Consider implementing caching for frequently analyzed meals
-- **Database Indexing**: Ensure MongoDB indexes are properly configured for query performance
-- **ML Model Optimization**: Models can be quantized for faster inference if needed
-
-## Known Limitations & Future Improvements
-
-### Current Limitations
+## Challenges and Limitations
 
 1. Classification Accuracy
 - Struggles with visually similar noodle and laksa variants 75.60% accuracy may limit real-world reliability for edge cases
@@ -292,12 +268,21 @@ PORT           # Flask port (default: 5000)
 - No expert nutritionist validation of calorie estimates
 - Limited ground truth for performance benchmarking
 
-## Contributing
 
-1. Create a feature branch: `git checkout -b feature/feature-name`
-2. Commit changes: `git commit -m "Add feature description"`
-3. Push to branch: `git push origin feature/feature-name`
-4. Submit a pull request
+## Future Improvements
+
+- **Enhancement of Classification Models:** Expand dataset coverage with additional Malaysian dishes and datasets such as VireoFood-172. Explore advanced architectures, including Vision Transformers, to improve fine-grained food recognition.
+
+- **Improvement of Segmentation Techniques:** Improve segmentation of overlapping food items and complex food structures through standardized prompts. Explore using Grounded SAM-generated masks to train a food-specific segmentation model.
+
+- **Refinement of Calorie Estimation:** Incorporate depth estimation, RGB-D reconstruction, or dedicated portion estimation models to improve ingredient weight estimation and nutritional accuracy.
+
+- **Strengthening Evaluation Methods:** Introduce expert validation from nutritionists or dietitians and establish more reliable ground-truth nutritional measurements for evaluating calorie estimation performance.
+
+- **System Performance Optimization:** Reduce inference latency through model quantization, pruning, batching, and GPU acceleration where available, particularly for computationally intensive segmentation tasks.
+
+- **Extension to Multimodal Inputs:** Support multiple images, video inputs, and user-provided text descriptions to improve ingredient identification and estimation reliability when food components are partially obscured.
+
 
 ## License
 
@@ -311,7 +296,7 @@ For issues, questions, or suggestions, please create an issue on the GitHub repo
 
 🚀 **In Development** - Active FYP project
 
-**Last Updated**: April 2026
+**Last Updated**: Oct 2026
 
 ---
 
