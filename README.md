@@ -35,6 +35,11 @@ FOODIE separates the application layer from the machine-learning layer to make t
 ## Frontend
 
 The React and TypeScript frontend provides the interface for uploading food images and displaying classification, segmentation, and nutritional analysis results.
+<img width="455" height="750" alt="image" src="https://github.com/user-attachments/assets/1633d24c-09b7-4404-b574-8bee02e520df" />
+<img width="457" height="751" alt="image" src="https://github.com/user-attachments/assets/ecd79d7f-808b-4489-9760-e91be16e628b" />
+<img width="455" height="750" alt="image" src="https://github.com/user-attachments/assets/b9fcf446-3ff9-4477-8e90-b10870de0671" />
+<img width="457" height="752" alt="image" src="https://github.com/user-attachments/assets/9e545832-8146-46c5-9bc1-2bc729869ea3" />
+
 
 ## Backend API
 
