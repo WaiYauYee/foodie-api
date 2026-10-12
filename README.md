@@ -109,18 +109,6 @@ FOODIE exposes its main image-analysis capabilities through RESTful endpoints.
 | `POST` | `/api/v1/vision/segment` | Detects and segments visible food components and returns segmentation results. Returns segmentation masks, ingredient labels, overlay visualization |
 | `POST` | `/api/v1/vision/segment/:seg_id/calorie` | Retrieves nutritional estimates associated with a segmentation result. Returns per-ingredient calories, macronutrients (protein, carbs, fats, fiber) |
 
-Classification
-
-The classification endpoint accepts a food image and returns the predicted dish, confidence information, and alternative predictions.
-
-Segmentation
-
-The segmentation endpoint processes an image to produce food-component labels and segmentation visualisations. A segmentation identifier can be used to retrieve the associated nutritional analysis.
-
-Nutritional Analysis
-
-The calorie endpoint returns estimated calories and macronutrients for the associated segmentation result. Estimates may be expressed as ranges to reflect uncertainty in ingredient identification and quantity estimation.
-
 ## Technology Stack
 
 | Component | Technologies |
@@ -281,7 +269,7 @@ npm run dev
 
 - **System Performance Optimization:** Reduce inference latency through model quantization, pruning, batching, and GPU acceleration where available, particularly for computationally intensive segmentation tasks.
 
-- **Extension to Multimodal Inputs:** Support multiple images, video inputs, and user-provided text descriptions to improve ingredient identification and estimation reliability when food components are partially obscured.
+- **Extension to Multimodal Inputs:** Support multiple images, and user-provided text descriptions to improve ingredient identification and estimation reliability when food components are partially obscured.
 
 
 ## License
