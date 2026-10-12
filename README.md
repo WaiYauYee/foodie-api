@@ -30,8 +30,6 @@ FOODIE separates the application layer from the machine-learning layer to make t
 # System Design
 <img width="497" height="196" alt="level0" src="https://github.com/user-attachments/assets/cfee8678-5f24-4694-a9e7-4c93691a37a3" />
 <img width="1798" height="383" alt="level1" src="https://github.com/user-attachments/assets/3f51e631-28bd-46f9-a0b9-7ec0afb336bc" />
-<img width="1737" height="415" alt="level2a" src="https://github.com/user-attachments/assets/7b2a487d-4346-47fe-afd2-6186d04d8336" />
-<img width="1860" height="374" alt="level2b" src="https://github.com/user-attachments/assets/d9d21902-2d2d-45f2-bf35-2437e3831f02" />
 
 ## Frontend
 
@@ -41,13 +39,37 @@ The React and TypeScript frontend provides the interface for uploading food imag
 
 The Node.js and Express backend acts as the application-facing API layer. It handles incoming requests, coordinates calls to the machine-learning service, and supports application functionality such as authentication, file uploads, and database operations.
 
-## Machine-Learning Service
-
-The Python and Flask service hosts the computer vision and nutritional analysis pipeline. Separating this service allows the machine-learning components to use Python-based libraries such as PyTorch and OpenCV without coupling them directly to the main application backend.
-
 ## Data Layer
 
-PostgreSQL supports application data persistence. Nutritional information is retrieved from food composition data sources, including the Malaysian Food Composition Database (MyFCD) and Singapore FoodID.
+FOODIE uses PostgreSQL for application data persistence and a curated JSON dataset for nutritional reference information used by the machine-learning pipeline.
+
+- **Application Database:** PostgreSQL stores persistent application data, including user accounts and other records managed by the backend.
+- **Nutritional Dataset:** A structured JSON dataset (refer below) organises ingredient information, including food names, food groups, energy, protein, fat, carbohydrates, fibre, source references, and serving-size information. Nutritional values are standardised per 100 g.
+- **Data Sources and Matching:** Nutritional records are curated from sources including the Malaysian Food Composition Database (MyFCD) and Singapore FoodID. Text embeddings and cosine similarity are used to match recognised ingredients to relevant records for nutritional estimation.
+
+```
+{
+"food_name":"", //string:nameoftheingredient
+"food_group":"", //string:categoryorfoodgroup
+"energy_kcal_per_100g":0, //number:energyinkilocaloriesper100g
+"protein_g_per_100g":0.0, //number:proteiningramsper100g
+"fat_g_per_100g":0.0, //number:fatingramsper100g
+"carbohydrate_g_per_100g": 0.0, //number:carbohydratesingramsper100g
+"fibre_g_per_100g":0.0, //number:fibreingramsper100g
+"data_source":[ //arrayofobjects:sourceinfo
+{
+"source":"", //string:sourcename
+"url":"" //string:URLtoreference
+}
+],
+"servings":[ //arrayofobjects:servinginfo
+{
+"serving_size_g":0, //number:servingsizeingrams
+"serving_unit":"" //string:unitname(e.g.,"cup")
+}
+]
+}
+```
 
 ## Machine-Learning Pipeline
 
@@ -65,6 +87,8 @@ Dataset: MalaysianFood120
 2. Ingredient Segmentation
 FOODIE uses Grounding DINO and the Segment Anything Model (SAM) through a Grounded SAM pipeline to identify and segment visible food components.
 
+<img width="1737" height="415" alt="level2a" src="https://github.com/user-attachments/assets/7b2a487d-4346-47fe-afd2-6186d04d8336" />
+
 The pipeline combines:
 
 - Grounding DINO: Detects image regions corresponding to text-described food components.
@@ -79,6 +103,11 @@ The resulting masks and ingredient labels provide information that can be used b
 
 3. Calorie and Macronutrient Estimation
 FOODIE implements a hybrid nutritional estimation pipeline that combines vision-language model analysis, computer vision-based segmentation, and structured nutritional databases to estimate the calorie and macronutrient content of a meal.
+
+<img width="1860" height="374" alt="level2b" src="https://github.com/user-attachments/assets/d9d21902-2d2d-45f2-bf35-2437e3831f02" />
+
+# Design
+
 <img width="1255" height="882" alt="calorie-estimation-framework" src="https://github.com/user-attachments/assets/b9d40914-a708-4d10-933c-b3fa6d398db5" />
 
 The estimation process consists of the following steps:
