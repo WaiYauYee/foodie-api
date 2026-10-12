@@ -73,7 +73,7 @@ FOODIE uses PostgreSQL for application data persistence and a curated JSON datas
 
 ## Machine-Learning Pipeline
 
-# 1. Food Image Classification
+### 1. Food Image Classification
 
 A custom CNN was trained to recognise Malaysian dishes from food images.
 Dataset: MalaysianFood120
@@ -85,7 +85,7 @@ Dataset: MalaysianFood120
 | Test accuracy             |  75.60%  |
 | Best validation accuracy  |  76.03%  |
 
-# 2. Ingredient Segmentation
+### 2. Ingredient Segmentation
 
 FOODIE uses Grounding DINO and the Segment Anything Model (SAM) through a Grounded SAM pipeline to identify and segment visible food components.
 
@@ -103,13 +103,13 @@ The resulting masks and ingredient labels provide information that can be used b
 
 **Key challenge:** Malaysian dishes often contain overlapping, layered, or visually similar ingredients. Segmentation quality also depends on the text prompts and the visibility of individual components.
 
-# 3. Calorie and Macronutrient Estimation
+### 3. Calorie and Macronutrient Estimation
 
 FOODIE implements a hybrid nutritional estimation pipeline that combines vision-language model analysis, computer vision-based segmentation, and structured nutritional databases to estimate the calorie and macronutrient content of a meal.
 
 <img width="1860" height="374" alt="level2b" src="https://github.com/user-attachments/assets/d9d21902-2d2d-45f2-bf35-2437e3831f02" />
 
-# Design
+#### Design
 
 <img width="1255" height="882" alt="calorie-estimation-framework" src="https://github.com/user-attachments/assets/b9d40914-a708-4d10-933c-b3fa6d398db5" />
 
