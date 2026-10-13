@@ -52,11 +52,11 @@ The system provides three main capabilities:
 - Full-Stack Architecture: Connects a React and TypeScript frontend to a Node.js/Express backend and a Python/Flask machine-learning service.
 
 ## 🏗️ System Architecture
-# 🔌 API Endpoints Architecture
+### 🔌 API Endpoints Architecture
 MakanFit separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
 <img width="1651" height="751" alt="endpoint_diagram" src="https://github.com/user-attachments/assets/9c8e9a64-1927-445f-b62a-dbfb5f1f812d" />
 
-# 🏛️ System Design
+### 🏛️ System Design
 <img width="1798" height="383" alt="level1" src="https://github.com/user-attachments/assets/3f51e631-28bd-46f9-a0b9-7ec0afb336bc" />
 
 ## 🎨 Frontend
