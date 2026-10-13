@@ -193,7 +193,11 @@ interface ModalShellProps {
   children: React.ReactNode;
 }
 
-/** Full-screen page: awning + [X] Title [pill] header, then whatever children you pass. */
+/**
+ * Mobile: full-screen page. Laptop: centered panel over a dimmed backdrop
+ * (click outside or press Escape to close).
+ * Layout inside: awning + [X] Title [pill] header, then whatever children you pass.
+ */
 const ModalShell: React.FC<ModalShellProps> = ({
   title,
   headerBg,
@@ -204,34 +208,40 @@ const ModalShell: React.FC<ModalShellProps> = ({
   children,
 }) => (
   <div
-    role="dialog"
-    aria-modal="true"
-    aria-label={title}
-    className="fixed inset-0 z-[100] flex flex-col bg-white animate-in slide-in-from-bottom duration-300"
+    className="fixed inset-0 z-[100] bg-white lg:bg-slate-900/50 lg:backdrop-blur-sm lg:flex lg:items-center lg:justify-center lg:p-8 animate-in slide-in-from-bottom lg:slide-in-from-bottom-0 lg:fade-in duration-300"
+    onClick={onClose}
   >
-    <header
-      className={`relative shrink-0 ${headerBg}`}
-      style={{
-        paddingTop: `calc(env(safe-area-inset-top, 0px) + ${AWNING_R + 10}px)`,
-      }}
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      onClick={(e) => e.stopPropagation()}
+      className="flex flex-col h-full w-full bg-white overflow-hidden lg:h-[min(90vh,820px)] lg:max-w-5xl lg:rounded-[32px] lg:shadow-2xl"
     >
-      <Awning a={awningA} b={awningB} />
-      <div className="px-4 pb-3 grid grid-cols-[1fr_auto_1fr] items-center">
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="justify-self-start w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-slate-600 hover:bg-black/5 active:scale-90 transition-all cursor-pointer"
-        >
-          <X size={22} />
-        </button>
-        <h2 className="text-lg font-black text-slate-800 tracking-tight">
-          {title}
-        </h2>
-        <div className="justify-self-end">{right}</div>
-      </div>
-    </header>
-    {children}
+      <header
+        className={`relative shrink-0 ${headerBg}`}
+        style={{
+          paddingTop: `calc(env(safe-area-inset-top, 0px) + ${AWNING_R + 10}px)`,
+        }}
+      >
+        <Awning a={awningA} b={awningB} />
+        <div className="px-4 lg:px-6 pb-3 grid grid-cols-[1fr_auto_1fr] items-center">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="justify-self-start w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-slate-600 hover:bg-black/5 active:scale-90 transition-all cursor-pointer"
+          >
+            <X size={22} />
+          </button>
+          <h2 className="text-lg lg:text-xl font-black text-slate-800 tracking-tight">
+            {title}
+          </h2>
+          <div className="justify-self-end">{right}</div>
+        </div>
+      </header>
+      {children}
+    </div>
   </div>
 );
 
@@ -253,7 +263,7 @@ const TabsBar: React.FC<{
           role="tab"
           aria-selected={isActive}
           onClick={() => onChange(key)}
-          className={`relative flex-1 flex flex-col items-center gap-0.5 pt-2.5 pb-2.5 text-[11px] font-bold transition-colors cursor-pointer ${
+          className={`relative flex-1 flex flex-col items-center gap-0.5 pt-2.5 pb-2.5 text-[11px] lg:text-xs font-bold transition-colors cursor-pointer hover:bg-slate-50 ${
             isActive
               ? ACCENT[accent].text
               : "text-slate-400 hover:text-slate-600"
@@ -328,7 +338,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
     <button
       type="button"
       onClick={onSelect}
-      className={`relative h-[118px] rounded-[22px] bg-white border-2 px-2 pt-2 pb-2 flex flex-col items-center text-center transition-all active:translate-y-[2px] active:shadow-none cursor-pointer ${
+      className={`relative h-[118px] lg:h-[132px] rounded-[22px] bg-white border-2 px-2 pt-2 pb-2 flex flex-col items-center text-center transition-all active:translate-y-[2px] active:shadow-none cursor-pointer lg:hover:-translate-y-0.5 ${
         isEquipped
           ? "border-emerald-400 bg-emerald-50/60 shadow-[0_3px_0_#A7F3D0]"
           : "border-[#ECE7D8] shadow-[0_3px_0_#ECE7D8] hover:border-[#DDD5BE]"
@@ -348,14 +358,14 @@ const ItemCard: React.FC<ItemCardProps> = ({
       >
         <svg
           viewBox={ITEM_VIEWBOX[item.id] ?? "0 0 200 200"}
-          className={`w-14 h-14 ${isScenery ? "rounded-xl overflow-hidden shadow-2xs border border-slate-200/80" : ""}`}
+          className={`w-14 h-14 lg:w-16 lg:h-16 ${isScenery ? "rounded-xl overflow-hidden shadow-2xs border border-slate-200/80" : ""}`}
           aria-hidden
         >
           {item.svgElement}
         </svg>
       </div>
 
-      <p className="w-full truncate text-[10px] font-semibold text-slate-400">
+      <p className="w-full truncate text-[10px] lg:text-[11px] font-semibold text-slate-400">
         {item.name}
       </p>
       <div className="h-4 flex items-center justify-center text-[12px] font-extrabold">
@@ -377,8 +387,9 @@ interface ItemsBrowserProps {
 }
 
 /**
- * "All" tab  -> one horizontal row per category with a "See all" link (like the reference)
- * Other tabs -> a 3-column grid for that category
+ * "All" tab  -> mobile: one horizontal row per category with a "See all" link
+ *               laptop: a wrapping grid per category (no sideways scrolling with a mouse)
+ * Other tabs -> a grid for that category
  */
 const ItemsBrowser: React.FC<ItemsBrowserProps> = ({
   items,
@@ -393,7 +404,7 @@ const ItemsBrowser: React.FC<ItemsBrowserProps> = ({
   const categories = tab === "all" ? CATEGORY_ORDER : [tab];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 lg:space-y-7">
       {categories.map((cat) => {
         const list = items.filter((i) => i.category === cat);
         if (list.length === 0) return null;
@@ -417,14 +428,14 @@ const ItemsBrowser: React.FC<ItemsBrowserProps> = ({
         return (
           <section key={cat}>
             <div className="flex items-center justify-between mb-2.5 px-0.5">
-              <h3 className="text-[13px] font-extrabold text-slate-700">
+              <h3 className="text-[13px] lg:text-sm font-extrabold text-slate-700">
                 {CATEGORY_META[cat].label}
               </h3>
               {tab === "all" && (
                 <button
                   type="button"
                   onClick={() => onTabChange(cat)}
-                  className="flex items-center text-[11px] font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
+                  className="lg:hidden flex items-center text-[11px] font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
                 >
                   See all
                   <ChevronRight size={14} />
@@ -433,13 +444,13 @@ const ItemsBrowser: React.FC<ItemsBrowserProps> = ({
             </div>
 
             {tab === "all" ? (
-              <div className="flex gap-2.5 overflow-x-auto snap-x -mx-4 px-4 pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex gap-2.5 overflow-x-auto snap-x -mx-4 px-4 pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-5 lg:gap-3 lg:overflow-visible lg:mx-0 lg:px-0">
                 {list.map((item) =>
-                  renderCard(item, "w-[100px] shrink-0 snap-start"),
+                  renderCard(item, "w-[100px] shrink-0 snap-start lg:w-full"),
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-2.5 pb-1.5">
+              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2.5 lg:gap-3 pb-1.5">
                 {list.map((item) => renderCard(item, "w-full"))}
               </div>
             )}
@@ -498,7 +509,7 @@ const QuestCard: React.FC<{
             />
           )}
         </div>
-        <p className="text-[11px] text-slate-400 font-medium leading-tight mt-0.5">
+        <p className="text-[11px] lg:text-xs text-slate-400 font-medium leading-tight mt-0.5">
           {quest.description}
         </p>
 
@@ -550,7 +561,7 @@ const MissionSection: React.FC<{
   quests: Challenge[];
   onClaim: (id: string) => void;
 }> = ({ title, quests, onClaim }) => (
-  <div className="space-y-3 pb-8">
+  <div className="space-y-3 pb-8 lg:pb-4">
     <div className="flex items-center justify-between px-1">
       <div className="flex items-center space-x-1.5">
         <Trophy size={14} className="text-amber-500" />
@@ -1167,11 +1178,12 @@ export const Pal: React.FC<PalProps> = ({
     temporaryAnimation || palStatus.moodState;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F0FDF4] via-[#F8FAFC] to-[#F1F5F9] pb-28 relative overflow-hidden select-none">
+    // overflow-x-clip (not overflow-hidden) so the sticky header keeps working
+    <div className="min-h-screen bg-gradient-to-b from-[#F0FDF4] via-[#F8FAFC] to-[#F1F5F9] pb-28 relative overflow-x-clip select-none">
       {/* Reward Popup Overlay */}
       {showReward && (
         <div className="fixed inset-0 z-[130] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-xs transition-opacity">
-          <div className="bg-white px-8 py-7 rounded-[32px] shadow-2xl border border-amber-200 flex flex-col items-center text-center animate-in zoom-in-95 duration-200 max-w-xs w-full">
+          <div className="bg-white px-8 py-7 rounded-[32px] shadow-2xl border border-amber-200 flex flex-col items-center text-center animate-in zoom-in-95 duration-200 max-w-xs lg:max-w-sm w-full">
             <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mb-3 border border-amber-100 shadow-inner">
               <PartyPopper size={36} />
             </div>
@@ -1205,230 +1217,238 @@ export const Pal: React.FC<PalProps> = ({
         </div>
       )}
 
-      {/* Header Stats Bar */}
-      <div className="px-5 py-4 bg-white/80 backdrop-blur-md rounded-b-[28px] border-b border-emerald-100/60 shadow-xs flex items-center justify-between sticky top-0 z-20">
-        <button
-          onClick={handleOpenStreakModal}
-          className="flex items-center space-x-3 text-left group cursor-pointer hover:opacity-90 active:scale-[0.98] transition-all"
-          title="Click to view full streak calendar and rewards"
-        >
-          <div
-            className={`w-10 h-10 rounded-2xl flex items-center justify-center relative shadow-xs transition-all group-hover:scale-105 ${
-              streakInfo.hasLoggedToday
-                ? "bg-gradient-to-tr from-orange-400 to-amber-300"
-                : streakInfo.streak > 0
-                  ? "bg-gradient-to-tr from-amber-400 to-yellow-300"
-                  : "bg-gradient-to-tr from-slate-200 to-slate-100 border border-slate-200/80"
-            }`}
+      {/* Header Stats Bar: full-width background, content aligned with the page grid */}
+      <div className="px-5 py-4 bg-white/80 backdrop-blur-md rounded-b-[28px] border-b border-emerald-100/60 shadow-xs sticky top-0 z-20">
+        <div className="mx-auto w-full max-w-6xl flex items-center justify-between lg:px-3">
+          <button
+            onClick={handleOpenStreakModal}
+            className="flex items-center space-x-3 text-left group cursor-pointer hover:opacity-90 active:scale-[0.98] transition-all"
+            title="Click to view full streak calendar and rewards"
           >
-            <Flame
-              className={`transition-all ${
+            <div
+              className={`w-10 h-10 rounded-2xl flex items-center justify-center relative shadow-xs transition-all group-hover:scale-105 ${
                 streakInfo.hasLoggedToday
-                  ? "text-white fill-white"
+                  ? "bg-gradient-to-tr from-orange-400 to-amber-300"
                   : streakInfo.streak > 0
-                    ? "text-white fill-white/90"
-                    : "text-slate-400"
-              }`}
-              size={20}
-            />
-            <div className="absolute -top-1 -right-1 bg-white rounded-full p-0.5 shadow-xs">
-              <div
-                className={`w-4 h-4 rounded-full text-[9px] flex items-center justify-center text-white font-black ${
-                  streakInfo.hasLoggedToday
-                    ? "bg-orange-600"
-                    : streakInfo.streak > 0
-                      ? "bg-amber-600"
-                      : "bg-slate-400"
-                }`}
-              >
-                {streakInfo.streak}
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center space-x-1.5">
-              <p className="text-sm font-black text-slate-800 group-hover:text-orange-600 transition-colors">
-                {streakInfo.streak}-Day Streak
-              </p>
-              <span
-                className={`text-[10px] ${streakInfo.badgeBg} ${streakInfo.badgeText} font-extrabold px-1.5 py-0.5 rounded-md border ${streakInfo.badgeBorder}`}
-              >
-                {streakInfo.statusBadge}
-              </span>
-            </div>
-            <p
-              className={`text-[11px] font-medium transition-colors ${
-                streakInfo.hasLoggedToday
-                  ? "text-emerald-600 font-semibold"
-                  : "text-slate-400"
+                    ? "bg-gradient-to-tr from-amber-400 to-yellow-300"
+                    : "bg-gradient-to-tr from-slate-200 to-slate-100 border border-slate-200/80"
               }`}
             >
-              {streakInfo.statusMessage}
-            </p>
-          </div>
-        </button>
-
-        <div className="flex items-center space-x-1.5 bg-amber-50 px-3.5 py-2 rounded-2xl border border-amber-200/80 shadow-xs">
-          <Coins className="text-amber-500 fill-amber-400" size={18} />
-          <span className="font-black text-amber-800 text-sm tabular-nums">
-            {coins}
-          </span>
-        </div>
-      </div>
-
-      {/* Hero Section: Interactive Lemmy Stage */}
-      <div className="relative pt-4 pb-6 px-4 max-w-md mx-auto">
-        {/* Scenic Stage Card Framing Lemmy */}
-        <PalBackground theme={backgroundTheme}>
-          <div className="w-full pt-4 pb-4 px-4 flex flex-col items-center">
-            <div className="flex flex-col items-center mb-2 z-10 text-center">
-              <div className="flex items-center space-x-2 bg-white/85 backdrop-blur-md px-3 py-1 rounded-full border border-white/80 shadow-2xs">
-                <h1 className="text-base font-black text-slate-800 tracking-tight">
-                  Lemmy
-                </h1>
-                <span className="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">
-                  Lvl {friendshipLevel} Companion
-                </span>
-              </div>
-
-              <div className="flex items-center space-x-2 mt-1.5 bg-white/70 backdrop-blur-xs px-2.5 py-0.5 rounded-full">
-                <div className="flex space-x-1">
-                  {[1, 2, 3, 4, 5].map((h) => (
-                    <Heart
-                      key={h}
-                      className={`transition-colors duration-300 ${h <= 4 ? "fill-rose-500 text-rose-500" : "text-slate-300"}`}
-                      size={12}
-                    />
-                  ))}
-                </div>
-                <div
-                  className="w-24 h-2 bg-slate-200/80 rounded-full overflow-hidden"
-                  title={`Friendship XP: ${friendshipXp}/100`}
-                >
-                  <div
-                    className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-500"
-                    style={{ width: `${friendshipXp}%` }}
-                  />
-                </div>
-                <span className="text-[10px] text-slate-400 font-semibold">
-                  {friendshipXp}xp
-                </span>
-              </div>
-            </div>
-
-            {/* Speech Bubble */}
-            <div className="relative mb-2 max-w-xs px-4 py-2.5 bg-white/95 rounded-2xl shadow-sm border border-emerald-100/80 text-xs font-semibold text-slate-700 text-center z-10 transition-all duration-300">
-              <p className="leading-snug">
-                {dialogue || palStatus.defaultDialogue}
-              </p>
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-b border-r border-emerald-100/80 rotate-45" />
-            </div>
-
-            <div className="relative z-10 my-0">
-              <Mascot
-                animationState={currentMascotAnimation}
-                outfit={currentOutfit}
-                onPet={handlePetLemmy}
-                className="w-56 h-64 sm:w-64 sm:h-72"
+              <Flame
+                className={`transition-all ${
+                  streakInfo.hasLoggedToday
+                    ? "text-white fill-white"
+                    : streakInfo.streak > 0
+                      ? "text-white fill-white/90"
+                      : "text-slate-400"
+                }`}
+                size={20}
               />
-            </div>
-
-            {/* Quick Scenery Theme Bar */}
-            <div className="w-full flex items-center justify-center gap-1 mt-1 z-10">
-              <div className="flex items-center gap-1 bg-white/90 backdrop-blur-md p-1 rounded-2xl border border-white shadow-xs overflow-x-auto [scrollbar-width:none]">
-                {BACKGROUND_OPTIONS.map(
-                  (bg: (typeof BACKGROUND_OPTIONS)[number]) => {
-                    const isCurrent = backgroundTheme === bg.id;
-                    const item = shopItems.find((i) => i.id === `bg_${bg.id}`);
-                    const isOwned = item?.owned ?? bg.id === "garden";
-                    return (
-                      <button
-                        key={bg.id}
-                        onClick={() => {
-                          if (isOwned) {
-                            handleSelectBackground(bg.id);
-                          } else if (item) {
-                            setSheetItemId(item.id);
-                          }
-                        }}
-                        title={
-                          isOwned
-                            ? `Switch to ${bg.name} (${bg.tagline})`
-                            : `Unlock ${bg.name} in Shop (${item?.price} coins)`
-                        }
-                        className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer whitespace-nowrap ${
-                          isCurrent
-                            ? "bg-emerald-600 text-white shadow-xs scale-102"
-                            : isOwned
-                              ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 active:scale-95"
-                              : "text-slate-400 bg-slate-50/80 hover:bg-amber-50 hover:text-amber-700 border border-dashed border-amber-200 active:scale-95"
-                        }`}
-                      >
-                        <span className="text-xs">{bg.emoji}</span>
-                        <span>{bg.name}</span>
-                        {!isOwned && item && (
-                          <span className="flex items-center text-[9px] text-amber-700 bg-amber-100/90 px-1 py-0.2 rounded font-black ml-0.5">
-                            <Lock size={9} className="mr-0.5" />
-                            {item.price}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  },
-                )}
+              <div className="absolute -top-1 -right-1 bg-white rounded-full p-0.5 shadow-xs">
+                <div
+                  className={`w-4 h-4 rounded-full text-[9px] flex items-center justify-center text-white font-black ${
+                    streakInfo.hasLoggedToday
+                      ? "bg-orange-600"
+                      : streakInfo.streak > 0
+                        ? "bg-amber-600"
+                        : "bg-slate-400"
+                  }`}
+                >
+                  {streakInfo.streak}
+                </div>
               </div>
             </div>
-          </div>
-        </PalBackground>
-
-        {/* Quick Action Buttons */}
-        <div className="mt-4 flex items-center justify-center space-x-3 z-10">
-          <button
-            onClick={handlePetLemmy}
-            className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-2xl shadow-md shadow-emerald-600/20 font-bold text-xs text-white hover:scale-102 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
-          >
-            <Heart size={15} className="fill-white" />
-            <span>Pet Lemmy</span>
+            <div>
+              <div className="flex items-center space-x-1.5">
+                <p className="text-sm font-black text-slate-800 group-hover:text-orange-600 transition-colors">
+                  {streakInfo.streak}-Day Streak
+                </p>
+                <span
+                  className={`text-[10px] ${streakInfo.badgeBg} ${streakInfo.badgeText} font-extrabold px-1.5 py-0.5 rounded-md border ${streakInfo.badgeBorder}`}
+                >
+                  {streakInfo.statusBadge}
+                </span>
+              </div>
+              <p
+                className={`text-[11px] font-medium transition-colors ${
+                  streakInfo.hasLoggedToday
+                    ? "text-emerald-600 font-semibold"
+                    : "text-slate-400"
+                }`}
+              >
+                {streakInfo.statusMessage}
+              </p>
+            </div>
           </button>
 
-          <button
-            id="my-outfits-btn"
-            onClick={() => setShowOutfits(true)}
-            className="bg-white hover:bg-emerald-50 px-4 py-3 rounded-2xl shadow-xs border border-emerald-100 text-emerald-800 font-bold text-xs hover:scale-102 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
-            title="Open My Outfits"
-          >
-            <Shirt size={15} className="text-emerald-600" />
-            <span>My Outfits</span>
-            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-1.5 py-0.5 rounded-full">
-              {ownedItems.length}
+          <div className="flex items-center space-x-1.5 bg-amber-50 px-3.5 py-2 rounded-2xl border border-amber-200/80 shadow-xs">
+            <Coins className="text-amber-500 fill-amber-400" size={18} />
+            <span className="font-black text-amber-800 text-sm tabular-nums">
+              {coins}
             </span>
-          </button>
-
-          <button
-            id="shop-btn"
-            onClick={() => setShowShop(true)}
-            className="bg-white hover:bg-amber-50 px-4 py-3 rounded-2xl shadow-xs border border-amber-200/80 text-amber-900 font-bold text-xs hover:scale-102 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
-            title="Open Shop"
-            aria-label="Open Shop"
-          >
-            <ShoppingBag size={15} className="text-amber-600" />
-          </button>
+          </div>
         </div>
       </div>
 
-      {/* Missions (only this block is width-constrained; modals live outside it) */}
-      <div className="px-5 space-y-4 max-w-md mx-auto">
-        <MissionSection
-          title="Daily Missions"
-          quests={challenges}
-          onClaim={handleCompleteQuest}
-        />
-        {/* TODO: swap `challenges` for a separate special-missions list */}
-        <MissionSection
-          title="Weekly Missions"
-          quests={weeklyChallenges}
-          onClaim={handleCompleteQuest}
-        />
+      {/* Page body: one column on mobile, stage (left) + missions (right) on laptop */}
+      <div className="mx-auto w-full max-w-6xl lg:grid lg:grid-cols-12 lg:gap-8 lg:px-8 lg:pt-6 lg:items-start">
+        {/* Hero Section: Interactive Lemmy Stage */}
+        <div className="relative pt-4 pb-6 px-4 max-w-md mx-auto lg:max-w-none lg:mx-0 lg:px-0 lg:pt-0 lg:col-span-7">
+          {/* Scenic Stage Card Framing Lemmy */}
+          <PalBackground theme={backgroundTheme}>
+            <div className="w-full pt-4 pb-4 px-4 lg:pt-8 lg:pb-6 lg:px-8 flex flex-col items-center">
+              <div className="flex flex-col items-center mb-2 z-10 text-center">
+                <div className="flex items-center space-x-2 bg-white/85 backdrop-blur-md px-3 py-1 rounded-full border border-white/80 shadow-2xs">
+                  <h1 className="text-base lg:text-lg font-black text-slate-800 tracking-tight">
+                    Lemmy
+                  </h1>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">
+                    Lvl {friendshipLevel} Companion
+                  </span>
+                </div>
+
+                <div className="flex items-center space-x-2 mt-1.5 bg-white/70 backdrop-blur-xs px-2.5 py-0.5 rounded-full">
+                  <div className="flex space-x-1">
+                    {[1, 2, 3, 4, 5].map((h) => (
+                      <Heart
+                        key={h}
+                        className={`transition-colors duration-300 ${h <= 4 ? "fill-rose-500 text-rose-500" : "text-slate-300"}`}
+                        size={12}
+                      />
+                    ))}
+                  </div>
+                  <div
+                    className="w-24 lg:w-32 h-2 bg-slate-200/80 rounded-full overflow-hidden"
+                    title={`Friendship XP: ${friendshipXp}/100`}
+                  >
+                    <div
+                      className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-500"
+                      style={{ width: `${friendshipXp}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-semibold">
+                    {friendshipXp}xp
+                  </span>
+                </div>
+              </div>
+
+              {/* Speech Bubble */}
+              <div className="relative mb-2 max-w-xs lg:max-w-md px-4 py-2.5 lg:px-5 lg:py-3 bg-white/95 rounded-2xl shadow-sm border border-emerald-100/80 text-xs lg:text-sm font-semibold text-slate-700 text-center z-10 transition-all duration-300">
+                <p className="leading-snug">
+                  {dialogue || palStatus.defaultDialogue}
+                </p>
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-b border-r border-emerald-100/80 rotate-45" />
+              </div>
+
+              <div className="relative z-10 my-0">
+                <Mascot
+                  animationState={currentMascotAnimation}
+                  outfit={currentOutfit}
+                  onPet={handlePetLemmy}
+                  className="w-56 h-64 sm:w-64 sm:h-72 lg:w-72 lg:h-80"
+                />
+              </div>
+
+              {/* Quick Scenery Theme Bar: scrolls on mobile, wraps on laptop so every scene is visible */}
+              <div className="w-full flex items-center justify-center gap-1 mt-1 z-10">
+                <div className="flex items-center gap-1 bg-white/90 backdrop-blur-md p-1 rounded-2xl border border-white shadow-xs overflow-x-auto [scrollbar-width:none] lg:flex-wrap lg:justify-center lg:overflow-visible">
+                  {BACKGROUND_OPTIONS.map(
+                    (bg: (typeof BACKGROUND_OPTIONS)[number]) => {
+                      const isCurrent = backgroundTheme === bg.id;
+                      const item = shopItems.find(
+                        (i) => i.id === `bg_${bg.id}`,
+                      );
+                      const isOwned = item?.owned ?? bg.id === "garden";
+                      return (
+                        <button
+                          key={bg.id}
+                          onClick={() => {
+                            if (isOwned) {
+                              handleSelectBackground(bg.id);
+                            } else if (item) {
+                              setSheetItemId(item.id);
+                            }
+                          }}
+                          title={
+                            isOwned
+                              ? `Switch to ${bg.name} (${bg.tagline})`
+                              : `Unlock ${bg.name} in Shop (${item?.price} coins)`
+                          }
+                          className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                            isCurrent
+                              ? "bg-emerald-600 text-white shadow-xs scale-102"
+                              : isOwned
+                                ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 active:scale-95"
+                                : "text-slate-400 bg-slate-50/80 hover:bg-amber-50 hover:text-amber-700 border border-dashed border-amber-200 active:scale-95"
+                          }`}
+                        >
+                          <span className="text-xs">{bg.emoji}</span>
+                          <span>{bg.name}</span>
+                          {!isOwned && item && (
+                            <span className="flex items-center text-[9px] text-amber-700 bg-amber-100/90 px-1 py-0.2 rounded font-black ml-0.5">
+                              <Lock size={9} className="mr-0.5" />
+                              {item.price}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    },
+                  )}
+                </div>
+              </div>
+            </div>
+          </PalBackground>
+
+          {/* Quick Action Buttons */}
+          <div className="mt-4 lg:mt-5 flex items-center justify-center space-x-3 z-10">
+            <button
+              onClick={handlePetLemmy}
+              className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-2xl shadow-md shadow-emerald-600/20 font-bold text-xs lg:text-sm text-white hover:scale-102 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
+            >
+              <Heart size={15} className="fill-white" />
+              <span>Pet Lemmy</span>
+            </button>
+
+            <button
+              id="my-outfits-btn"
+              onClick={() => setShowOutfits(true)}
+              className="bg-white hover:bg-emerald-50 px-4 py-3 rounded-2xl shadow-xs border border-emerald-100 text-emerald-800 font-bold text-xs lg:text-sm hover:scale-102 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
+              title="Open My Outfits"
+            >
+              <Shirt size={15} className="text-emerald-600" />
+              <span>My Outfits</span>
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-1.5 py-0.5 rounded-full">
+                {ownedItems.length}
+              </span>
+            </button>
+
+            <button
+              id="shop-btn"
+              onClick={() => setShowShop(true)}
+              className="bg-white hover:bg-amber-50 px-4 py-3 rounded-2xl shadow-xs border border-amber-200/80 text-amber-900 font-bold text-xs lg:text-sm hover:scale-102 active:scale-95 transition-all flex items-center space-x-2 cursor-pointer"
+              title="Open Shop"
+              aria-label="Open Shop"
+            >
+              <ShoppingBag size={15} className="text-amber-600" />
+              <span className="hidden lg:inline">Shop</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Missions (modals live outside this block) */}
+        <div className="px-5 space-y-4 max-w-md mx-auto lg:max-w-none lg:mx-0 lg:px-0 lg:col-span-5 lg:bg-white/60 lg:border lg:border-white lg:rounded-[32px] lg:shadow-xs lg:p-6">
+          <MissionSection
+            title="Daily Missions"
+            quests={challenges}
+            onClaim={handleCompleteQuest}
+          />
+          {/* TODO: swap `challenges` for a separate special-missions list */}
+          <MissionSection
+            title="Weekly Missions"
+            quests={weeklyChallenges}
+            onClaim={handleCompleteQuest}
+          />
+        </div>
       </div>
 
       {/* ================================================================= */}
@@ -1451,108 +1471,114 @@ export const Pal: React.FC<PalProps> = ({
             </div>
           }
         >
-          {/* Fitting stage: mascot + equipment slots */}
-          <div className="shrink-0 px-4 pt-3 pb-3 bg-white">
-            <div className="relative h-[230px] sm:h-[300px] rounded-[28px] overflow-hidden border-2 border-emerald-200 shadow-sm">
-              <PalBackground theme={backgroundTheme}>
-                <div className="w-full h-[230px] sm:h-[300px] relative flex items-end justify-center pb-2">
-                  <Mascot
-                    className="w-36 h-40 sm:w-52 sm:h-60"
-                    outfit={currentOutfit}
-                  />
+          {/* Mobile: stacked. Laptop: fitting stage on the left, browser on the right */}
+          <div className="flex-1 min-h-0 flex flex-col lg:flex-row">
+            {/* Fitting stage: mascot + equipment slots */}
+            <div className="shrink-0 px-4 pt-3 pb-3 bg-white lg:w-[380px] lg:px-5 lg:pt-5 lg:pb-5 lg:border-r lg:border-[#F0EBDD] lg:overflow-y-auto">
+              <div className="relative h-[230px] sm:h-[300px] lg:h-[400px] rounded-[28px] overflow-hidden border-2 border-emerald-200 shadow-sm">
+                <PalBackground theme={backgroundTheme}>
+                  <div className="w-full h-[230px] sm:h-[300px] lg:h-[400px] relative flex items-end justify-center pb-2">
+                    <Mascot
+                      className="w-36 h-40 sm:w-52 sm:h-60 lg:w-56 lg:h-64"
+                      outfit={currentOutfit}
+                    />
 
-                  {/* Slots: tap a worn item to take it off, tap an empty one to browse that category */}
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">
-                    {CATEGORY_ORDER.map((cat) => {
-                      const isScenery = cat === "scenery";
-                      const worn = isScenery
-                        ? shopItems.find(
-                            (i) => i.id === `bg_${backgroundTheme}`,
-                          )
-                        : equipped[cat];
-                      const { Icon, label } = CATEGORY_META[cat];
-                      return (
-                        <button
-                          key={cat}
-                          type="button"
-                          onClick={() =>
-                            worn && !isScenery
-                              ? handleEquip(worn)
-                              : setOutfitTab(cat)
-                          }
-                          title={
-                            isScenery
-                              ? worn
-                                ? `Active Scene: ${worn.name}`
-                                : "Browse Sceneries"
-                              : worn
-                                ? `Take off ${worn.name}`
-                                : `Browse ${label}`
-                          }
-                          aria-label={
-                            isScenery
-                              ? worn
-                                ? `Active Scene: ${worn.name}`
-                                : "Browse Sceneries"
-                              : worn
-                                ? `Take off ${worn.name}`
-                                : `Browse ${label}`
-                          }
-                          className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all active:scale-95 cursor-pointer backdrop-blur-xs ${
-                            worn
-                              ? "bg-white border-2 border-emerald-400 shadow-xs"
-                              : "bg-white/80 border-2 border-dashed border-emerald-300 text-emerald-600"
-                          }`}
-                        >
-                          {worn ? (
-                            <svg
-                              viewBox={ITEM_VIEWBOX[worn.id] ?? "0 0 120 120"}
-                              className={`w-7 h-7 ${isScenery ? "rounded-lg overflow-hidden" : ""}`}
-                              aria-hidden
-                            >
-                              {worn.svgElement}
-                            </svg>
-                          ) : (
-                            <Icon size={17} />
-                          )}
-                        </button>
-                      );
-                    })}
+                    {/* Slots: tap a worn item to take it off, tap an empty one to browse that category */}
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">
+                      {CATEGORY_ORDER.map((cat) => {
+                        const isScenery = cat === "scenery";
+                        const worn = isScenery
+                          ? shopItems.find(
+                              (i) => i.id === `bg_${backgroundTheme}`,
+                            )
+                          : equipped[cat];
+                        const { Icon, label } = CATEGORY_META[cat];
+                        return (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() =>
+                              worn && !isScenery
+                                ? handleEquip(worn)
+                                : setOutfitTab(cat)
+                            }
+                            title={
+                              isScenery
+                                ? worn
+                                  ? `Active Scene: ${worn.name}`
+                                  : "Browse Sceneries"
+                                : worn
+                                  ? `Take off ${worn.name}`
+                                  : `Browse ${label}`
+                            }
+                            aria-label={
+                              isScenery
+                                ? worn
+                                  ? `Active Scene: ${worn.name}`
+                                  : "Browse Sceneries"
+                                : worn
+                                  ? `Take off ${worn.name}`
+                                  : `Browse ${label}`
+                            }
+                            className={`w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center transition-all active:scale-95 cursor-pointer backdrop-blur-xs hover:scale-105 ${
+                              worn
+                                ? "bg-white border-2 border-emerald-400 shadow-xs"
+                                : "bg-white/80 border-2 border-dashed border-emerald-300 text-emerald-600"
+                            }`}
+                          >
+                            {worn ? (
+                              <svg
+                                viewBox={ITEM_VIEWBOX[worn.id] ?? "0 0 120 120"}
+                                className={`w-7 h-7 ${isScenery ? "rounded-lg overflow-hidden" : ""}`}
+                                aria-hidden
+                              >
+                                {worn.svgElement}
+                              </svg>
+                            ) : (
+                              <Icon size={17} />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {anyEquipped && (
+                      <button
+                        type="button"
+                        onClick={handleUnequipAll}
+                        className="absolute top-3 right-3 text-[11px] font-bold text-rose-600 bg-white/90 hover:bg-white px-3 py-1.5 rounded-full border border-rose-100 active:scale-95 transition-all cursor-pointer z-20 shadow-xs"
+                      >
+                        Take all off
+                      </button>
+                    )}
                   </div>
-
-                  {anyEquipped && (
-                    <button
-                      type="button"
-                      onClick={handleUnequipAll}
-                      className="absolute top-3 right-3 text-[11px] font-bold text-rose-600 bg-white/90 hover:bg-white px-3 py-1.5 rounded-full border border-rose-100 active:scale-95 transition-all cursor-pointer z-20 shadow-xs"
-                    >
-                      Take all off
-                    </button>
-                  )}
-                </div>
-              </PalBackground>
+                </PalBackground>
+              </div>
             </div>
-          </div>
 
-          <TabsBar
-            active={outfitTab}
-            onChange={setOutfitTab}
-            accent="emerald"
-          />
+            {/* Browser: tabs + items */}
+            <div className="flex-1 min-h-0 flex flex-col">
+              <TabsBar
+                active={outfitTab}
+                onChange={setOutfitTab}
+                accent="emerald"
+              />
 
-          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#FFFDF7] px-4 pt-4 pb-[max(2rem,env(safe-area-inset-bottom))]">
-            <ItemsBrowser
-              items={closetItems}
-              tab={outfitTab}
-              onTabChange={setOutfitTab}
-              mode="closet"
-              equipped={equipped}
-              backgroundTheme={backgroundTheme}
-              coins={coins}
-              onSelect={(item) =>
-                item.owned ? handleEquip(item) : setSheetItemId(item.id)
-              }
-            />
+              <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#FFFDF7] px-4 lg:px-6 pt-4 pb-[max(2rem,env(safe-area-inset-bottom))]">
+                <ItemsBrowser
+                  items={closetItems}
+                  tab={outfitTab}
+                  onTabChange={setOutfitTab}
+                  mode="closet"
+                  equipped={equipped}
+                  backgroundTheme={backgroundTheme}
+                  coins={coins}
+                  onSelect={(item) =>
+                    item.owned ? handleEquip(item) : setSheetItemId(item.id)
+                  }
+                />
+              </div>
+            </div>
           </div>
         </ModalShell>
       )}
@@ -1571,7 +1597,7 @@ export const Pal: React.FC<PalProps> = ({
         >
           <TabsBar active={shopTab} onChange={setShopTab} accent="amber" />
 
-          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#FFFDF7] px-4 pt-4 pb-[max(2rem,env(safe-area-inset-bottom))]">
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#FFFDF7] px-4 lg:px-8 pt-4 lg:pt-6 pb-[max(2rem,env(safe-area-inset-bottom))]">
             <ItemsBrowser
               items={shopItems}
               tab={shopTab}
@@ -1591,6 +1617,7 @@ export const Pal: React.FC<PalProps> = ({
 
       {/* ================================================================= */}
       {/* ITEM SHEET: try on, buy, or wear                                  */}
+      {/* Mobile: bottom sheet. Laptop: centered dialog.                    */}
       {/* ================================================================= */}
       {sheetItem &&
         (() => {
@@ -1625,7 +1652,7 @@ export const Pal: React.FC<PalProps> = ({
 
           return (
             <div
-              className="fixed inset-0 z-[110] flex items-end justify-center"
+              className="fixed inset-0 z-[110] flex items-end lg:items-center justify-center lg:p-6"
               role="dialog"
               aria-modal="true"
               aria-label={sheetItem.name}
@@ -1638,14 +1665,14 @@ export const Pal: React.FC<PalProps> = ({
               />
 
               <div
-                className="relative w-full max-w-md bg-[#FFFCF2] rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-300"
+                className="relative w-full max-w-md lg:max-w-lg bg-[#FFFCF2] rounded-t-[32px] lg:rounded-[32px] shadow-2xl animate-in slide-in-from-bottom lg:slide-in-from-bottom-0 lg:zoom-in-95 duration-300 lg:pb-6"
                 style={{
                   paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))",
                 }}
               >
-                <div className="w-11 h-1.5 bg-slate-200 rounded-full mx-auto mt-3" />
+                <div className="lg:hidden w-11 h-1.5 bg-slate-200 rounded-full mx-auto mt-3" />
 
-                <div className="px-5 pt-3 flex items-start justify-between gap-3">
+                <div className="px-5 lg:px-7 pt-3 lg:pt-6 flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-[11px] font-bold text-amber-600">
                       {CATEGORY_META[sheetItem.category].label}
@@ -1655,39 +1682,50 @@ export const Pal: React.FC<PalProps> = ({
                     </h3>
                   </div>
 
-                  {sheetItem.owned ? (
-                    <span className="shrink-0 flex items-center gap-1 text-xs font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
-                      <Check size={13} className="stroke-[3]" />
-                      Owned
-                    </span>
-                  ) : (
-                    <span
-                      className={`shrink-0 flex items-center gap-1 text-sm font-black px-3 py-1.5 rounded-full border ${
-                        canAfford
-                          ? "text-amber-800 bg-amber-50 border-amber-200"
-                          : "text-slate-400 bg-slate-50 border-slate-200"
-                      }`}
-                    >
-                      {!canAfford && <Lock size={12} />}
-                      <Coins
-                        size={14}
-                        className={
+                  <div className="flex items-center gap-2 shrink-0">
+                    {sheetItem.owned ? (
+                      <span className="flex items-center gap-1 text-xs font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
+                        <Check size={13} className="stroke-[3]" />
+                        Owned
+                      </span>
+                    ) : (
+                      <span
+                        className={`flex items-center gap-1 text-sm font-black px-3 py-1.5 rounded-full border ${
                           canAfford
-                            ? "text-amber-500 fill-amber-400"
-                            : "text-slate-300 fill-slate-200"
-                        }
-                      />
-                      {sheetItem.price}
-                    </span>
-                  )}
+                            ? "text-amber-800 bg-amber-50 border-amber-200"
+                            : "text-slate-400 bg-slate-50 border-slate-200"
+                        }`}
+                      >
+                        {!canAfford && <Lock size={12} />}
+                        <Coins
+                          size={14}
+                          className={
+                            canAfford
+                              ? "text-amber-500 fill-amber-400"
+                              : "text-slate-300 fill-slate-200"
+                          }
+                        />
+                        {sheetItem.price}
+                      </span>
+                    )}
+                    {/* Close button for laptop (mobile closes via backdrop / "Not now") */}
+                    <button
+                      type="button"
+                      onClick={() => setSheetItemId(null)}
+                      aria-label="Close"
+                      className="hidden lg:flex w-8 h-8 items-center justify-center rounded-full text-slate-400 hover:text-slate-600 hover:bg-black/5 transition-colors cursor-pointer"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Try-on stage */}
-                <div className="relative mx-5 mt-3 h-52 rounded-[24px] overflow-hidden border-2 border-[#F6D98A]">
+                <div className="relative mx-5 lg:mx-7 mt-3 h-52 lg:h-64 rounded-[24px] overflow-hidden border-2 border-[#F6D98A]">
                   <PalBackground theme={sheetTheme}>
-                    <div className="w-full h-52 flex items-end justify-center pb-2">
+                    <div className="w-full h-52 lg:h-64 flex items-end justify-center pb-2">
                       <Mascot
-                        className="w-36 h-44"
+                        className="w-36 h-44 lg:w-44 lg:h-52"
                         outfit={
                           isScenery ? currentOutfit : tryOnOutfit(sheetItem)
                         }
@@ -1696,11 +1734,11 @@ export const Pal: React.FC<PalProps> = ({
                   </PalBackground>
                 </div>
 
-                <p className="px-5 mt-3 text-xs font-semibold text-slate-500 text-center">
+                <p className="px-5 lg:px-7 mt-3 text-xs lg:text-sm font-semibold text-slate-500 text-center">
                   {message}
                 </p>
 
-                <div className="px-5 mt-3 space-y-2">
+                <div className="px-5 lg:px-7 mt-3 space-y-2">
                   {sheetItem.owned ? (
                     <button
                       type="button"
@@ -1710,8 +1748,8 @@ export const Pal: React.FC<PalProps> = ({
                       }}
                       className={`w-full py-3.5 rounded-2xl font-black text-sm text-white border-b-4 active:border-b-0 active:translate-y-1 transition-all cursor-pointer ${
                         isEquipped
-                          ? "bg-slate-700 border-slate-900"
-                          : "bg-emerald-500 border-emerald-700"
+                          ? "bg-slate-700 border-slate-900 hover:bg-slate-600"
+                          : "bg-emerald-500 border-emerald-700 hover:bg-emerald-600"
                       }`}
                     >
                       {isScenery
@@ -1732,7 +1770,7 @@ export const Pal: React.FC<PalProps> = ({
                       }}
                       className={`w-full py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 border-b-4 transition-all ${
                         canAfford
-                          ? "bg-amber-500 border-amber-700 text-white active:border-b-0 active:translate-y-1 cursor-pointer"
+                          ? "bg-amber-500 border-amber-700 text-white hover:bg-amber-600 active:border-b-0 active:translate-y-1 cursor-pointer"
                           : "bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed"
                       }`}
                     >
