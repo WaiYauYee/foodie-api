@@ -3,11 +3,12 @@
     width="149"
     height="148"
     alt="MakanFit Logo"
-    src="https://github.com/user-attachments/assets/d2426a3d-b4e8-4519-8810-1cedf6c2f36f"
+    src="https://github.com/user-attachments/assets/4344ab71-2774-412c-8a52-c1f4539f5a83"
   />
 
   <h1>MakanFit</h1>
 </div>
+
 
 # FOODIE: Deployment of Models for Food Image Understanding
 
