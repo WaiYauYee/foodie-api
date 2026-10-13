@@ -369,30 +369,30 @@ npm run dev
 
 ## ⚠️ Challenges and Limitations
 
-- 1. 🎯 Classification Accuracy
--- Struggles with visually similar noodle and laksa variants 75.60% accuracy may limit real-world reliability for edge cases
--- Improvement needed through larger dataset expansion and advanced architectures (ViT, hybrid CNN-ViT)
+1. 🎯 **Classification Accuracy**
+- Struggles with visually similar noodle and laksa variants 75.60% accuracy may limit real-world reliability for edge cases
+- Improvement needed through larger dataset expansion and advanced architectures (ViT, hybrid CNN-ViT)
 
-2. 🧩 Segmentation Challenges
+2. 🧩 **Segmentation Challenges**
 - Difficulty with overlapping or densely layered ingredients
 - Performance sensitive to text prompt quality for Grounded SAM
 - Redundant/overlapping detections in complex dishes
 
 
-3. 🍽️ Calorie Estimation
+3. 🍽️ **Calorie Estimation**
 - 2D pixel-area proportions don't account for food depth/layering
 - Implicit assumption of uniform ingredient thickness
 - Relies on LLM-generated weights which may be unrealistic
 - Limited internal ingredient dictionary (261 entries)
 
 
-4. ⚡ Performance
+4. ⚡ **Performance**
 - Segmentation inference on CPU (~80 seconds) too slow for real-time use
 - No batch processing or caching mechanisms
 - Single-image input constraint
 
 
-5. 📊 Calorie Estimation Evaluation
+5. 📊 **Calorie Estimation Evaluation**
 
 - LLM variance used as proxy for consistency, not actual accuracy
 - No expert nutritionist validation of calorie estimates
