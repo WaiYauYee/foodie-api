@@ -233,10 +233,10 @@ foodie-api/
 │           ├── styles/           # Shared styles
 │           ├── types/            # TypeScript type definitions
 │           ├── utils/            # Shared helper functions
-│           ├── App.css                # Main application styles
-│           ├── App.tsx                # Root React component
-│           ├── index.css              # Global styles
-│           └── main.tsx               # Application entry point
+│           ├── App.css           # Main application styles
+│           ├── App.tsx           # Root React component
+│           ├── index.css         # Global styles
+│           └── main.tsx          # Application entry point
 │       ├── .gitignore
 │       ├── eslint.config.js
 │       ├── index.html
