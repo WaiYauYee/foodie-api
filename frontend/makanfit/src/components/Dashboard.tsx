@@ -201,53 +201,73 @@ const Dashboard: React.FC<DashboardProps> = ({
       <header className="border-b border-slate-100 sticky top-0 bg-white/90 backdrop-blur z-10">
         <div className="mx-auto w-full max-w-4xl px-6 py-5 lg:py-6 flex items-center space-x-4">
           <button
-            onClick={() => setView('main')}
+            onClick={() => setView("main")}
             aria-label="Back to dashboard"
             className="p-2 bg-slate-50 rounded-full text-slate-900 hover:bg-slate-100 active:scale-90 transition-all"
           >
             <ArrowLeft size={20} />
           </button>
-          <h2 className="text-xl font-black text-slate-900 tracking-tight">Understanding BMI</h2>
+          <h2 className="text-xl font-black text-slate-900 tracking-tight">
+            Understanding BMI
+          </h2>
         </div>
       </header>
- 
+
       <div className="flex-1 mx-auto w-full max-w-4xl p-6 lg:py-10 space-y-8 pb-24">
         <div className="flex flex-col items-center text-center space-y-4 py-4 lg:py-8">
           <div className="w-20 h-20 bg-emerald-50 rounded-[32px] flex items-center justify-center text-emerald-500 shadow-sm border border-emerald-100">
             <Activity size={32} />
           </div>
           <div className="space-y-1">
-            <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Medical Disclaimer</p>
+            <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
+              Medical Disclaimer
+            </p>
             <h3 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight px-4">
               Why we measure your BMI
             </h3>
           </div>
         </div>
- 
+
         {/* Two columns on laptop */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="p-8 bg-slate-50 rounded-[32px] border border-slate-100 space-y-4">
             <div className="flex items-center space-x-3 text-emerald-600 mb-2">
               <ShieldCheck size={20} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Screening Tool</span>
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                Screening Tool
+              </span>
             </div>
             <p className="text-slate-600 font-bold leading-relaxed">
-              Body Mass Index (BMI) is a simple screening tool to categorize weight relative to height. While it is not a
-              perfect diagnostic of individual health or body composition (like muscle vs fat), it remains a vital
-              starting point.
+              Body Mass Index (BMI) is a simple screening tool to categorize
+              weight relative to height. While it is not a perfect diagnostic of
+              individual health or body composition (like muscle vs fat), it
+              remains a vital starting point.
             </p>
           </div>
- 
+
           <div className="p-8 bg-emerald-50 rounded-[32px] border border-emerald-100 space-y-4 shadow-sm">
-            <h4 className="text-emerald-900 font-black text-lg">The Health Connection</h4>
+            <h4 className="text-emerald-900 font-black text-lg">
+              The Health Connection
+            </h4>
             <p className="text-emerald-800/80 font-bold leading-relaxed">
-              Extensive medical research indicates that individuals with a{' '}
-              <span className="text-emerald-900 underline decoration-2 underline-offset-4">higher BMI range</span> have a
-              statistically significant increased risk of developing chronic conditions, including:
+              Extensive medical research indicates that individuals with a{" "}
+              <span className="text-emerald-900 underline decoration-2 underline-offset-4">
+                higher BMI range
+              </span>{" "}
+              have a statistically significant increased risk of developing
+              chronic conditions, including:
             </p>
             <ul className="space-y-3 pt-2">
-              {['Type 2 Diabetes', 'Hypertension (High Blood Pressure)', 'Cardiovascular Diseases', 'Certain types of Cancers'].map(item => (
-                <li key={item} className="flex items-center space-x-3 text-emerald-900 font-black text-sm">
+              {[
+                "Type 2 Diabetes",
+                "Hypertension (High Blood Pressure)",
+                "Cardiovascular Diseases",
+                "Certain types of Cancers",
+              ].map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center space-x-3 text-emerald-900 font-black text-sm"
+                >
                   <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
                   <span>{item}</span>
                 </li>
@@ -255,9 +275,11 @@ const Dashboard: React.FC<DashboardProps> = ({
             </ul>
           </div>
         </div>
- 
+
         <div className="pt-2">
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-4 px-2">Authority & Guidelines</p>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-4 px-2">
+            Authority & Guidelines
+          </p>
           <a
             href="https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight"
             target="_blank"
@@ -266,20 +288,30 @@ const Dashboard: React.FC<DashboardProps> = ({
           >
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-slate-50 rounded-2xl group-hover:bg-emerald-50 transition-colors">
-                <ExternalLink size={20} className="text-slate-400 group-hover:text-emerald-500" />
+                <ExternalLink
+                  size={20}
+                  className="text-slate-400 group-hover:text-emerald-500"
+                />
               </div>
               <div className="text-left">
-                <p className="font-black text-slate-800 text-sm">WHO Guidelines</p>
-                <p className="text-[10px] text-slate-400 font-bold">World Health Organization</p>
+                <p className="font-black text-slate-800 text-sm">
+                  WHO Guidelines
+                </p>
+                <p className="text-[10px] text-slate-400 font-bold">
+                  World Health Organization
+                </p>
               </div>
             </div>
-            <ChevronRight size={20} className="text-slate-200 group-hover:text-emerald-500" />
+            <ChevronRight
+              size={20}
+              className="text-slate-200 group-hover:text-emerald-500"
+            />
           </a>
         </div>
- 
+
         <div className="pt-4 lg:max-w-sm lg:mx-auto">
           <button
-            onClick={() => setView('main')}
+            onClick={() => setView("main")}
             className="w-full bg-slate-900 text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase text-xs tracking-widest"
           >
             I Understand
@@ -292,6 +324,14 @@ const Dashboard: React.FC<DashboardProps> = ({
   if (view === "bmi-detail") {
     return renderBmiDetail();
   }
+
+  const macroProgress = [
+    { label: 'Protein', value: totals.protein, target: user.targetProtein, color: COLORS.protein },
+    { label: 'Carbs', value: totals.carbs, target: user.targetCarbs, color: COLORS.carbs },
+    { label: 'Fat', value: totals.fat, target: user.targetFat, color: COLORS.fat },
+  ];
+ 
+  const calPct = Math.min((totals.calories / user.targetCalories) * 100, 100);
 
   const renderNutritionTab = () => (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-300 pb-20">
@@ -333,15 +373,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 stroke="#10B981"
                 strokeWidth="6"
                 strokeDasharray={213.6}
-                strokeDashoffset={
-                  213.6 -
-                  (213.6 *
-                    Math.min(
-                      (totals.calories / user.targetCalories) * 100,
-                      100,
-                    )) /
-                    100
-                }
+                strokeDashoffset={213.6 - (213.6 * calPct) / 100}
                 strokeLinecap="round"
                 fill="transparent"
               />
@@ -351,10 +383,33 @@ const Dashboard: React.FC<DashboardProps> = ({
             </div>
           </div>
         </div>
-        </div>
 
-        {/* Daily consumption */}
-        {/* <div className="bg-white rounded-[32px] p-6 shadow-sm border border-slate-100 space-y-6">
+        {/* Macro progress bars */}
+        <div className="space-y-4 border-t border-gray-100 pt-5">
+          {macroProgress.map(m => {
+            const pct = m.target > 0 ? Math.min((m.value / m.target) * 100, 100) : 0;
+            return (
+              <div key={m.label} className="space-y-1.5">
+                <div className="flex justify-between text-xs font-bold">
+                  <span className="text-slate-500">{m.label}</span>
+                  <span className="text-slate-400">
+                    {Math.round(m.value)} / {m.target} g
+                  </span>
+                </div>
+                <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{ width: `${pct}%`, backgroundColor: m.color }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Daily consumption */}
+      {/* <div className="bg-white rounded-[32px] p-6 shadow-sm border border-slate-100 space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-slate-900 font-extrabold text-lg">Daily Consumption</h3>
             <div className="flex space-x-1 bg-slate-50 p-1 rounded-full border border-slate-100">
@@ -392,217 +447,217 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
       </div> */}
 
-        {/* Goal Line Chart */}
-        <div className={`${CARD} lg:col-span-7 space-y-4`}>
-          {renderChartHeader("Goal (Cal)")}
-          <div className="h-64 lg:h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={historicalData}
-                margin={{ top: 20, right: 30, left: -20, bottom: 0 }}
+      {/* Goal Line Chart */}
+      <div className={`${CARD} lg:col-span-7 space-y-4`}>
+        {renderChartHeader("Goal (Cal)")}
+        <div className="h-64 lg:h-72 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={historicalData}
+              margin={{ top: 20, right: 30, left: -20, bottom: 0 }}
+            >
+              <XAxis
+                dataKey="date"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#9CA3AF", fontSize: 10 }}
+                dy={10}
+                minTickGap={16}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#9CA3AF", fontSize: 10 }}
+              />
+              <ReferenceLine
+                y={user.targetCalories}
+                stroke="#9CA3AF"
+                strokeDasharray="3 3"
+              />
+              <Line
+                type="monotone"
+                dataKey="calories"
+                stroke="#10B981"
+                strokeWidth={3}
+                dot={
+                  range > 30
+                    ? false
+                    : {
+                        r: 4,
+                        fill: "#10B981",
+                        strokeWidth: 2,
+                        stroke: "#fff",
+                      }
+                }
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Macronutrient Breakdown (%) */}
+      <div className={`${CARD} lg:col-span-6 space-y-4`}>
+        {renderChartHeader("Macronutrient Distribution (%)")}
+        <div className="h-64 lg:h-72 w-full flex justify-center relative">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={goalDonutData}
+                innerRadius="45%"
+                outerRadius="62%"
+                dataKey="value"
+                stroke="none"
               >
-                <XAxis
-                  dataKey="date"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#9CA3AF", fontSize: 10 }}
-                  dy={10}
-                  minTickGap={16}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#9CA3AF", fontSize: 10 }}
-                />
-                <ReferenceLine
-                  y={user.targetCalories}
-                  stroke="#9CA3AF"
-                  strokeDasharray="3 3"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="calories"
-                  stroke="#10B981"
-                  strokeWidth={3}
-                  dot={
-                    range > 30
-                      ? false
-                      : {
-                          r: 4,
-                          fill: "#10B981",
-                          strokeWidth: 2,
-                          stroke: "#fff",
-                        }
-                  }
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Macronutrient Breakdown (%) */}
-        <div className={`${CARD} lg:col-span-6 space-y-4`}>
-          {renderChartHeader("Macronutrient Distribution (%)")}
-          <div className="h-64 lg:h-72 w-full flex justify-center relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={goalDonutData}
-                  innerRadius="45%"
-                  outerRadius="62%"
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {goalDonutData.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Pie
-                  data={macroDonutData}
-                  innerRadius="70%"
-                  outerRadius="90%"
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {macroDonutData.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <p className="text-[10px] text-gray-400 font-bold uppercase">
-                My goal
-              </p>
-              <div className="h-12" />
-              <p className="text-[10px] text-gray-400 font-bold uppercase mt-4">
-                My consumption
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Macronutrient Average (g) */}
-        <div className={`${CARD} lg:col-span-6 space-y-4`}>
-          {renderChartHeader("Macronutrient average (g)")}
-          <div className="h-64 lg:h-72 w-full relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={[
-                  {
-                    name: "fat",
-                    value: totals.fat,
-                    target: user.targetFat,
-                    fill: COLORS.fat,
-                  },
-                  {
-                    name: "protein",
-                    value: totals.protein,
-                    target: user.targetProtein,
-                    fill: COLORS.protein,
-                  },
-                  {
-                    name: "carbs",
-                    value: totals.carbs,
-                    target: user.targetCarbs,
-                    fill: COLORS.carbs,
-                  },
-                  { name: "fiber", value: 5, target: 18, fill: COLORS.fiber },
-                ]}
-                margin={{ top: 20, right: 50, left: -20, bottom: 10 }}
+                {goalDonutData.map((entry, index) => (
+                  <Cell key={index} fill={entry.color} />
+                ))}
+              </Pie>
+              <Pie
+                data={macroDonutData}
+                innerRadius="70%"
+                outerRadius="90%"
+                dataKey="value"
+                stroke="none"
               >
-                <XAxis dataKey="name" hide />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#9CA3AF", fontSize: 10 }}
-                />
-                <ReferenceLine
-                  y={user.targetCarbs}
-                  stroke={COLORS.carbs}
-                  strokeDasharray="3 3"
-                  label={{
-                    position: "right",
-                    value: `${user.targetCarbs}g`,
-                    fill: COLORS.carbs,
-                    fontSize: 10,
-                  }}
-                />
-                <ReferenceLine
-                  y={user.targetProtein}
-                  stroke={COLORS.protein}
-                  strokeDasharray="3 3"
-                  label={{
-                    position: "right",
-                    value: `${user.targetProtein}g`,
-                    fill: COLORS.protein,
-                    fontSize: 10,
-                  }}
-                />
-                <ReferenceLine
-                  y={user.targetFat}
-                  stroke={COLORS.fat}
-                  strokeDasharray="3 3"
-                  label={{
-                    position: "right",
-                    value: `${user.targetFat}g`,
-                    fill: COLORS.fat,
-                    fontSize: 10,
-                  }}
-                />
-                <ReferenceLine
-                  y={18}
-                  stroke={COLORS.fiber}
-                  strokeDasharray="3 3"
-                  label={{
-                    position: "right",
-                    value: `18g`,
-                    fill: COLORS.fiber,
-                    fontSize: 10,
-                  }}
-                />
-
-                {/* Layered Bar Effect */}
-                <Bar
-                  dataKey="target"
-                  fill="#F3F4F6"
-                  barSize={40}
-                  radius={[4, 4, 0, 0]}
-                />
-                <Bar
-                  dataKey="value"
-                  barSize={40}
-                  radius={[4, 4, 0, 0]}
-                  isAnimationActive={true}
-                >
-                  {[
-                    { fill: COLORS.fat },
-                    { fill: COLORS.protein },
-                    { fill: COLORS.carbs },
-                    { fill: COLORS.fiber },
-                  ].map((entry, index) => (
-                    <Cell key={`cell-bar-${index}`} fill={entry.fill} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="flex justify-center flex-wrap gap-4">
-            {Object.entries(COLORS)
-              .filter(([k]) => k !== "background")
-              .map(([key, color]) => (
-                <div key={key} className="flex items-center space-x-2">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: color }}
-                  />
-                  <span className="text-[10px] font-bold text-gray-400 uppercase">
-                    {key}
-                  </span>
-                </div>
-              ))}
+                {macroDonutData.map((entry, index) => (
+                  <Cell key={index} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <p className="text-[10px] text-gray-400 font-bold uppercase">
+              My goal
+            </p>
+            <div className="h-12" />
+            <p className="text-[10px] text-gray-400 font-bold uppercase mt-4">
+              My consumption
+            </p>
           </div>
         </div>
+      </div>
+
+      {/* Macronutrient Average (g) */}
+      <div className={`${CARD} lg:col-span-6 space-y-4`}>
+        {renderChartHeader("Macronutrient average (g)")}
+        <div className="h-64 lg:h-72 w-full relative">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={[
+                {
+                  name: "fat",
+                  value: totals.fat,
+                  target: user.targetFat,
+                  fill: COLORS.fat,
+                },
+                {
+                  name: "protein",
+                  value: totals.protein,
+                  target: user.targetProtein,
+                  fill: COLORS.protein,
+                },
+                {
+                  name: "carbs",
+                  value: totals.carbs,
+                  target: user.targetCarbs,
+                  fill: COLORS.carbs,
+                },
+                { name: "fiber", value: 5, target: 18, fill: COLORS.fiber },
+              ]}
+              margin={{ top: 20, right: 50, left: -20, bottom: 10 }}
+            >
+              <XAxis dataKey="name" hide />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#9CA3AF", fontSize: 10 }}
+              />
+              <ReferenceLine
+                y={user.targetCarbs}
+                stroke={COLORS.carbs}
+                strokeDasharray="3 3"
+                label={{
+                  position: "right",
+                  value: `${user.targetCarbs}g`,
+                  fill: COLORS.carbs,
+                  fontSize: 10,
+                }}
+              />
+              <ReferenceLine
+                y={user.targetProtein}
+                stroke={COLORS.protein}
+                strokeDasharray="3 3"
+                label={{
+                  position: "right",
+                  value: `${user.targetProtein}g`,
+                  fill: COLORS.protein,
+                  fontSize: 10,
+                }}
+              />
+              <ReferenceLine
+                y={user.targetFat}
+                stroke={COLORS.fat}
+                strokeDasharray="3 3"
+                label={{
+                  position: "right",
+                  value: `${user.targetFat}g`,
+                  fill: COLORS.fat,
+                  fontSize: 10,
+                }}
+              />
+              <ReferenceLine
+                y={18}
+                stroke={COLORS.fiber}
+                strokeDasharray="3 3"
+                label={{
+                  position: "right",
+                  value: `18g`,
+                  fill: COLORS.fiber,
+                  fontSize: 10,
+                }}
+              />
+
+              {/* Layered Bar Effect */}
+              <Bar
+                dataKey="target"
+                fill="#F3F4F6"
+                barSize={40}
+                radius={[4, 4, 0, 0]}
+              />
+              <Bar
+                dataKey="value"
+                barSize={40}
+                radius={[4, 4, 0, 0]}
+                isAnimationActive={true}
+              >
+                {[
+                  { fill: COLORS.fat },
+                  { fill: COLORS.protein },
+                  { fill: COLORS.carbs },
+                  { fill: COLORS.fiber },
+                ].map((entry, index) => (
+                  <Cell key={`cell-bar-${index}`} fill={entry.fill} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex justify-center flex-wrap gap-4">
+          {Object.entries(COLORS)
+            .filter(([k]) => k !== "background")
+            .map(([key, color]) => (
+              <div key={key} className="flex items-center space-x-2">
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="text-[10px] font-bold text-gray-400 uppercase">
+                  {key}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
 
