@@ -110,7 +110,12 @@ interface MacroRingProps {
   color: string;
 }
 
-const MacroRing: React.FC<MacroRingProps> = ({ label, current, target, color }) => {
+const MacroRing: React.FC<MacroRingProps> = ({
+  label,
+  current,
+  target,
+  color,
+}) => {
   const radius = 24;
   const circumference = 2 * Math.PI * radius;
   const progress = target > 0 ? Math.min(current / target, 1) : 0;
@@ -119,7 +124,14 @@ const MacroRing: React.FC<MacroRingProps> = ({ label, current, target, color }) 
     <div className="flex flex-col items-center space-y-2">
       <div className="relative w-14 h-14">
         <svg className="w-full h-full -rotate-90">
-          <circle cx="28" cy="28" r={radius} stroke="#F3F4F6" strokeWidth="4" fill="transparent" />
+          <circle
+            cx="28"
+            cy="28"
+            r={radius}
+            stroke="#F3F4F6"
+            strokeWidth="4"
+            fill="transparent"
+          />
           <circle
             cx="28"
             cy="28"
@@ -134,11 +146,17 @@ const MacroRing: React.FC<MacroRingProps> = ({ label, current, target, color }) 
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-[11px] font-black text-gray-800 leading-none">{Math.round(current)}</span>
-          <span className="text-[9px] text-gray-400 font-bold leading-none">/{target}g</span>
+          <span className="text-[11px] font-black text-gray-800 leading-none">
+            {Math.round(current)}
+          </span>
+          <span className="text-[9px] text-gray-400 font-bold leading-none">
+            /{target}g
+          </span>
         </div>
       </div>
-      <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{label}</span>
+      <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+        {label}
+      </span>
     </div>
   );
 };
@@ -763,12 +781,12 @@ export const Diary: React.FC<DiaryProps> = ({
   // };
 
   // Non-food / rejection modal state
-const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
-const [rejectionInfo, setRejectionInfo] = useState<{
-  imagePreview: string;
-  foodName: string;
-  confidence: number;
-} | null>(null);
+  const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
+  const [rejectionInfo, setRejectionInfo] = useState<{
+    imagePreview: string;
+    foodName: string;
+    confidence: number;
+  } | null>(null);
 
   const handleCapture = async (base64: string) => {
     setPreviewUrl(base64);
@@ -782,20 +800,22 @@ const [rejectionInfo, setRejectionInfo] = useState<{
       console.log("🔄 Sending image to backend for classification...");
       const classificationResult = await classifyFoodImage(base64);
       console.log("🍽️ Classification result:", classificationResult);
-      console.log("🍽️ Classification all predictions:", classificationResult.all_predictions);
+      console.log(
+        "🍽️ Classification all predictions:",
+        classificationResult.all_predictions,
+      );
 
       const topPrediction = classificationResult.primary_prediction;
       const dishName = topPrediction?.food_name || "";
 
       const isFood = classificationResult.is_food;
       console.log("🍽️ Food or not:", classificationResult.is_food);
-      console.log(
-        "🍽️ Food check:",
-        classificationResult.food_check
-      );
+      console.log("🍽️ Food check:", classificationResult.food_check);
 
       if (!isFood || !topPrediction) {
-        console.warn("⚠️ Non-food detected or model confidence too low. Halting pipeline.");
+        console.warn(
+          "⚠️ Non-food detected or model confidence too low. Halting pipeline.",
+        );
         setAnalyzing(false); // Stop loading spinner
 
         setRejectionInfo({
@@ -804,8 +824,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
             classificationResult.food_check?.label === "not_food_or_drink"
               ? "Not food or drink"
               : classificationResult.food_check?.label || "Not food",
-          confidence:
-            classificationResult.food_check?.confidence ?? 0,
+          confidence: classificationResult.food_check?.confidence ?? 0,
         });
 
         setIsRejectionModalOpen(true);
@@ -1221,160 +1240,165 @@ const [rejectionInfo, setRejectionInfo] = useState<{
         <Mic size={16} />
       </button>
       <div className="bg-white px-4 py-4 shadow-sm sticky top-0 z-[40]">
-        <div className="flex items-center justify-between">
-          <div className="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center">
-            <Target className="w-6 h-6 text-sky-400" />
-          </div>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={goToPrevDay}
-              className="p-2 hover:bg-gray-50 rounded-full transition-colors active:scale-90"
-            >
-              <ChevronLeft className="w-6 h-6 text-gray-400" />
-            </button>
-            <button
-              onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-              className="flex items-center space-x-2 cursor-pointer active:scale-95 transition-all"
-            >
-              <CalendarIcon className="w-6 h-6 text-gray-800" />
-              <span className="font-black text-gray-900 text-lg tracking-tight">
-                {selectedDate.toLocaleDateString("en-US", {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </span>
-            </button>
-            <button
-              onClick={goToNextDay}
-              disabled={
-                selectedDate.toDateString() === getToday().toDateString()
-              }
-              className={`p-2 rounded-full transition-colors active:scale-90 ${
-                selectedDate.toDateString() === getToday().toDateString()
-                  ? "opacity-30 cursor-not-allowed"
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              <ChevronRight className="w-6 h-6 text-gray-800" />
-            </button>
-          </div>
-          <div className="w-10" />
-        </div>
-
-        {/* Scrollable Mini Calendar */}
-        <div
-          ref={scrollContainerRef}
-          className="flex space-x-2 overflow-x-auto pb-1 scrollbar-hide snap-x"
-        >
-          {days.map((d, i) => {
-            const isSelected = d.toDateString() === selectedDate.toDateString();
-            const isFuture = !isTodayOrPast(d);
-
-            return (
-              <button
-                key={i}
-                data-selected={isSelected}
-                disabled={isFuture}
-                onClick={() => {
-                  if (!isFuture) {
-                    setSelectedDate(new Date(d));
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white px-4 py-4 shadow-sm sticky top-0 z-[40]">
+            <div className="flex items-center justify-between">
+              <div className="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center">
+                <Target className="w-6 h-6 text-sky-400" />
+              </div>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={goToPrevDay}
+                  className="p-2 hover:bg-gray-50 rounded-full transition-colors active:scale-90"
+                >
+                  <ChevronLeft className="w-6 h-6 text-gray-400" />
+                </button>
+                <button
+                  onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                  className="flex items-center space-x-2 cursor-pointer active:scale-95 transition-all"
+                >
+                  <CalendarIcon className="w-6 h-6 text-gray-800" />
+                  <span className="font-black text-gray-900 text-lg tracking-tight">
+                    {selectedDate.toLocaleDateString("en-US", {
+                      weekday: "short",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                </button>
+                <button
+                  onClick={goToNextDay}
+                  disabled={
+                    selectedDate.toDateString() === getToday().toDateString()
                   }
-                }}
-                className={`flex-shrink-0 w-14 flex flex-col items-center space-y-2 py-3 px-1 rounded-2xl border-2 transition-all snap-center ${
-                  isSelected
-                    ? "border-emerald-500 bg-emerald-50 shadow-sm"
-                    : isFuture
-                      ? "border-transparent bg-gray-50 opacity-40 cursor-not-allowed"
-                      : "border-transparent bg-white"
-                }`}
-              >
-                <span
-                  className={`text-[10px] uppercase font-black tracking-tighter ${
-                    isSelected
-                      ? "text-emerald-600"
-                      : isFuture
-                        ? "text-gray-300"
-                        : "text-gray-400"
+                  className={`p-2 rounded-full transition-colors active:scale-90 ${
+                    selectedDate.toDateString() === getToday().toDateString()
+                      ? "opacity-30 cursor-not-allowed"
+                      : "hover:bg-gray-50"
                   }`}
                 >
-                  {d.toLocaleDateString("en-US", { weekday: "short" })}
-                </span>
+                  <ChevronRight className="w-6 h-6 text-gray-800" />
+                </button>
+              </div>
+              <div className="w-10" />
+            </div>
 
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                    isSelected
-                      ? "bg-emerald-500 text-white"
-                      : isFuture
-                        ? "text-gray-300"
-                        : "text-gray-600"
-                  }`}
-                >
-                  <span className="text-sm font-black">{d.getDate()}</span>
-                </div>
-              </button>
-            );
-          })}
+            {/* Scrollable Mini Calendar */}
+            <div
+              ref={scrollContainerRef}
+              className="flex space-x-2 overflow-x-auto pb-1 scrollbar-hide snap-x"
+            >
+              {days.map((d, i) => {
+                const isSelected =
+                  d.toDateString() === selectedDate.toDateString();
+                const isFuture = !isTodayOrPast(d);
+
+                return (
+                  <button
+                    key={i}
+                    data-selected={isSelected}
+                    disabled={isFuture}
+                    onClick={() => {
+                      if (!isFuture) {
+                        setSelectedDate(new Date(d));
+                      }
+                    }}
+                    className={`flex-shrink-0 w-14 flex flex-col items-center space-y-2 py-3 px-1 rounded-2xl border-2 transition-all snap-center ${
+                      isSelected
+                        ? "border-emerald-500 bg-emerald-50 shadow-sm"
+                        : isFuture
+                          ? "border-transparent bg-gray-50 opacity-40 cursor-not-allowed"
+                          : "border-transparent bg-white"
+                    }`}
+                  >
+                    <span
+                      className={`text-[10px] uppercase font-black tracking-tighter ${
+                        isSelected
+                          ? "text-emerald-600"
+                          : isFuture
+                            ? "text-gray-300"
+                            : "text-gray-400"
+                      }`}
+                    >
+                      {d.toLocaleDateString("en-US", { weekday: "short" })}
+                    </span>
+
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                        isSelected
+                          ? "bg-emerald-500 text-white"
+                          : isFuture
+                            ? "text-gray-300"
+                            : "text-gray-600"
+                      }`}
+                    >
+                      <span className="text-sm font-black">{d.getDate()}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Calendar Modal Overlay */}
-        {isCalendarOpen && (
-          <>
-            <div
-              className="fixed inset-0 bg-black/40 z-[89] backdrop-blur-sm"
-              onClick={() => setIsCalendarOpen(false)}
-            />
-            <div className="fixed inset-x-0 bottom-0 bg-white z-[90] rounded-tl-3xl rounded-tr-3xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto">
-              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6" />
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-black text-gray-800 uppercase tracking-normal">
-                  Select Date
-                </h3>
-                <button
-                  onClick={() => setIsCalendarOpen(false)}
-                  className="p-2 bg-gray-50 rounded-full"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-              <div className="flex justify-center pb-4">
-                <Calendar
-                  value={selectedDate}
-                  maxDate={getToday()}
-                  onChange={(date) => {
-                    const newDate = date as Date;
-
-                    if (isTodayOrPast(newDate)) {
-                      setSelectedDate(newDate);
-                      setIsCalendarOpen(false);
-                    }
-                  }}
-                  className="makanfit-calendar"
-                  maxDetail="month"
-                  minDetail="year"
-                  next2Label={null}
-                  prev2Label={null}
-                />
-              </div>
-              {/* Quick "Today" shortcut */}
+      {isCalendarOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-[89] backdrop-blur-sm"
+            onClick={() => setIsCalendarOpen(false)}
+          />
+          <div className="fixed inset-x-0 bottom-0 bg-white z-[90] rounded-t-3xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto md:inset-y-0 md:my-auto md:h-fit md:rounded-3xl">
+            <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6" />
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-black text-gray-800 uppercase tracking-normal">
+                Select Date
+              </h3>
               <button
-                onClick={() => {
-                  const today = new Date();
-                  today.setHours(0, 0, 0, 0);
-                  setSelectedDate(today);
-                  setIsCalendarOpen(false);
-                }}
-                className="w-full mt-2 bg-[#1A2A33] text-white font-black py-4 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
+                onClick={() => setIsCalendarOpen(false)}
+                className="p-2 bg-gray-50 rounded-full"
               >
-                Jump to Today
+                <X size={20} />
               </button>
             </div>
-          </>
-        )}
+            <div className="flex justify-center pb-4">
+              <Calendar
+                value={selectedDate}
+                maxDate={getToday()}
+                onChange={(date) => {
+                  const newDate = date as Date;
 
-      <div className="px-4 py-6">
-        <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-100 space-y-6">
+                  if (isTodayOrPast(newDate)) {
+                    setSelectedDate(newDate);
+                    setIsCalendarOpen(false);
+                  }
+                }}
+                className="makanfit-calendar"
+                maxDetail="month"
+                minDetail="year"
+                next2Label={null}
+                prev2Label={null}
+              />
+            </div>
+            {/* Quick "Today" shortcut */}
+            <button
+              onClick={() => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                setSelectedDate(today);
+                setIsCalendarOpen(false);
+              }}
+              className="w-full mt-2 bg-[#1A2A33] text-white font-black py-4 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
+            >
+              Jump to Today
+            </button>
+          </div>
+        </>
+      )}
+
+      <div className="px-4 py-6 max-w-6xl mx-auto lg:px-8 lg:grid lg:grid-cols-[400px_1fr] lg:grid-rows-[auto_1fr] lg:gap-6 lg:items-start">
+        <div className="lg:col-start-1 lg:row-start-1 bg-white rounded-[32px] p-8 shadow-sm border border-gray-100 space-y-6">
           <div className="flex justify-between items-start text-center">
             <div className="space-y-1">
               <div className="flex items-center justify-center space-x-1 text-gray-400">
@@ -1510,7 +1534,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
           MEAL CARDS:
           Clicking the tab / card opens the full Category Info Edit Page that displays ALL foods in that category!
         */}
-        <div className="space-y-4 pt-4 pb-4">
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:pt-0 space-y-4 pt-4 pb-4">
           {mealCategories.map((cat) => {
             const categoryMeals = todaysMeals.filter((m) => m.mealType === cat);
             const categoryCalories = Math.round(
@@ -1599,7 +1623,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
         </div>
 
         {/* Hydration Tracker Card */}
-        <div className="bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-sm space-y-4">
+        <div className="lg:col-start-1 lg:row-start-2 bg-white rounded-[28px] p-5 sm:p-6 border border-slate-100 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3.5">
               <div className="w-10 h-10 rounded-2xl bg-sky-50 flex items-center justify-center flex-shrink-0">
@@ -1765,7 +1789,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
               className="fixed inset-0 bg-black/40 z-[90] backdrop-blur-xs"
               onClick={() => setIsAddWaterOpen(false)}
             />
-            <div className="fixed inset-x-0 bottom-0 bg-white z-[95] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-5">
+            <div className="fixed inset-x-0 bottom-0 bg-white z-[95] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-5 md:inset-y-0 md:my-auto md:h-fit md:rounded-[32px]">
               <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-1" />
 
               <div className="flex items-center justify-between pb-2 border-b border-gray-100">
@@ -1858,7 +1882,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
               className="fixed inset-0 bg-black/40 z-[110] backdrop-blur-xs"
               onClick={() => setAddMenuCategory(null)}
             />
-            <div className="fixed inset-x-0 bottom-0 bg-white z-[120] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-4">
+            <div className="fixed inset-x-0 bottom-0 bg-white z-[120] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-4 md:inset-y-0 md:my-auto md:h-fit md:rounded-[32px]">
               <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-2" />
               <div className="flex items-center justify-between pb-2 border-b border-gray-100">
                 <h3 className="text-lg font-black text-slate-900 tracking-normal">
@@ -1946,7 +1970,8 @@ const [rejectionInfo, setRejectionInfo] = useState<{
 
       {/* CATEGORY INFO & EDIT PAGE (Shows ALL foods in Breakfast / Lunch / etc.) */}
       {isCategoryViewOpen && (
-        <div className="fixed inset-0 bg-white z-[100] flex flex-col animate-in slide-in-from-bottom duration-300">
+        <div 
+        className="fixed inset-0 bg-white z-[100] flex flex-col animate-in slide-in-from-bottom duration-300 md:inset-y-6 md:inset-x-0 md:mx-auto md:max-w-3xl md:rounded-[32px] md:overflow-hidden md:shadow-[0_0_0_100vmax_rgba(15,23,42,0.5)]">
           {/* Header Row */}
           <div className="p-4 flex items-center justify-between border-b border-gray-50 pb-0">
             {/* <button 
@@ -2250,7 +2275,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
 
       {/* AI SCANNING OVERLAY */}
       {analyzing && (
-        <div className="fixed inset-0 bg-white/95 z-[100] flex flex-col items-center justify-center p-8 backdrop-blur-md animate-in fade-in duration-500">
+        <div className="fixed inset-0 bg-white/95 z-[100] flex flex-col items-center justify-center p-8 backdrop-blur-md animate-in fade-in duration-500 md:inset-y-6 md:inset-x-0 md:mx-auto md:max-w-3xl md:rounded-[32px] md:overflow-hidden md:shadow-[0_0_0_100vmax_rgba(15,23,42,0.5)]">
           <div className="relative w-48 h-48 mb-12">
             <div className="absolute inset-0 bg-sky-100 rounded-[40px] animate-pulse" />
             <div className="absolute inset-4 overflow-hidden rounded-[32px] border-4 border-white shadow-xl bg-gray-50 flex items-center justify-center">
@@ -2272,7 +2297,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
                     type="nutrition"
                     size={80}
                     className="!w-16 !h-16 !rounded-3xl shadow-md"
-                />
+                  />
                 </div>
               </div>
             </div>
@@ -2294,9 +2319,9 @@ const [rejectionInfo, setRejectionInfo] = useState<{
 
       {/* SINGLE FOOD CUSTOMIZE / SCAN RESULTS MODAL */}
       {isSingleFoodEditOpen && selectedFood && (
-        <div className="fixed inset-0 bg-white z-[110] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-500">
+        <div className="fixed inset-0 bg-white z-[110] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-500 lg:flex-row lg:inset-y-6 lg:inset-x-0 lg:mx-auto lg:max-w-5xl lg:rounded-[32px] lg:shadow-[0_0_0_100vmax_rgba(15,23,42,0.5)]">
           {/* Header Image Section */}
-          <div className="relative h-[40vh] w-full">
+          <div className="relative h-[40vh] w-full lg:h-full lg:w-1/2 lg:flex-shrink-0">
             {previewUrl ? (
               <img
                 src={previewUrl}
@@ -2391,7 +2416,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
           </div>
 
           {/* Floating Action Card Content */}
-          <div className="flex-1 bg-white rounded-t-[32px] -mt-8 relative z-20 overflow-y-auto pb-24 shadow-2xl">
+          <div className="flex-1 bg-white rounded-t-[32px] -mt-8 relative z-20 overflow-y-auto pb-24 shadow-2xl lg:mt-0 lg:rounded-none lg:shadow-none">
             {/* Sentiment / Summary Strip */}
             <div className="flex items-center justify-between p-6 border-b border-gray-50">
               <div className="flex items-center space-x-3">
@@ -2965,11 +2990,11 @@ const [rejectionInfo, setRejectionInfo] = useState<{
           </div>
 
           {/* Fixed Footer Button */}
-          <div className="absolute bottom-0 left-0 w-full p-6 bg-transparent z-30">
+          <div className="absolute bottom-0 left-0 w-full p-6 bg-transparent z-30 lg:left-1/2 lg:w-1/2 lg:bg-gradient-to-t lg:from-white lg:via-white/90 lg:to-transparent">
             <button
               onClick={confirmSingleFood}
               className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
-              >
+            >
               {editingMealId ? "Save this food" : "Log this food"}
             </button>
           </div>
@@ -2988,7 +3013,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
           {/* Bottom Half Sheet */}
           <div
             className="
-              fixed bottom-0 left-0 right-0
+              fixed bottom-0 left-0 right-0 md:max-w-lg md:mx-auto
               h-[66vh]
               bg-white
               z-[150]
@@ -3431,7 +3456,7 @@ const [rejectionInfo, setRejectionInfo] = useState<{
 
       {/* SEARCH FOOD OVERLAY */}
       {isSearching && (
-        <div className="fixed inset-0 bg-white z-[120] p-4 flex flex-col animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-white z-[120] p-4 flex flex-col animate-in fade-in duration-200 md:inset-y-6 md:inset-x-0 md:mx-auto md:max-w-3xl md:rounded-[32px] md:overflow-hidden md:shadow-[0_0_0_100vmax_rgba(15,23,42,0.5)]">
           <div className="flex items-center space-x-3 mb-4">
             <button
               onClick={() => {
@@ -3520,15 +3545,14 @@ const [rejectionInfo, setRejectionInfo] = useState<{
       {/* NON-FOOD REJECTION MODAL (No window.alert)              */}
       {/* ======================================================== */}
       {isRejectionModalOpen && rejectionInfo && (
-        <div 
-        onClick={() => {
-          setIsRejectionModalOpen(false);
-          setRejectionInfo(null);
-        }}
-        className="fixed inset-0 z-[130] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/70 backdrop-blur-xs animate-in fade-in duration-200">
-          <div 
-          className="relative bg-white w-full max-w-md rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl space-y-5 animate-in slide-in-from-bottom duration-300">
-            
+        <div
+          onClick={() => {
+            setIsRejectionModalOpen(false);
+            setRejectionInfo(null);
+          }}
+          className="fixed inset-0 z-[130] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/70 backdrop-blur-xs animate-in fade-in duration-200"
+        >
+          <div className="relative bg-white w-full max-w-md rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl space-y-5 animate-in slide-in-from-bottom duration-300">
             {/* ✕ Top-Right Exit Button */}
             <button
               onClick={() => {
@@ -3568,13 +3592,17 @@ const [rejectionInfo, setRejectionInfo] = useState<{
                   {rejectionInfo.foodName}
                 </p>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Confidence: <strong className="text-amber-600">{(rejectionInfo.confidence * 100).toFixed(2)}%</strong>
+                  Confidence:{" "}
+                  <strong className="text-amber-600">
+                    {(rejectionInfo.confidence * 100).toFixed(2)}%
+                  </strong>
                 </p>
               </div>
             </div>
 
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              This photo appears to be non-food item or is too dark/blurry to be analyzed. Try another photo with the food fully visible.
+              This photo appears to be non-food item or is too dark/blurry to be
+              analyzed. Try another photo with the food fully visible.
             </p>
 
             {/* Buttons */}
