@@ -51,15 +51,15 @@ The system provides three main capabilities:
 - RESTful API Integration: Exposes food analysis capabilities through HTTP endpoints.
 - Full-Stack Architecture: Connects a React and TypeScript frontend to a Node.js/Express backend and a Python/Flask machine-learning service.
 
-## System Architecture
-# API Endpoints Architecture
+## 🏗️ System Architecture
+# 🔌 API Endpoints Architecture
 MakanFit separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
 <img width="1651" height="751" alt="endpoint_diagram" src="https://github.com/user-attachments/assets/9c8e9a64-1927-445f-b62a-dbfb5f1f812d" />
 
-# System Design
+# 🏛️ System Design
 <img width="1798" height="383" alt="level1" src="https://github.com/user-attachments/assets/3f51e631-28bd-46f9-a0b9-7ec0afb336bc" />
 
-## Frontend
+## 🎨 Frontend
 
 The React and TypeScript frontend provides the interface for uploading food images and displaying classification, segmentation, and nutritional analysis results.
 
@@ -109,11 +109,11 @@ The React and TypeScript frontend provides the interface for uploading food imag
   </tr>
 </table>
 
-## Backend API
+## ⚙️ Backend API
 
 The Node.js and Express backend acts as the application-facing API layer. It handles incoming requests, coordinates calls to the machine-learning service, and supports application functionality such as authentication, file uploads, and database operations.
 
-## Data Layer
+## 🗄️ Data Layer
 
 MakanFit uses PostgreSQL for application data persistence and a curated JSON dataset for nutritional reference information used by the machine-learning pipeline.
 
@@ -123,29 +123,29 @@ MakanFit uses PostgreSQL for application data persistence and a curated JSON dat
 
 ```
 {
-"food_name":"", //string:nameoftheingredient
-"food_group":"", //string:categoryorfoodgroup
-"energy_kcal_per_100g":0, //number:energyinkilocaloriesper100g
-"protein_g_per_100g":0.0, //number:proteiningramsper100g
-"fat_g_per_100g":0.0, //number:fatingramsper100g
-"carbohydrate_g_per_100g": 0.0, //number:carbohydratesingramsper100g
-"fibre_g_per_100g":0.0, //number:fibreingramsper100g
-"data_source":[ //arrayofobjects:sourceinfo
-{
-"source":"", //string:sourcename
-"url":"" //string:URLtoreference
-}
-],
-"servings":[ //arrayofobjects:servinginfo
-{
-"serving_size_g":0, //number:servingsizeingrams
-"serving_unit":"" //string:unitname(e.g.,"cup")
-}
-]
+    "food_name":"",                             //string:nameoftheingredient
+    "food_group":"",                            //string:categoryorfoodgroup
+    "energy_kcal_per_100g":0,                   //number:energyinkilocaloriesper100g
+    "protein_g_per_100g":0.0,                   //number:proteiningramsper100g
+    "fat_g_per_100g":0.0,                       //number:fatingramsper100g
+    "carbohydrate_g_per_100g": 0.0,             //number:carbohydratesingramsper100g
+    "fibre_g_per_100g":0.0,                    //number:fibreingramsper100g
+    "data_source":[                            //arrayofobjects:sourceinfo
+        {
+          "source":"",                         //string:sourcename
+          "url":""                             //string:URLtoreference
+        }
+    ],
+    "servings":[                               //arrayofobjects:servinginfo
+        {
+          "serving_size_g":0,                  //number:servingsizeingrams
+          "serving_unit":""                    //string:unitname(e.g.,"cup")
+        }
+    ]
 }
 ```
 
-## Machine-Learning Pipeline
+## 🤖 Machine-Learning Pipeline
 
 ### 1. Food Image Classification
 
@@ -189,23 +189,23 @@ MakanFit implements a hybrid nutritional estimation pipeline that combines visio
 
 The estimation process consists of the following steps:
 
-a. **Food and Ingredient Analysis:** A vision-language model analyses the input image and generates structured JSON containing the food name, visible ingredients, estimated serving weight, and nutritional information.
+  a. **Food and Ingredient Analysis:** A vision-language model analyses the input image and generates structured JSON containing the food name, visible ingredients, estimated serving weight, and nutritional information.
 
-b. **Food Component Segmentation:** Grounded SAM, combining Grounding DINO and the Segment Anything Model (SAM), uses the identified ingredient names to detect and generate pixel-level masks for visible food components.
+  b. **Food Component Segmentation:** Grounded SAM, combining Grounding DINO and the Segment Anything Model (SAM), uses the identified ingredient names to detect and generate pixel-level masks for visible food components.
 
-c. **Ingredient Weight Estimation:** The system calculates the relative pixel-area proportion of each segmented ingredient and uses it as a visual proxy for ingredient quantity. These proportions are combined with the estimated total serving weight to derive ingredient-level weight estimates. For ingredients that cannot be segmented successfully, the system falls back to the vision-language model's weight estimates.
+  c. **Ingredient Weight Estimation:** The system calculates the relative pixel-area proportion of each segmented ingredient and uses it as a visual proxy for ingredient quantity. These proportions are combined with the estimated total serving weight to derive ingredient-level weight estimates. For ingredients that cannot be segmented successfully, the system falls back to the vision-language model's weight estimates.
 
-d. **Nutritional Data Matching:** Ingredient names are normalised and converted into vector embeddings using a sentence-transformer model. Cosine similarity is used to match each ingredient against available nutritional records from MyFCD and SG FoodID. If no suitable match is found, the system falls back to the nutritional estimates generated by the vision-language model.
+  d. **Nutritional Data Matching:** Ingredient names are normalised and converted into vector embeddings using a sentence-transformer model. Cosine similarity is used to match each ingredient against available nutritional records from MyFCD and SG FoodID. If no suitable match is found, the system falls back to the nutritional estimates generated by the vision-language model.
 
-e. **Calorie and Macronutrient Calculation:** The estimated ingredient weights are combined with their corresponding per-100g nutritional values to calculate calories and aggregate nutritional estimates, including protein, carbohydrates, fat, and fibre.
+  e. **Calorie and Macronutrient Calculation:** The estimated ingredient weights are combined with their corresponding per-100g nutritional values to calculate calories and aggregate nutritional estimates, including protein, carbohydrates, fat, and fibre.
 
-f. **Calorie Range Estimation:** To account for uncertainty, the system compares the segmentation-based calorie estimate with the vision-language model estimate and reports a calorie range based on the lower and upper estimates.
+  f. **Calorie Range Estimation:** To account for uncertainty, the system compares the segmentation-based calorie estimate with the vision-language model estimate and reports a calorie range based on the lower and upper estimates.
 
 This hybrid approach combines visual evidence, model-generated nutritional estimates, and structured food composition data to provide more informative estimates of meal nutrition.
 
 **Important limitation:** A two-dimensional image does not directly reveal food weight, depth, hidden ingredients, or preparation methods. Consequently, estimated quantities and calorie values are approximate and should not be treated as verified nutritional measurements.
 
-## API Endpoints
+## 🔗 API Endpoints
 
 MakanFit exposes its main image-analysis capabilities through RESTful endpoints.
 
@@ -295,7 +295,7 @@ foodie-api/
 
 # Getting Started
 
-## Installation & Setup
+## 🚀 Installation & Setup
 
 #### 1. Clone repository
 ```
