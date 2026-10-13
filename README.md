@@ -50,6 +50,7 @@ The system provides three main capabilities:
 - 🧩 **Ingredient Segmentation** – Uses Grounding DINO and SAM to generate ingredient-level masks.
 - 📊 **Food Diary & Nutrition Tracking** – Logs meals and tracks daily calorie and macronutrient intake against personalised goals.
 - 🔍 **Food Search & Logging** – Supports food search and meal logging for nutrition tracking.
+- 🎙️ **Voice Food Logging** – Enables hands-free meal logging through voice input and keyword detection to identify food items.
 - 🐣 **Virtual Food Pal** – Features a virtual companion with friendship levels, XP, and customisable accessories.
 - 🪙 **Rewards & Gamification** – Earns MakanCoins through activities and tasks to unlock companion accessories and backgrounds.
 - 🔔 **Notifications & Reminders** – Helps users stay on track with food logging and wellness goals.
