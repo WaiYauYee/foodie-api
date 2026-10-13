@@ -7,6 +7,8 @@
   />
 
   <h1>MakanFit</h1>
+
+  <p>Eat smart, track better, and stay balanced—your all-in-one app for Malaysian food and nutrition tracking.</p>
 </div>
 
 
