@@ -218,7 +218,7 @@ export const VoiceInputDialog: React.FC<VoiceInputDialogProps> = ({
       />
 
       {/* Clean Bottom Sheet matching MakanFit style */}
-      <div className="fixed inset-x-0 bottom-0 bg-white z-[130] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-5">
+      <div className="fixed inset-x-0 bottom-0 bg-white z-[130] rounded-t-[32px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 max-w-md mx-auto space-y-5 md:inset-y-0 md:my-auto md:h-fit md:max-h-[90vh] md:overflow-y-auto md:rounded-[32px]">
         {/* Drag handle */}
         <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto" />
 
