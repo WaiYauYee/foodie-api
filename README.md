@@ -1,3 +1,6 @@
+<img width="149" height="148" alt="Group 83 (1)" src="https://github.com/user-attachments/assets/875dcbc3-bca0-4867-a011-256ab0b34128" />
+
+
 # FOODIE: Deployment of Models for Food Image Understanding
 
 An AI-powered food image analysis system focused on Malaysian cuisine, integrating food classification, ingredient-level segmentation, and calorie estimation through a RESTful API architecture.
