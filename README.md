@@ -9,8 +9,6 @@
   <h1>MakanFit</h1>
 </div>
 
-<hr />
-
 # FOODIE: Deployment of Models for Food Image Understanding
 
 An AI-powered food image analysis system focused on Malaysian cuisine, integrating food classification, ingredient-level segmentation, and calorie estimation through a RESTful API architecture.
