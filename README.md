@@ -39,17 +39,23 @@ Rather than treating food classification, segmentation, and nutritional analysis
 
 The system provides three main capabilities:
 
-- **Food Classification:** Predicts the dish represented in an uploaded image using a custom-trained convolutional neural network (CNN).
-- **Ingredient Segmentation:** Uses open-vocabulary object detection and segmentation models to identify and separate visible food components.
-- **Calorie Estimation:** Combines ingredient recognition, nutritional databases, and LLM-assisted analysis to estimate calories and macronutrients.
+- 🇲🇾 **Food Classification:** Predicts the dish represented in an uploaded image using a custom-trained convolutional neural network (CNN).
+- 🧩 **Ingredient Segmentation:** Uses open-vocabulary object detection and segmentation models to identify and separate visible food components.
+- 📸 **Calorie Estimation:** Combines ingredient recognition, nutritional databases, and LLM-assisted analysis to estimate calories and macronutrients.
+- 📊 **Food Diary & Nutrition Tracking** – Logs meals and tracks daily calorie and macronutrient intake against personalised goals.
+- 🔍 **Food Search & Logging** – Supports food search and meal logging for nutrition tracking.
+- 🐣 **Virtual Food Pal** – Features a virtual companion with friendship levels, XP, and customisable accessories.
+- 🪙 **Rewards & Gamification** – Earns MakanCoins through activities and tasks to unlock companion accessories and backgrounds.
+- 🔔 **Notifications & Reminders** – Helps users stay on track with food logging and wellness goals.
+- 👤 **Personalised User Profile** – Manages user preferences, dietary settings, and nutrition goals.
+- 🔐 **Authentication & Password Recovery** – Supports account registration, login, and email-based password reset.
 
 ## ✨ Features
 
-- Malaysian Food Recognition: Classification across 120 Malaysian food categories.
-- Ingredient-Level Segmentation: Combines Grounding DINO and Segment Anything Model (SAM) to detect and segment visible food components.
-- Nutritional Analysis: Uses Malaysian and Singaporean food composition data to support ingredient matching and nutritional estimation.
-- RESTful API Integration: Exposes food analysis capabilities through HTTP endpoints.
-- Full-Stack Architecture: Connects a React and TypeScript frontend to a Node.js/Express backend and a Python/Flask machine-learning service.
+- **Malaysian Food Recognition** - Classification model trained across 120 Malaysian food categories.
+- **Ingredient-Level Segmentation** - Combines Grounding DINO and Segment Anything Model (SAM) to detect and segment visible food components with labels.
+- **Calorie Estimation** - Uses Malaysian and Singaporean food composition data to support ingredient matching and nutritional estimation.
+- 📊 **Food Diary & Nutrition Tracking** – Logs meals and tracks daily calorie and macronutrient intake against personalised goals.
 
 ## 🏗️ Architecture
 ### 🔌 API Endpoints Architecture
