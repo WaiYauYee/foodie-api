@@ -186,7 +186,7 @@ MakanFit implements a hybrid nutritional estimation pipeline that combines visio
 
 <img width="1860" height="374" alt="level2b" src="https://github.com/user-attachments/assets/d9d21902-2d2d-45f2-bf35-2437e3831f02" />
 
-#### Design
+#### 🧮 Design Solution
 
 <img width="1255" height="882" alt="calorie-estimation-framework" src="https://github.com/user-attachments/assets/b9d40914-a708-4d10-933c-b3fa6d398db5" />
 
