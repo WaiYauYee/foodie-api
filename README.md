@@ -1,4 +1,3 @@
-```html
 <div align="center">
   <img
     width="149"
@@ -11,7 +10,6 @@
 </div>
 
 <hr />
-```
 
 # FOODIE: Deployment of Models for Food Image Understanding
 
