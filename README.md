@@ -62,6 +62,7 @@ The pipeline first classifies input food images, identifies ingredients using an
 
 <img width="1798" height="383" alt="level1" src="https://github.com/user-attachments/assets/3f51e631-28bd-46f9-a0b9-7ec0afb336bc" />
 
+<!--
 ## 🎨 Frontend
 
 The React and TypeScript frontend provides the interface for uploading food images and displaying classification, segmentation, and nutritional analysis results.
@@ -115,6 +116,7 @@ The React and TypeScript frontend provides the interface for uploading food imag
 ## ⚙️ Backend API
 
 The Node.js and Express backend acts as the application-facing API layer. It handles incoming requests, coordinates calls to the machine-learning service, and supports application functionality such as authentication, file uploads, and database operations.
+-->
 
 ## 🗄️ Data Layer
 
