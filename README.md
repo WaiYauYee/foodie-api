@@ -376,7 +376,7 @@ npm run dev
 2. 🧩 **Segmentation Challenges**
 - Difficulty with overlapping or densely layered ingredients
 - Performance sensitive to text prompt quality for Grounded SAM
-- Redundant/overlapping detections in complex dishes
+- May miss food components due to overlapping detections.
 
 
 3. 🍽️ **Calorie Estimation**
