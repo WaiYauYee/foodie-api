@@ -1,5 +1,17 @@
-<img width="149" height="148" alt="Group 83 (1)" src="https://github.com/user-attachments/assets/875dcbc3-bca0-4867-a011-256ab0b34128" />
+```html
+<div align="center">
+  <img
+    width="149"
+    height="148"
+    alt="MakanFit Logo"
+    src="https://github.com/user-attachments/assets/d2426a3d-b4e8-4519-8810-1cedf6c2f36f"
+  />
 
+  <h1>MakanFit</h1>
+</div>
+
+<hr />
+```
 
 # FOODIE: Deployment of Models for Food Image Understanding
 
