@@ -208,31 +208,62 @@ FOODIE exposes its main image-analysis capabilities through RESTful endpoints.
 
 foodie-api/
 ```
-├── backend/                      # Express.js server
-│   ├── config/                   # Database and email configuration
-│   ├── controller/               # Route controllers
-│   ├── models/                   # MongoDB schemas
-│   ├── routes/                   # API endpoints
-│   ├── services/                 # Business logic & ML client calls
-│   ├── middlewares/              # Authentication & validation
+├── backend/                      # Node.js + Express REST API
+│   ├── controller/               # Request handlers
+│   ├── db/                       # Database-related configuration
+│   ├── middlewares/              # Authentication and validation
+│   ├── models/                   # Database models and queries
+│   ├── routes/                   # API route definitions
+│   ├── services/                 # Business logic and ML service calls
 │   ├── uploads/                  # Uploaded image storage
-│   ├── server.js                 # Server entry point
-│   └── package.json
+│   ├── utils/                    # Shared utilities, including email
+│   ├── package-lock.json
+│   ├── package.json
+│   └── server.js                 # Express server entry point
 │
-├── frontend/                     # React + TypeScript frontend
-│   ├── makanfit/                 # Main React app
-│   └── package.json
+├── frontend/                     # Frontend workspace
+│   └── makanfit/                 # React + TypeScript application
+│       ├── public/
+│       ├── src/                  # Application source code
+│           ├── assets/           # Images, icons, and other assets
+│           ├── components/
+│           ├── data/             # Static data and constants
+│           ├── hooks/            # Custom React hooks
+│           ├── services/         # API calls and service logic
+│           ├── styles/           # Shared styles
+│           ├── types/            # TypeScript type definitions
+│           ├── utils/            # Shared helper functions
+│           ├── App.css                # Main application styles
+│           ├── App.tsx                # Root React component
+│           ├── index.css              # Global styles
+│           └── main.tsx               # Application entry point
+│       ├── .gitignore
+│       ├── eslint.config.js
+│       ├── index.html
+│       ├── .gitignore
+│       ├── package-lock.json
+│       ├── package.json
+│       ├── README.md
+│       ├── tsconfig.app.json
+│       ├── tsconfig.json
+│       ├── tsconfig.node.json
+│       └── vite.config.ts
+│   └── package-lock.json
 │
-├── ml-service/                   # Python Flask ML backend
-│   ├── classification.py                  # Food classification model
-│   ├── segmentation_calorie2.py           # Food segmentation & calorie estimation
-│   ├── ingredient_matcher.py              # Nutrition data retrieval
-│   ├── ingredient_embeddings.py           # Embedding generation
-│   ├── groundingdino_with_segment_anything.py  # Detection & segmentation
-│   ├── app2.py                            # Flask app entry point
-│   └── requirements.txt
+├── ml-service/                                 # Python Flask ML service
+│   ├── assets/                                 # Supporting assets
+│   ├── data/                                   # Food and nutrition data, and food embeddings stored
+│   ├── models/                                 # Food image classification model pth
+│   ├── classification.py                       # Food classification model
+│   ├── segmentation_calorie2.py                # Food segmentation & calorie estimation
+│   ├── ingredient_matcher.py                   # Ingredient and nutrition data matching
+│   ├── ingredient_embeddings.py                # Ingredient embedding generation
+│   ├── groundingdino_with_segment_anything.py  # Food detection and segmentation
+│   ├── app2.py                                 # Flask API entry point
+│   └── requirements.txt                        # Python dependencies
 │
-└── .gitignore
+├── .gitignore
+└── README.md
 ```
 
 # Getting Started
