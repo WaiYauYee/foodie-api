@@ -29,7 +29,7 @@
 
 An AI-powered food image analysis system focused on Malaysian cuisine, integrating food classification, ingredient-level segmentation, and calorie estimation through a RESTful API architecture.
 
-<img width="1920" height="1080" alt="makanfit_thumbnail_all" src="https://github.com/user-attachments/assets/80494116-7d91-4448-8ad4-92dd72440fa5" />
+<img width="1920" height="1080" alt="makanfit_thumbnail_v5" src="https://github.com/user-attachments/assets/3862c698-6529-4209-b5ff-243c6490e241" />
 
 ## 📱 About
 
