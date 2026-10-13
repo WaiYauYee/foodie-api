@@ -12,15 +12,15 @@
 </div>
 
 
-# FOODIE: Deployment of Models for Food Image Understanding
+# Deployment of Models for Food Image Understanding
 
 An AI-powered food image analysis system focused on Malaysian cuisine, integrating food classification, ingredient-level segmentation, and calorie estimation through a RESTful API architecture.
 
 <img width="1917" height="905" alt="image" src="https://github.com/user-attachments/assets/904f9547-a489-4026-ad1d-58feabf01364" />
 
-## Overview
+## 📱 About
 
-FOODIE explores how computer vision and machine learning can be deployed as practical software services for understanding food images. The project focuses on Malaysian cuisine, where local dishes and their ingredients may be underrepresented in general-purpose food recognition systems.
+It explores how computer vision and machine learning can be deployed as practical software services for understanding food images. The project focuses on Malaysian cuisine, where local dishes and their ingredients may be underrepresented in general-purpose food recognition systems.
 
 Rather than treating food classification, segmentation, and nutritional analysis as isolated machine-learning tasks, FOODIE integrates them into an API-based system that connects machine-learning inference with a web interface.
 
@@ -30,7 +30,7 @@ The system provides three main capabilities:
 - **Ingredient Segmentation:** Uses open-vocabulary object detection and segmentation models to identify and separate visible food components.
 - **Calorie Estimation:** Combines ingredient recognition, nutritional databases, and LLM-assisted analysis to estimate calories and macronutrients.
 
-## Key Features
+## ✨ Features
 
 - Malaysian Food Recognition: Classification across 120 Malaysian food categories.
 - Ingredient-Level Segmentation: Combines Grounding DINO and Segment Anything Model (SAM) to detect and segment visible food components.
@@ -40,7 +40,7 @@ The system provides three main capabilities:
 
 ## System Architecture
 # API Endpoints Architecture
-FOODIE separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
+MakanFit separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
 <img width="1651" height="751" alt="endpoint_diagram" src="https://github.com/user-attachments/assets/9c8e9a64-1927-445f-b62a-dbfb5f1f812d" />
 
 # System Design
@@ -102,7 +102,7 @@ The Node.js and Express backend acts as the application-facing API layer. It han
 
 ## Data Layer
 
-FOODIE uses PostgreSQL for application data persistence and a curated JSON dataset for nutritional reference information used by the machine-learning pipeline.
+MakanFit uses PostgreSQL for application data persistence and a curated JSON dataset for nutritional reference information used by the machine-learning pipeline.
 
 - **Application Database:** PostgreSQL stores persistent application data, including user accounts and other records managed by the backend.
 - **Nutritional Dataset:** A structured JSON dataset (refer below) organises ingredient information, including food names, food groups, energy, protein, fat, carbohydrates, fibre, source references, and serving-size information. Nutritional values are standardised per 100 g.
@@ -148,7 +148,7 @@ Dataset: MalaysianFood120
 
 ### 2. Ingredient Segmentation
 
-FOODIE uses Grounding DINO and the Segment Anything Model (SAM) through a Grounded SAM pipeline to identify and segment visible food components.
+MakanFit uses Grounding DINO and the Segment Anything Model (SAM) through a Grounded SAM pipeline to identify and segment visible food components.
 
 <img width="1737" height="415" alt="level2a" src="https://github.com/user-attachments/assets/7b2a487d-4346-47fe-afd2-6186d04d8336" />
 
@@ -166,7 +166,7 @@ The resulting masks and ingredient labels provide information that can be used b
 
 ### 3. Calorie and Macronutrient Estimation
 
-FOODIE implements a hybrid nutritional estimation pipeline that combines vision-language model analysis, computer vision-based segmentation, and structured nutritional databases to estimate the calorie and macronutrient content of a meal.
+MakanFit implements a hybrid nutritional estimation pipeline that combines vision-language model analysis, computer vision-based segmentation, and structured nutritional databases to estimate the calorie and macronutrient content of a meal.
 
 <img width="1860" height="374" alt="level2b" src="https://github.com/user-attachments/assets/d9d21902-2d2d-45f2-bf35-2437e3831f02" />
 
@@ -194,7 +194,7 @@ This hybrid approach combines visual evidence, model-generated nutritional estim
 
 ## API Endpoints
 
-FOODIE exposes its main image-analysis capabilities through RESTful endpoints.
+MakanFit exposes its main image-analysis capabilities through RESTful endpoints.
 
 | Method | Endpoint | Purpose |
 |---|---|---|
@@ -202,7 +202,7 @@ FOODIE exposes its main image-analysis capabilities through RESTful endpoints.
 | `POST` | `/api/v1/vision/segment` | Detects and segments visible food components and returns segmentation results. Returns segmentation masks, ingredient labels, overlay visualization |
 | `POST` | `/api/v1/vision/segment/:seg_id/calorie` | Retrieves nutritional estimates associated with a segmentation result. Returns per-ingredient calories, macronutrients (protein, carbs, fats, fiber) |
 
-## Technology Stack
+## 🛠️ Tech Stack
 
 | Component | Technologies |
 |---|---|
@@ -218,7 +218,7 @@ FOODIE exposes its main image-analysis capabilities through RESTful endpoints.
 | Nutritional Data | MyFCD, SG FoodID |
 | Ingredient Matching | Text Embeddings, Semantic Similarity |
 
-## Project Structure
+## 📂 Project Structure
 
 foodie-api/
 ```
