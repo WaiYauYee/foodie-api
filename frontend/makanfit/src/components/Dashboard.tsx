@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   LineChart,
   Line,
@@ -12,7 +12,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { MealEntry, User, WeightEntry } from "../types/types";
+import { User, WeightEntry } from "../types/types";
 import {
   Flame,
   ChevronRight,
@@ -23,12 +23,13 @@ import {
   ArrowLeft,
   Activity,
 } from "lucide-react";
+import { getDashboard, DashboardData } from "../services/dashboardService";
 
 interface DashboardProps {
-  meals: MealEntry[];
   user: User;
   weightHistory: WeightEntry[];
   onNavigateToAddWeight: () => void;
+  onEditWeight: (entry: WeightEntry) => void;
 }
 
 type TimeRange = 7 | 30 | 90;
@@ -48,68 +49,43 @@ const CARD = "bg-white rounded-3xl p-6 lg:p-7 shadow-sm border border-gray-100";
 const CARD_TITLE = "text-slate-900 text-lg font-extrabold";
 
 const Dashboard: React.FC<DashboardProps> = ({
-  meals,
   user,
   weightHistory,
   onNavigateToAddWeight,
+  onEditWeight,
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>("weight");
   const [range, setRange] = useState<TimeRange>(7);
   const [view, setView] = useState<DashboardView>("main");
 
-  const todaysMeals = useMemo(() => {
-    const today = new Date().setHours(0, 0, 0, 0);
-    return meals.filter(
-      (m) => new Date(m.createdAt).setHours(0, 0, 0, 0) === today,
-    );
-  }, [meals]);
+  const [data, setData] = useState<DashboardData | null>(null);
 
-  const totals = useMemo(() => {
-    return todaysMeals.reduce(
-      (acc, meal) => {
-        meal.ingredients.forEach((ing) => {
-          const n = ing.nutrients;
-          acc.calories += n.calories;
-          acc.protein += n.protein;
-          acc.carbs += n.carbs;
-          acc.fat += n.fat;
-        });
-        return acc;
-      },
-      { calories: 0, protein: 0, carbs: 0, fat: 0 },
-    );
-  }, [todaysMeals]);
+  useEffect(() => {
+    let cancelled = false;
+    getDashboard(user.userId, range).then((r) => {
+      if (!cancelled && r.success) setData(r);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [user.userId, range, weightHistory.length]);
 
-  const historicalData = useMemo(() => {
-    const data = [];
-    for (let i = range - 1; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const dateStr = `${d.getDate()}/${(d.getMonth() + 1).toString().padStart(2, "0")}`;
-      const isToday = i === 0;
-      data.push({
-        date: dateStr,
-        calories: isToday
-          ? totals.calories
-          : Math.floor(user.targetCalories * (0.8 + Math.random() * 0.4)),
-        protein: isToday
-          ? totals.protein
-          : Math.floor(user.targetProtein * (0.7 + Math.random() * 0.5)),
-        carbs: isToday
-          ? totals.carbs
-          : Math.floor(user.targetCarbs * (0.7 + Math.random() * 0.5)),
-        fat: isToday
-          ? totals.fat
-          : Math.floor(user.targetFat * (0.7 + Math.random() * 0.5)),
-      });
-    }
-    return data;
-  }, [range, totals, user]);
+  const totals = data?.today ?? { calories: 0, protein: 0, carbs: 0, fat: 0 };
+  const weightList = data?.weight.entries ?? weightHistory;
+
+  const historicalData = useMemo(
+    () =>
+      (data?.history ?? []).map((h) => ({
+        ...h,
+        date: `${h.date.slice(8, 10)}/${h.date.slice(5, 7)}`,
+        calories: h.logged ? h.calories : null,
+      })),
+    [data],
+  );
 
   const weightChartData = useMemo(() => {
-    const sorted = [...weightHistory].sort(
-      (a, b) => a.recordedAt - b.recordedAt,
-    );
+    const sorted = [...weightList].sort((a, b) => a.recordedAt - b.recordedAt);
+
     if (sorted.length === 0)
       return [{ date: "24/01", weight: user.currentWeight }];
 
@@ -120,7 +96,15 @@ const Dashboard: React.FC<DashboardProps> = ({
       }),
       weight: entry.weight,
     }));
-  }, [weightHistory, user.currentWeight]);
+  }, [weightList, user.currentWeight]);
+
+  const weightDomain = useMemo<[number, number]>(() => {
+    const weights = weightChartData.map((d) => d.weight);
+    const min = Math.min(...weights, user.goalWeight);
+    const max = Math.max(...weights, user.goalWeight);
+    // small padding so the line and points don't touch the edges
+    return [Math.floor(min - 2), Math.ceil(max + 2)];
+  }, [weightChartData, user.goalWeight]);
 
   const macroDonutData = [
     { name: "fat", value: totals.fat, color: COLORS.fat },
@@ -326,11 +310,26 @@ const Dashboard: React.FC<DashboardProps> = ({
   }
 
   const macroProgress = [
-    { label: 'Protein', value: totals.protein, target: user.targetProtein, color: COLORS.protein },
-    { label: 'Carbs', value: totals.carbs, target: user.targetCarbs, color: COLORS.carbs },
-    { label: 'Fat', value: totals.fat, target: user.targetFat, color: COLORS.fat },
+    {
+      label: "Protein",
+      value: totals.protein,
+      target: user.targetProtein,
+      color: COLORS.protein,
+    },
+    {
+      label: "Carbs",
+      value: totals.carbs,
+      target: user.targetCarbs,
+      color: COLORS.carbs,
+    },
+    {
+      label: "Fat",
+      value: totals.fat,
+      target: user.targetFat,
+      color: COLORS.fat,
+    },
   ];
- 
+
   const calPct = Math.min((totals.calories / user.targetCalories) * 100, 100);
 
   const renderNutritionTab = () => (
@@ -386,8 +385,9 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         {/* Macro progress bars */}
         <div className="space-y-4 border-t border-gray-100 pt-5">
-          {macroProgress.map(m => {
-            const pct = m.target > 0 ? Math.min((m.value / m.target) * 100, 100) : 0;
+          {macroProgress.map((m) => {
+            const pct =
+              m.target > 0 ? Math.min((m.value / m.target) * 100, 100) : 0;
             return (
               <div key={m.label} className="space-y-1.5">
                 <div className="flex justify-between text-xs font-bold">
@@ -546,23 +546,28 @@ const Dashboard: React.FC<DashboardProps> = ({
               data={[
                 {
                   name: "fat",
-                  value: totals.fat,
+                  value: data?.averages.fat ?? 0,
                   target: user.targetFat,
                   fill: COLORS.fat,
                 },
                 {
                   name: "protein",
-                  value: totals.protein,
+                  value: data?.averages.protein ?? 0,
                   target: user.targetProtein,
                   fill: COLORS.protein,
                 },
                 {
                   name: "carbs",
-                  value: totals.carbs,
+                  value: data?.averages.carbs ?? 0,
                   target: user.targetCarbs,
                   fill: COLORS.carbs,
                 },
-                { name: "fiber", value: 5, target: 18, fill: COLORS.fiber },
+                {
+                  name: "fiber",
+                  value: data?.averages.fiber ?? 0,
+                  target: 18,
+                  fill: COLORS.fiber,
+                },
               ]}
               margin={{ top: 20, right: 50, left: -20, bottom: 10 }}
             >
@@ -700,7 +705,13 @@ const Dashboard: React.FC<DashboardProps> = ({
               </h3>
             </div>
             <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-              <TrendingDown size={24} />
+              {Math.abs(user.currentWeight - user.goalWeight) < 1 ? (
+                <Activity size={24} />
+              ) : user.currentWeight > user.goalWeight ? (
+                <TrendingDown size={24} />
+              ) : (
+                <TrendingDown size={24} className="rotate-180" />
+              )}
             </div>
           </div>
           <div className="flex justify-between border-t border-white/20 pt-6">
@@ -821,16 +832,18 @@ const Dashboard: React.FC<DashboardProps> = ({
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "#9CA3AF", fontSize: 10 }}
-                  domain={["auto", "auto"]}
+                  domain={weightDomain}
                 />
                 <ReferenceLine
                   y={user.goalWeight}
-                  stroke="#9CA3AF"
-                  strokeDasharray="5 5"
+                  stroke="#10B981"
+                  strokeWidth={2}
+                  strokeDasharray="6 6"
+                  ifOverflow="extendDomain"
                   label={{
-                    value: `${user.goalWeight}kg`,
-                    position: "right",
-                    fill: "#9CA3AF",
+                    value: `Goal ${user.goalWeight}kg`,
+                    position: "insideTopRight",
+                    fill: "#10B981",
                     fontSize: 10,
                     fontWeight: "bold",
                   }}
@@ -859,15 +872,15 @@ const Dashboard: React.FC<DashboardProps> = ({
             <span>Weight Logs</span>
           </h3>
           <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm lg:max-h-[26rem] overflow-y-auto">
-            {weightHistory.length === 0 && (
+            {weightList.length === 0 && (
               <p className="p-6 text-sm font-bold text-gray-400">
                 No weight entries yet. Log your first weight to start tracking.
               </p>
             )}
-            {weightHistory.map((entry, idx) => (
+            {weightList.map((entry, idx) => (
               <div
                 key={entry.id}
-                onClick={onNavigateToAddWeight}
+                onClick={() => onEditWeight(entry)}
                 className={`flex items-center justify-between p-5 active:bg-gray-50 transition-colors cursor-pointer ${idx !== weightHistory.length - 1 ? "border-b border-gray-50" : ""}`}
               >
                 <p className="text-xl font-bold text-gray-800">

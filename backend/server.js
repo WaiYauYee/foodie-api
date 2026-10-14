@@ -41,6 +41,7 @@ const fs = require("fs");
 
 // Routes
 const authRoute = require("./routes/authRoute");
+const { dashboardRouter, weightRouter } = require("./routes/dashboardRoute");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -98,6 +99,10 @@ app.get('/', (req, res) => {
 
 // Auth routes
 app.use("/api/auth", authRoute);
+
+// dashboard routes
+app.use("/api/dashboard", dashboardRouter);
+app.use("/api/weight", weightRouter);
 
 // ============================================
 // FOOD SEGMENTATION

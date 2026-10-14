@@ -3,9 +3,11 @@ import { X, CalendarIcon, Minus, Plus } from "lucide-react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/calendar-custom.css";
+import { WeightEntry } from "../types/types";
 
 interface AddWeightProps {
   currentWeight: number;
+  editingEntry?: WeightEntry | null;
   onBack: () => void;
   onAdd: (weight: number, recordedAt?: number) => void;
 }
@@ -18,19 +20,26 @@ const getToday = () => {
 
 const AddWeight: React.FC<AddWeightProps> = ({
   currentWeight,
+  editingEntry,
   onBack,
   onAdd,
 }) => {
   const initialVal =
     Number.isFinite(currentWeight) && currentWeight > 0 ? currentWeight : 65;
+
+  const initialWeight = editingEntry?.weight ?? initialVal;
+
   const [weightValue, setWeightValue] = useState<number>(
-    Math.round(initialVal * 10) / 10,
-  );
-  const [weightInput, setWeightInput] = useState<string>(
-    (Math.round(initialVal * 10) / 10).toFixed(1),
+    Math.round(initialWeight * 10) / 10,
   );
 
-  const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
+  const [weightInput, setWeightInput] = useState<string>(
+    (Math.round(initialWeight * 10) / 10).toFixed(1),
+  );
+
+  const [selectedDate, setSelectedDate] = useState<Date>(() =>
+    editingEntry ? new Date(editingEntry.recordedAt) : new Date(),
+  );
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   // Close on Escape (calendar first, then the whole screen) - handy on laptop
@@ -152,7 +161,7 @@ const AddWeight: React.FC<AddWeightProps> = ({
             <X className="w-6 h-6" />
           </button>
           <h2 className="flex-1 text-center text-lg lg:text-xl font-extrabold text-slate-900 pl-3">
-            Log a weight entry
+            {editingEntry ? "Edit Weight Entry" : "Log a Weight Entry"}
           </h2>
           <div className="w-9" /> {/* Spacer for centering */}
         </div>
@@ -365,7 +374,7 @@ const AddWeight: React.FC<AddWeightProps> = ({
             onClick={handleAdd}
             className="flex-1 lg:flex-[2] bg-[#1A2A33] text-white font-black py-4 lg:py-4 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
           >
-            Add
+            {editingEntry ? "Save Changes" : "Add"}
           </button>
         </div>
       </div>

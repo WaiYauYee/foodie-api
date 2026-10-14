@@ -36,7 +36,11 @@ import { calculateStreak } from "./utils/streak";
 import WelcomeStoryboard from "./components/WelcomeStoryboard";
 import PlanBuilder from "./components/PlanBuilder";
 import { OnboardingData } from "./types/types";
-import { completeOnboarding, CompleteOnboardingPayload } from "./services/authService";
+import {
+  completeOnboarding,
+  CompleteOnboardingPayload,
+} from "./services/authService";
+import { addWeight } from "./services/dashboardService";
 
 const INITIAL_USER: User = {
   userId: "u1",
@@ -159,6 +163,7 @@ const App: React.FC = () => {
   const [meals, setMeals] = useState<MealEntry[]>(MOCK_MEALS);
   const [weightHistory, setWeightHistory] =
     useState<WeightEntry[]>(MOCK_WEIGHTS);
+  const [editingWeight, setEditingWeight] = useState<WeightEntry | null>(null);
   const [user, setUser] = useState<User>(INITIAL_USER);
 
   const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
@@ -204,7 +209,9 @@ const App: React.FC = () => {
     localStorage.setItem("makanfit_meals", JSON.stringify(meals));
   }, [meals]);
 
-  const submitPendingOnboarding = async (userId: string): Promise<User | null> => {
+  const submitPendingOnboarding = async (
+    userId: string,
+  ): Promise<User | null> => {
     const raw = localStorage.getItem("makanfit_pending_onboarding");
     if (!raw) return null;
 
@@ -414,24 +421,14 @@ const App: React.FC = () => {
   //   setUser(prev => ({ ...prev, weight }));
   // };
 
-  const handleAddWeight = (weight: number) => {
-    const now = Date.now();
-
-    const newEntry: WeightEntry = {
-      id: Math.random().toString(36).substr(2, 9),
-      userId: user.userId,
-      weight,
-      recordedAt: now,
-      createdAt: now,
-    };
-
-    setWeightHistory((prev) => [newEntry, ...prev]);
-
-    setUser((prev) => ({
-      ...prev,
-      currentWeight: weight,
-      updatedAt: now,
-    }));
+  const handleAddWeight = async (weight: number) => {
+    const res = await addWeight(user.userId, weight);
+    if (!res.success) {
+      console.error(res.message);
+      return;
+    }
+    setWeightHistory((prev) => [res.entry, ...prev]);
+    setUser((prev) => ({ ...prev, currentWeight: res.currentWeight }));
   };
 
   const handleUpdateUser = (updatedFields: Partial<User>) => {
@@ -511,10 +508,13 @@ const App: React.FC = () => {
       case Page.DASHBOARD:
         return (
           <Dashboard
-            meals={meals}
             user={user}
             weightHistory={weightHistory}
             onNavigateToAddWeight={() => setCurrentPage(Page.ADD_WEIGHT)}
+            onEditWeight={(entry) => {
+              setEditingWeight(entry);
+              setCurrentPage(Page.ADD_WEIGHT);
+            }}
           />
         );
       case Page.DIARY:
@@ -591,6 +591,7 @@ const App: React.FC = () => {
         return (
           <AddWeight
             currentWeight={user.currentWeight}
+            editingEntry={editingWeight}
             onBack={() => setCurrentPage(Page.DASHBOARD)}
             onAdd={handleAddWeight}
           />
@@ -598,10 +599,13 @@ const App: React.FC = () => {
       default:
         return (
           <Dashboard
-            meals={meals}
             user={user}
             weightHistory={weightHistory}
             onNavigateToAddWeight={() => setCurrentPage(Page.ADD_WEIGHT)}
+            onEditWeight={(entry) => {
+              setEditingWeight(entry);
+              setCurrentPage(Page.ADD_WEIGHT);
+            }}
           />
         );
     }
