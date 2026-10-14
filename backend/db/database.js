@@ -13,7 +13,10 @@
 // module.exports = connectDB;
 
 // db.js
-const { Pool } = require("pg");
+const { Pool, types } = require("pg");
+
+types.setTypeParser(1082, (v) => v);            // DATE    -> "YYYY-MM-DD"
+types.setTypeParser(1700, (v) => parseFloat(v)); // NUMERIC -> number
 
 const pool = new Pool({
   user: process.env.PG_USER,

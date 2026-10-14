@@ -47,6 +47,7 @@ const toUserDto = (u) => ({
   triedOtherApps: u.tried_other_apps,
   primaryGoal: u.primary_goal,
   dietType: u.diet_type,
+  targetWater: u.target_water_ml,
 });
 
 // ---------------- SIGNUP ----------------
@@ -239,18 +240,35 @@ const getUserProfile = async (req, res) => {
 // UPDATE USER PROFILE
 // ============================================
 
+const num = (v, min, max) =>
+  v === undefined || v === null || (Number.isFinite(Number(v)) && Number(v) >= min && Number(v) <= max);
+
+const ACTIVITY = ["sedentary", "lightly_active", "moderately_active", "very_active", "extra_active"];
+const DIETARY = ["maintain", "gradual_gain", "rapid_gain", "gradual_lose", "rapid_lose"];
+const ORIGINS = ["standard", "custom"];
+const norm = (v) => String(v).trim().toLowerCase().replace(/[\s-]+/g, "_");
+
 const updateUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
-    
-    const user = await UserModel.updateProfile(userId, req.body);
+    const b = req.body;
 
-    if (user === undefined) {
+    if (b.gender && !["male", "female"].includes(norm(b.gender)))
+      return res.status(400).json({ success: false, message: "Invalid gender" });
+    if (!num(b.heightCm, 100, 250))
+      return res.status(400).json({ success: false, message: "Height must be between 100 and 250 cm" });
+    if (b.birthDate && !(new Date(b.birthDate) < new Date()))
+      return res.status(400).json({ success: false, message: "Birth date must be in the past" });
+    if (b.firstName !== undefined && !String(b.firstName).trim())
+      return res.status(400).json({ success: false, message: "First name cannot be empty" });
+    if (b.lastName !== undefined && !String(b.lastName).trim())
+      return res.status(400).json({ success: false, message: "Last name cannot be empty" });
+
+    const user = await UserModel.updateProfile(userId, b);
+    if (user === undefined)
       return res.status(400).json({ success: false, message: "No fields provided to update" });
-    }
-    if (user === null) {
+    if (user === null)
       return res.status(404).json({ success: false, message: "User not found" });
-    }
 
     return res.status(200).json({
       success: true,
@@ -269,12 +287,27 @@ const updateUserProfile = async (req, res) => {
 const updateUserProfileGoals = async (req, res) => {
   try {
     const { userId } = req.params;
-    
-    const user = await UserModel.updateGoals(userId, req.body);
+    const g = req.body;
+
+    const bad = (message) => res.status(400).json({ success: false, message });
+
+    if (!num(g.startWeightKg, 20, 500) || !num(g.goalWeightKg, 20, 500))
+      return bad("Weight must be between 20 and 500 kg");
+    if (!num(g.targetCalories, 800, 6000)) return bad("Calories must be between 800 and 6000");
+    if (!num(g.targetWaterMl, 500, 8000)) return bad("Water goal must be between 500 and 8000 ml");
+    for (const k of ["targetProteinG", "targetCarbsG", "targetFatG", "targetFiberG"])
+      if (!num(g[k], 0, 2000)) return bad(`${k} is out of range`);
+    if (g.activityLevel && !ACTIVITY.includes(norm(g.activityLevel))) return bad("Invalid activity level");
+    if (g.dietaryGoal && !DIETARY.includes(norm(g.dietaryGoal).replace(/_weight$/, "")))
+      return bad("Invalid dietary goal");
+    if (g.goalOrigin && !ORIGINS.includes(norm(g.goalOrigin))) return bad("Invalid goal origin");
+    if (g.macroGoalOrigin && !ORIGINS.includes(norm(g.macroGoalOrigin))) return bad("Invalid macro origin");
+
+    const user = await UserModel.updateGoals(userId, g);
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found or onboarding not completed" });
     }
- 
+
     return res.status(200).json({
       success: true,
       message: "Profile goals updated successfully",
@@ -484,5 +517,6 @@ module.exports = {
   requestPasswordReset,
   verifyResetCode,
   resetPassword,
-  logout
+  logout,
+  toUserDto
 };

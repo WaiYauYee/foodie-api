@@ -12,25 +12,109 @@ import {
 interface AccountSettingProps {
   user: User;
   onBack: () => void;
-  onSave: (updatedUser: Partial<User>) => void;
+  onChangeEmail: (
+    email: string,
+  ) => Promise<{ success: boolean; message: string; user?: User }>;
+  onDeleteAccount: () => Promise<{
+    success: boolean;
+    message: string;
+  }>;
 }
+
+const ErrorAlert = ({
+  title,
+  message,
+  onDismiss,
+}: {
+  title: string;
+  message: string;
+  onDismiss: () => void;
+}) => (
+  <div
+    role="alert"
+    className="flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 p-4"
+  >
+    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-600">
+      <AlertTriangle size={20} />
+    </div>
+
+    <div className="min-w-0 flex-1">
+      <p className="text-sm font-extrabold text-rose-900">{title}</p>
+      <p className="mt-1 text-sm leading-relaxed text-rose-700">{message}</p>
+    </div>
+
+    <button
+      type="button"
+      onClick={onDismiss}
+      aria-label="Dismiss error"
+      className="rounded-lg p-1 text-rose-400 hover:bg-rose-100 hover:text-rose-700"
+    >
+      <X size={18} />
+    </button>
+  </div>
+);
 
 const AccountSetting: React.FC<AccountSettingProps> = ({
   user,
-  onSave,
   onBack,
+  onChangeEmail,
+  onDeleteAccount,
 }) => {
   const [emailValue, setEmailValue] = useState(user.email);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleSaveEmail = () => {
+  const [emailError, setEmailError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleSaveEmail = async () => {
+    setEmailError("");
+
+    if (!emailValue.trim()) {
+      setEmailError("Please enter your email address.");
+      return;
+    }
+
+    if (emailValue.trim().toLowerCase() === user.email.toLowerCase()) {
+      setEmailError("Your new email is the same as your current email.");
+      return;
+    }
+
     setIsSaving(true);
-    setTimeout(() => {
-      onSave({ email: emailValue });
-      setIsSaving(false);
+
+    try {
+      const res = await onChangeEmail(emailValue.trim());
+
+      if (!res.success) {
+        setEmailError(res.message);
+        return;
+      }
+
       onBack();
-    }, 1000);
+    } catch {
+      setEmailError("We couldn't update your email. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setDeleteError("");
+    setIsDeleting(true);
+
+    try {
+      const res = await onDeleteAccount();
+
+      if (!res.success) {
+        setDeleteError(res.message);
+      }
+      // On success, App.tsx handles logout.
+    } catch {
+      setDeleteError("We couldn't delete your account. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -64,6 +148,14 @@ const AccountSetting: React.FC<AccountSettingProps> = ({
           </div>
         </div>
 
+        {emailError && (
+          <ErrorAlert
+            title="Unable to update email"
+            message={emailError}
+            onDismiss={() => setEmailError("")}
+          />
+        )}
+
         <button
           onClick={handleSaveEmail}
           disabled={isSaving}
@@ -92,7 +184,10 @@ const AccountSetting: React.FC<AccountSettingProps> = ({
           weight history, and custom settings.
         </p>
         <button
-          onClick={() => setIsDeleteModalOpen(true)}
+          onClick={() => {
+            setDeleteError("");
+            setIsDeleteModalOpen(true);
+          }}
           className="w-full bg-white text-red-600 font-black py-4 rounded-2xl border border-red-200 active:scale-[0.98] transition-all uppercase tracking-widest text-[10px]"
         >
           Delete My Account
@@ -121,11 +216,19 @@ const AccountSetting: React.FC<AccountSettingProps> = ({
                 </p>
               </div>
               <div className="w-full space-y-3">
+                {deleteError && (
+                  <ErrorAlert
+                    title="Unable to delete account"
+                    message={deleteError}
+                    onDismiss={() => setDeleteError("")}
+                  />
+                )}
                 <button
-                  onClick={() => alert("Account Deleted")}
+                  onClick={handleDelete}
+                  disabled={isDeleting}
                   className="w-full bg-red-500 text-white font-black py-5 rounded-3xl shadow-xl shadow-red-200 active:scale-[0.95] transition-all uppercase text-xs tracking-widest"
                 >
-                  Delete Forever
+                  {isDeleting ? "Deleting..." : "Delete Forever"}
                 </button>
                 <button
                   onClick={() => setIsDeleteModalOpen(false)}

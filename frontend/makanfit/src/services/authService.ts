@@ -654,3 +654,75 @@ export const verifyResetCode = async (
     return { success: false, message: 'Network error. Please try again.' };
   }
 };
+
+const jsonOrFail = async (res: Response, fallback: string): Promise<AuthResponse> => {
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) return { success: false, message: body.message || fallback };
+  return body as AuthResponse;
+};
+
+export const changePassword = async (
+  userId: string,
+  currentPassword: string,
+  newPassword: string,
+  confirmPassword: string
+): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/password/${userId}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+    });
+    return await jsonOrFail(res, 'Failed to change password');
+  } catch (e) {
+    console.error('Change Password Error:', e);
+    return { success: false, message: 'Network error. Please try again.' };
+  }
+};
+
+
+export const changeEmail = async (
+  userId: string,
+  email: string,
+): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/email/${userId}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ email }),
+    });
+
+    const result = await jsonOrFail(res, "Failed to change email");
+
+    if (result.success && result.token) {
+      localStorage.setItem("makanfit_token", result.token);
+    }
+
+    return result;
+  } catch (e) {
+    console.error("Change Email Error:", e);
+    return {
+      success: false,
+      message: "Network error. Please try again.",
+    };
+  }
+};
+
+export const deleteAccount = async (
+  userId: string,
+): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/account/${userId}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+
+    return await jsonOrFail(res, "Failed to delete account");
+  } catch (e) {
+    console.error("Delete Account Error:", e);
+    return {
+      success: false,
+      message: "Network error. Please try again.",
+    };
+  }
+};

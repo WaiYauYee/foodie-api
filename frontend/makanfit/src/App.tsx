@@ -39,6 +39,10 @@ import { OnboardingData } from "./types/types";
 import {
   completeOnboarding,
   CompleteOnboardingPayload,
+  updateUserProfile,
+  updateUserProfileGoals,
+  changeEmail,
+  deleteAccount,
 } from "./services/authService";
 import { addWeight } from "./services/dashboardService";
 
@@ -431,9 +435,112 @@ const App: React.FC = () => {
     setUser((prev) => ({ ...prev, currentWeight: res.currentWeight }));
   };
 
-  const handleUpdateUser = (updatedFields: Partial<User>) => {
-    setUser((prev) => ({ ...prev, ...updatedFields }));
+  const persistUser = (merged: User) => {
+    setUser(merged);
+    localStorage.setItem("makanfit_user", JSON.stringify(merged));
   };
+
+  const PROFILE_KEYS = [
+    "firstName",
+    "lastName",
+    "gender",
+    "birthDate",
+    "heightCm",
+  ] as const;
+
+  // frontend field -> backend goal field
+  const GOAL_MAP: Record<string, string> = {
+    goalWeight: "goalWeightKg",
+    activityLevel: "activityLevel",
+    dietaryGoal: "dietaryGoal",
+    targetCalories: "targetCalories",
+    targetProtein: "targetProteinG",
+    targetCarbs: "targetCarbsG",
+    targetFat: "targetFatG",
+    targetFiber: "targetFiberG",
+    targetWater: "targetWaterMl",
+    goalOrigin: "goalOrigin",
+    macroGoalOrigin: "macroGoalOrigin",
+  };
+
+  const handleUpdateUser = async (fields: Partial<User>) => {
+    let latest: User = user;
+
+    // 1. profile fields (PersonalInfo)
+    const profilePatch: Record<string, unknown> = {};
+    PROFILE_KEYS.forEach((k) => {
+      if (fields[k] !== undefined) profilePatch[k] = fields[k];
+    });
+    if (profilePatch.heightCm !== undefined)
+      profilePatch.heightCm = Number(profilePatch.heightCm);
+
+    if (Object.keys(profilePatch).length) {
+      const res = await updateUserProfile(user.userId, profilePatch);
+      if (!res.success) {
+        alert(res.message);
+        return;
+      }
+      if (res.user) latest = { ...latest, ...res.user };
+    }
+
+    // 2. goal fields (Goal page)
+    const goalPatch: Record<string, unknown> = {};
+    Object.entries(GOAL_MAP).forEach(([front, back]) => {
+      const v = (fields as any)[front];
+      if (v !== undefined) goalPatch[back] = v;
+    });
+    if (Object.keys(goalPatch).length) {
+      const res = await updateUserProfileGoals(user.userId, goalPatch);
+      if (!res.success) {
+        alert(res.message);
+        return;
+      }
+      if (res.user) latest = { ...latest, ...res.user };
+    }
+
+    // 3. weight is its own table now
+    if (
+      fields.currentWeight !== undefined &&
+      fields.currentWeight !== user.currentWeight
+    ) {
+      await handleAddWeight(fields.currentWeight);
+      return persistUser({ ...latest, currentWeight: fields.currentWeight });
+    }
+
+    persistUser(latest);
+  };
+
+  const handleChangeEmail = async (email: string) => {
+    const res = await changeEmail(user.userId, email);
+
+    if (res.success && res.user) {
+      persistUser({ ...user, ...res.user });
+    }
+
+    return res;
+  };
+
+  const handleDeleteAccount = async () => {
+  const res = await deleteAccount(user.userId);
+
+  if (res.success) {
+    [
+      "makanfit_user",
+      "makanfit_userId",
+      "makanfit_token",
+      "makanfit_auth",
+      "makanfit_onboarding_done",
+      "makanfit_meals",
+      "makanfit_weights",
+    ].forEach((key) => localStorage.removeItem(key));
+
+    setIsAuthenticated(false);
+    setHasCompletedOnboarding(false);
+    setAuthPage("welcome");
+  }
+
+  return res;
+};
 
   if (!isAuthenticated) {
     if (authPage === "privacy")
@@ -563,14 +670,15 @@ const App: React.FC = () => {
           <AccountSetting
             user={user}
             onBack={() => setCurrentPage(Page.PROFILE)}
-            onSave={handleUpdateUser}
+            onChangeEmail={handleChangeEmail}
+            onDeleteAccount={handleDeleteAccount}
           />
         );
       case Page.CHANGE_PASSWORD:
         return (
           <ChangePassword
             onBack={() => setCurrentPage(Page.PROFILE)}
-            onSave={() => console.log("Password saved")}
+            userId={user.userId}
           />
         );
       case Page.GOAL:
@@ -585,7 +693,10 @@ const App: React.FC = () => {
         return <PrivacyPolicy onBack={() => setCurrentPage(Page.PROFILE)} />;
       case Page.NOTIFICATIONS:
         return (
-          <NotificationSettings onBack={() => setCurrentPage(Page.PROFILE)} />
+          <NotificationSettings
+            userId={user.userId}
+            onBack={() => setCurrentPage(Page.PROFILE)}
+          />
         );
       case Page.ADD_WEIGHT:
         return (

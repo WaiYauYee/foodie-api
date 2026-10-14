@@ -12,6 +12,7 @@ const {
   logout,
   verifyResetCode
 } = require("../controller/authController");
+const { changePassword, changeEmail, deleteAccount } = require("../controller/accountController");
 const { authenticateToken, authorizeSelf } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -24,6 +25,14 @@ const resetLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, message: "Too many requests. Try again later." },
+});
+
+const sensitiveLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Too many attempts. Try again later." },
 });
 
 // Auth routes
@@ -40,5 +49,9 @@ router.post('/onboarding/:userId', authenticateToken, authorizeSelf, completeOnb
 router.get("/profile/:userId", authenticateToken, authorizeSelf, getUserProfile);
 router.put("/profile/:userId", authenticateToken, authorizeSelf, updateUserProfile);
 router.put("/profile/:userId/goals", authenticateToken, authorizeSelf, updateUserProfileGoals);
+
+router.put("/password/:userId", authenticateToken, authorizeSelf, sensitiveLimiter, changePassword);
+router.put("/email/:userId", authenticateToken, authorizeSelf, sensitiveLimiter, changeEmail);
+router.delete("/account/:userId", authenticateToken, authorizeSelf, sensitiveLimiter, deleteAccount);
 
 module.exports = router;

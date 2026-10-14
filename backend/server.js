@@ -42,6 +42,7 @@ const fs = require("fs");
 // Routes
 const authRoute = require("./routes/authRoute");
 const { dashboardRouter, weightRouter } = require("./routes/dashboardRoute");
+const notificationRoute = require("./routes/notificationRoute");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -60,7 +61,7 @@ const upload = multer({ dest: uploadsDir });
 app.use(
     cors({
         origin: "*",
-        methods: ["GET", "POST", "PUT", "DELETE"],
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
@@ -103,6 +104,9 @@ app.use("/api/auth", authRoute);
 // dashboard routes
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/weight", weightRouter);
+
+// profile's notifications routes
+app.use("/api/notifications", notificationRoute);
 
 // ============================================
 // FOOD SEGMENTATION

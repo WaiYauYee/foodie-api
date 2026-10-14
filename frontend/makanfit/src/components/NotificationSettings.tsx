@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
-import { Utensils, Droplet, Scale, Clock, X, Check, ChevronLeft } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import {
+  Utensils,
+  Droplet,
+  Scale,
+  Clock,
+  X,
+  Check,
+  ChevronLeft,
+} from "lucide-react";
+import {
+  getNotificationSettings,
+  saveNotificationSettings,
+} from "../services/notificationService";
 
 interface NotificationSettingsProps {
   onBack: () => void;
+  userId: string;
 }
+
+const LABELS: Record<string, string> = {
+  breakfast: "Breakfast",
+  lunch: "Lunch",
+  dinner: "Dinner",
+};
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -14,12 +33,12 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange }) => (
   <button
     onClick={onChange}
     className={`w-12 h-7 rounded-full relative transition-colors duration-300 flex-shrink-0 ${
-      checked ? 'bg-emerald-500' : 'bg-gray-200'
+      checked ? "bg-emerald-500" : "bg-gray-200"
     }`}
   >
     <div
       className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${
-        checked ? 'translate-x-[22px]' : 'translate-x-1'
+        checked ? "translate-x-[22px]" : "translate-x-1"
       }`}
     />
   </button>
@@ -27,9 +46,9 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange }) => (
 
 // Formats 24hr "HH:MM" into "7:45 AM" style for display
 const formatTime = (time24: string) => {
-  const [hStr, m] = time24.split(':');
+  const [hStr, m] = time24.split(":");
   let h = parseInt(hStr, 10);
-  const suffix = h >= 12 ? 'PM' : 'AM';
+  const suffix = h >= 12 ? "PM" : "AM";
   h = h % 12 || 12;
   return `${h}:${m} ${suffix}`;
 };
@@ -40,20 +59,59 @@ interface MealTime {
   time: string; // 24hr "HH:MM" — native <input type="time"> works in this format
 }
 
-const NotificationSettings: React.FC<NotificationSettingsProps> = ({ onBack }) => {
+const NotificationSettings: React.FC<NotificationSettingsProps> = ({
+  onBack,
+  userId,
+}) => {
+  const [loading, setLoading] = useState(true);
   const [mealReminders, setMealReminders] = useState(true);
   const [waterReminder, setWaterReminder] = useState(false);
   const [weightReminders, setWeightReminders] = useState(true);
-
-  const [mealTimes, setMealTimes] = useState<MealTime[]>([
-    { id: 'breakfast', label: 'Breakfast', time: '07:45' },
-    { id: 'lunch', label: 'Lunch', time: '12:30' },
-    { id: 'dinner', label: 'Dinner', time: '19:00' },
-  ]);
+  const [mealTimes, setMealTimes] = useState<MealTime[]>([]);
 
   // Which meal's time picker is open (null = closed)
   const [editingMealId, setEditingMealId] = useState<string | null>(null);
-  const [draftTime, setDraftTime] = useState('');
+  const [draftTime, setDraftTime] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadSettings = async () => {
+      setLoading(true);
+
+      try {
+        const res = await getNotificationSettings(userId);
+
+        if (cancelled) return;
+
+        if (res.success) {
+          setMealReminders(res.settings.mealRemindersEnabled);
+          setWaterReminder(res.settings.waterReminderEnabled);
+          setWeightReminders(res.settings.weightRemindersEnabled);
+
+          setMealTimes(
+            res.settings.mealTimes.map((t) => ({
+              id: t.mealType,
+              label: LABELS[t.mealType] ?? t.mealType,
+              time: t.time,
+            })),
+          );
+        }
+      } catch (error) {
+        console.error("Failed to load notification settings:", error);
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadSettings();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
 
   const openTimeEditor = (meal: MealTime) => {
     setEditingMealId(meal.id);
@@ -62,24 +120,74 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({ onBack }) =
 
   const closeTimeEditor = () => {
     setEditingMealId(null);
-    setDraftTime('');
+    setDraftTime("");
   };
 
-  const saveTime = () => {
+  const toggle = async (
+    key:
+      | "mealRemindersEnabled"
+      | "waterReminderEnabled"
+      | "weightRemindersEnabled",
+    current: boolean,
+    set: (value: boolean) => void,
+  ) => {
+    const nextValue = !current;
+
+    // Update the UI immediately.
+    set(nextValue);
+
+    try {
+      const res = await saveNotificationSettings(userId, {
+        [key]: nextValue,
+      });
+
+      // Roll back if the backend rejects the update.
+      if (!res.success) {
+        set(current);
+      }
+    } catch (error) {
+      console.error("Failed to save notification setting:", error);
+      set(current);
+    }
+  };
+
+  const saveTime = async () => {
     if (!editingMealId || !draftTime) return;
-    setMealTimes(prev =>
-      prev.map(m => (m.id === editingMealId ? { ...m, time: draftTime } : m))
-    );
-    closeTimeEditor();
+
+    try {
+      const res = await saveNotificationSettings(userId, {
+        mealTimes: [
+          {
+            mealType: editingMealId as "breakfast" | "lunch" | "dinner",
+            time: draftTime,
+          },
+        ],
+      });
+
+      if (res.success) {
+        setMealTimes((prev) =>
+          prev.map((meal) =>
+            meal.id === editingMealId ? { ...meal, time: draftTime } : meal,
+          ),
+        );
+
+        closeTimeEditor();
+      }
+    } catch (error) {
+      console.error("Failed to save meal reminder time:", error);
+    }
   };
 
-  const editingMeal = mealTimes.find(m => m.id === editingMealId);
+  const editingMeal = mealTimes.find((m) => m.id === editingMealId);
 
   return (
     <div className="fixed inset-0 bg-[#F8FAFC] z-[100] flex flex-col animate-in slide-in-from-right duration-300">
       {/* Header */}
       <div className="px-4 py-3 flex items-center bg-white">
-        <button onClick={onBack} className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors">
+        <button
+          onClick={onBack}
+          className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors"
+        >
           <ChevronLeft className="w-7 h-7" />
         </button>
         <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-8">
@@ -87,60 +195,95 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({ onBack }) =
         </h2>
       </div>
 
-      <div className="p-4 space-y-4">
-        {/* Meal Reminders Card */}
-        <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between p-5">
-            <div className="flex items-center space-x-4">
-              <div className="bg-orange-50 w-10 h-10 rounded-2xl flex items-center justify-center">
-                <Utensils className="w-5 h-5 text-orange-500" />
+      {loading ? (
+        <div className="flex flex-1 items-center justify-center">
+          <p className="text-sm font-semibold text-slate-400">
+            Loading notification settings...
+          </p>
+        </div>
+      ) : (
+        <div className="p-4 space-y-4">
+          {/* Meal Reminders Card */}
+          <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between p-5">
+              <div className="flex items-center space-x-4">
+                <div className="bg-orange-50 w-10 h-10 rounded-2xl flex items-center justify-center">
+                  <Utensils className="w-5 h-5 text-orange-500" />
+                </div>
+                <span className="font-bold text-gray-800">Meal reminders</span>
               </div>
-              <span className="font-bold text-gray-800">Meal reminders</span>
+              <ToggleSwitch
+                checked={mealReminders}
+                onChange={() =>
+                  toggle(
+                    "mealRemindersEnabled",
+                    mealReminders,
+                    setMealReminders,
+                  )
+                }
+              />
             </div>
-            <ToggleSwitch checked={mealReminders} onChange={() => setMealReminders(!mealReminders)} />
+
+            {mealReminders && (
+              <div className="divide-y divide-gray-50 border-t border-gray-50">
+                {mealTimes.map((meal) => (
+                  <button
+                    key={meal.id}
+                    onClick={() => openTimeEditor(meal)}
+                    className="w-full flex items-center justify-between px-5 py-4 pl-[4.75rem] hover:bg-gray-50 transition-colors active:scale-[0.99]"
+                  >
+                    <span className="text-sm font-bold text-gray-600">
+                      {meal.label}
+                    </span>
+                    <div className="flex items-center space-x-1.5 text-emerald-600">
+                      <Clock size={14} />
+                      <span className="text-sm font-bold">
+                        {formatTime(meal.time)}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {mealReminders && (
-            <div className="divide-y divide-gray-50 border-t border-gray-50">
-              {mealTimes.map((meal) => (
-                <button
-                  key={meal.id}
-                  onClick={() => openTimeEditor(meal)}
-                  className="w-full flex items-center justify-between px-5 py-4 pl-[4.75rem] hover:bg-gray-50 transition-colors active:scale-[0.99]"
-                >
-                  <span className="text-sm font-bold text-gray-600">{meal.label}</span>
-                  <div className="flex items-center space-x-1.5 text-emerald-600">
-                    <Clock size={14} />
-                    <span className="text-sm font-bold">{formatTime(meal.time)}</span>
-                  </div>
-                </button>
-              ))}
+          {/* Water Reminder Card */}
+          <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-5 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="bg-sky-50 w-10 h-10 rounded-2xl flex items-center justify-center">
+                <Droplet className="w-5 h-5 text-sky-400" />
+              </div>
+              <span className="font-bold text-gray-800">Water reminder</span>
             </div>
-          )}
-        </div>
-
-        {/* Water Reminder Card */}
-        <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-5 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="bg-sky-50 w-10 h-10 rounded-2xl flex items-center justify-center">
-              <Droplet className="w-5 h-5 text-sky-400" />
-            </div>
-            <span className="font-bold text-gray-800">Water reminder</span>
+            <ToggleSwitch
+              checked={waterReminder}
+              onChange={() =>
+                toggle("waterReminderEnabled", waterReminder, setWaterReminder)
+              }
+            />
           </div>
-          <ToggleSwitch checked={waterReminder} onChange={() => setWaterReminder(!waterReminder)} />
-        </div>
 
-        {/* Weight Reminders Card */}
-        <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-5 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="bg-teal-50 w-10 h-10 rounded-2xl flex items-center justify-center">
-              <Scale className="w-5 h-5 text-teal-500" />
+          {/* Weight Reminders Card */}
+          <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-5 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="bg-teal-50 w-10 h-10 rounded-2xl flex items-center justify-center">
+                <Scale className="w-5 h-5 text-teal-500" />
+              </div>
+              <span className="font-bold text-gray-800">Weight reminders</span>
             </div>
-            <span className="font-bold text-gray-800">Weight reminders</span>
+            <ToggleSwitch
+              checked={weightReminders}
+              onChange={() =>
+                toggle(
+                  "weightRemindersEnabled",
+                  weightReminders,
+                  setWeightReminders,
+                )
+              }
+            />
           </div>
-          <ToggleSwitch checked={weightReminders} onChange={() => setWeightReminders(!weightReminders)} />
         </div>
-      </div>
+      )}
 
       {/* TIME PICKER BOTTOM SHEET */}
       {editingMeal && (

@@ -136,10 +136,10 @@ const Profile: React.FC<ProfileProps> = ({
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-lg flex flex-col items-center text-center lg:bg-slate-50 lg:border-slate-100 lg:shadow-none lg:p-5">
                   <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">
-                    Weight
+                    Current Weight
                   </p>
                   <p className="text-xl font-black text-gray-900">
-                    {user.startWeight}{" "}
+                    {user.currentWeight}{" "}
                     <span className="text-sm font-normal text-gray-400">kg</span>
                   </p>
                 </div>

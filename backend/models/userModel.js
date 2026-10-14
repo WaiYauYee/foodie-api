@@ -10,6 +10,12 @@ const withTransaction = require("../db/withTransaction");
 const toEnum = (v) =>
   typeof v === "string" ? v.trim().toLowerCase().replace(/[\s-]+/g, "_") : v;
 
+// "Gradual Lose Weight" / "gradual_lose" -> "gradual_lose"
+const toDietaryGoal = (v) => {
+  const e = toEnum(v);
+  return typeof e === "string" ? e.replace(/_weight$/, "") : e;
+};
+
 // Run fn inside the caller's client, or in a fresh transaction
 const inTx = (db, fn) => (db ? fn(db) : withTransaction(fn));
 
@@ -160,7 +166,7 @@ const UserModel = {
           data.startWeight,
           data.goalWeight,
           toEnum(data.activityLevel),
-          toEnum(data.dietaryGoal),
+          toDietaryGoal(data.dietaryGoal),
           customCal ? "custom" : "standard",
           data.targetCalories,
           customMacro ? "custom" : "standard",
@@ -212,7 +218,7 @@ const UserModel = {
    * Goals are versioned: close the current row, open a new one with the merged values.
    * Returns null if the user has no current goal (not onboarded) or doesn't exist.
    */
-  async updateGoals(userId, g, db) {
+    async updateGoals(userId, g, db) {
     return inTx(db, async (c) => {
       const { rows } = await c.query(
         `SELECT * FROM user_goals WHERE user_id = $1 AND valid_to IS NULL FOR UPDATE`,
@@ -221,10 +227,17 @@ const UserModel = {
       const cur = rows[0];
       if (!cur) return null;
 
-      const pick = (incoming, existing) => (incoming !== undefined && incoming !== null ? incoming : existing);
-      const customCal = g.targetCalories != null;
-      const customMacro = [g.targetProteinG, g.targetCarbsG, g.targetFatG, g.targetFiberG]
-        .some((v) => v != null);
+      const pick = (incoming, existing) =>
+        incoming !== undefined && incoming !== null ? incoming : existing;
+
+      const calorieOrigin = g.goalOrigin
+        ? toEnum(g.goalOrigin)
+        : g.targetCalories != null ? "custom" : cur.calorie_origin;
+
+      const macroKeys = [g.targetProteinG, g.targetCarbsG, g.targetFatG, g.targetFiberG];
+      const macroOrigin = g.macroGoalOrigin
+        ? toEnum(g.macroGoalOrigin)
+        : macroKeys.some((v) => v != null) ? "custom" : cur.macro_origin;
 
       await c.query(`UPDATE user_goals SET valid_to = now() WHERE id = $1`, [cur.id]);
 
@@ -240,10 +253,10 @@ const UserModel = {
           pick(g.startWeightKg, cur.start_weight_kg),
           pick(g.goalWeightKg, cur.goal_weight_kg),
           pick(toEnum(g.activityLevel), cur.activity_level),
-          pick(toEnum(g.dietaryGoal), cur.dietary_goal),
-          customCal ? "custom" : cur.calorie_origin,
+          pick(toDietaryGoal(g.dietaryGoal), cur.dietary_goal),
+          calorieOrigin,
           pick(g.targetCalories, cur.target_calories),
-          customMacro ? "custom" : cur.macro_origin,
+          macroOrigin,
           pick(g.targetProteinG, cur.target_protein_g),
           pick(g.targetCarbsG, cur.target_carbs_g),
           pick(g.targetFatG, cur.target_fat_g),
@@ -260,6 +273,34 @@ const UserModel = {
     const { rowCount } = await db.query(
       "UPDATE users SET password_hash = $1 WHERE id = $2 AND deleted_at IS NULL", // updated_at via trigger
       [passwordHash, userId]
+    );
+    return rowCount > 0;
+  },
+
+    async getPasswordHash(userId, db = pool) {
+    const { rows } = await db.query(
+      "SELECT password_hash FROM users WHERE id = $1 AND deleted_at IS NULL",
+      [userId]
+    );
+    return rows[0] ? rows[0].password_hash : null;
+  },
+
+  /** Returns true if updated. Throws pg error 23505 if the email is taken. */
+  async updateEmail(userId, email, db = pool) {
+    const { rowCount } = await db.query(
+      `UPDATE users SET email = $1, email_verified_at = NULL
+       WHERE id = $2 AND deleted_at IS NULL`,
+      [email, userId]
+    );
+    return rowCount > 0;
+  },
+
+  /** Soft delete (PDPA purge job hard-deletes later). Frees the email for re-signup. */
+  async softDelete(userId, db = pool) {
+    const { rowCount } = await db.query(
+      `UPDATE users SET deleted_at = now(), is_active = false
+       WHERE id = $1 AND deleted_at IS NULL`,
+      [userId]
     );
     return rowCount > 0;
   },
