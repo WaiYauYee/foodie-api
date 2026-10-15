@@ -87,15 +87,51 @@ const Profile: React.FC<ProfileProps> = ({
   }, [isLogoutModalOpen]);
 
   const accountItems: MenuItem[] = [
-    { icon: User, label: "Profile", color: "text-blue-500", bg: "bg-blue-50", action: onNavigateToAccount },
-    { icon: Settings, label: "Account", color: "text-indigo-500", bg: "bg-indigo-50", action: onNavigateToSetting },
-    { icon: Lock, label: "Security", color: "text-cyan-500", bg: "bg-cyan-50", action: onNavigateToSecurity },
+    {
+      icon: User,
+      label: "Profile",
+      color: "text-blue-500",
+      bg: "bg-blue-50",
+      action: onNavigateToAccount,
+    },
+    {
+      icon: Settings,
+      label: "Account",
+      color: "text-indigo-500",
+      bg: "bg-indigo-50",
+      action: onNavigateToSetting,
+    },
+    {
+      icon: Lock,
+      label: "Security",
+      color: "text-cyan-500",
+      bg: "bg-cyan-50",
+      action: onNavigateToSecurity,
+    },
   ];
 
   const preferenceItems: MenuItem[] = [
-    { icon: Target, label: "Goals", color: "text-emerald-500", bg: "bg-emerald-50", action: onNavigateToGoal },
-    { icon: Bell, label: "Notifications", color: "text-orange-500", bg: "bg-orange-50", action: onNavigateToNotifications },
-    { icon: Shield, label: "Privacy Policy", color: "text-purple-500", bg: "bg-purple-50", action: onNavigateToPrivacy },
+    {
+      icon: Target,
+      label: "Goals",
+      color: "text-emerald-500",
+      bg: "bg-emerald-50",
+      action: onNavigateToGoal,
+    },
+    {
+      icon: Bell,
+      label: "Notifications",
+      color: "text-orange-500",
+      bg: "bg-orange-50",
+      action: onNavigateToNotifications,
+    },
+    {
+      icon: Shield,
+      label: "Privacy Policy",
+      color: "text-purple-500",
+      bg: "bg-purple-50",
+      action: onNavigateToPrivacy,
+    },
   ];
 
   const renderLogoutButton = (className = "") => (
@@ -107,6 +143,15 @@ const Profile: React.FC<ProfileProps> = ({
       <span>Log Out</span>
     </button>
   );
+
+  const capitalizeName = (name?: string) => {
+    if (!name) return "";
+
+    return name
+      .trim()
+      .toLowerCase()
+      .replace(/(^|\s)\S/g, (letter) => letter.toUpperCase());
+  };
 
   return (
     <div className="bg-[#F8FAFC] min-h-full">
@@ -126,9 +171,12 @@ const Profile: React.FC<ProfileProps> = ({
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight break-words">
-                    {user.firstName} {user.lastName}
+                    {capitalizeName(user.firstName)}{" "}
+                    {capitalizeName(user.lastName)}
                   </h2>
-                  <p className="text-gray-400 font-bold truncate">{user.email}</p>
+                  <p className="text-gray-400 font-bold truncate">
+                    {user.email}
+                  </p>
                 </div>
               </div>
 
@@ -140,7 +188,9 @@ const Profile: React.FC<ProfileProps> = ({
                   </p>
                   <p className="text-xl font-black text-gray-900">
                     {user.currentWeight}{" "}
-                    <span className="text-sm font-normal text-gray-400">kg</span>
+                    <span className="text-sm font-normal text-gray-400">
+                      kg
+                    </span>
                   </p>
                 </div>
                 <div className="bg-white p-6 rounded-[25px] border border-gray-100 shadow-lg flex flex-col items-center text-center lg:bg-slate-50 lg:border-slate-100 lg:shadow-none lg:p-5">
