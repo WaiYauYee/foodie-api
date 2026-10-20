@@ -64,7 +64,7 @@ A preview of MakanFit's user interface, featuring a clean emerald-green design a
 <img width="1920" height="1080" alt="makanfit_frontend_emerald" src="https://github.com/user-attachments/assets/b3f0ee56-2b78-4393-ae28-28c185ddcac3" />
 
 ### 📱 Desktop View
-<img width="1920" height="1080" alt="makanfit_desktop_emerald" src="https://github.com/user-attachments/assets/1a121779-f015-4af2-b9b4-8e7b535f6556" />
+<img width="1920" height="1080" alt="makanfit_desktop_emerald (1)" src="https://github.com/user-attachments/assets/f6e1fb63-6a70-4175-909a-3fa1f8cedff2" />
 
 ## 🏗️ Architecture
 ### 🔌 API Endpoints Architecture
