@@ -762,14 +762,14 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
       </div>
 
       {/* Footer Save Button */}
-      <div className="p-6 pb-8 bg-[#F8FAFC] border-t border-gray-50">
+      {/* <div className="p-6 pb-8 bg-[#F8FAFC] border-t border-gray-50">
         <button
           onClick={onBack}
           className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-[32px] shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-[0.2em] text-xs"
         >
           Save
         </button>
-      </div>
+      </div> */}
 
       {activeOverlay === "waterTarget" && <CustomWaterOverlay />}
       {/* Selection Overlays */}
