@@ -53,6 +53,8 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
     (user.targetWater ?? 2000).toString(),
   );
 
+  const [showRecalculateModal, setShowRecalculateModal] = useState(false);
+
   const handleGoalChangeWithReminder = (
     update: Partial<Users>,
     type: string,
@@ -364,7 +366,7 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
             </button>
           </div>
 
-          <div className="py-20 flex flex-col items-center justify-center text-center space-y-4 px-10">
+          <div className="py-10 flex flex-col items-center justify-center text-center space-y-4 px-10">
             <h3 className="text-gray-400 font-black uppercase tracking-widest text-[11px]">
               Calorie goal
             </h3>
@@ -398,7 +400,19 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
             </p>
           </div>
 
-          <div className="p-8 pb-12">
+          <div className="p-8 pb-12 space-y-4">
+            {/* Recalculate calorie goals */}
+            <button
+              type="button"
+              onClick={() => {
+                setActiveOverlay(null);
+                setShowRecalculateModal(true);
+              }}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-emerald-100 text-emerald-600 font-bold text-sm hover:bg-emerald-50 transition-colors"
+            >
+              <Zap size={16} />
+              Recalculate calorie goals
+            </button>
             <button
               onClick={handleConfirmCustomCalorie}
               className="w-full bg-[#1A2A33] text-white font-black py-6 rounded-[32px] shadow-2xl active:scale-95 transition-all uppercase tracking-[0.2em] text-sm"
@@ -659,6 +673,7 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
           value: `${user.targetCalories} kcal (${user.goalOrigin || "Standard"})`,
           options: GOAL_ORIGINS,
           readOnly: false,
+          showRecalculate: true,
         },
         {
           id: "macroTarget",
@@ -723,7 +738,8 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
       <div className="flex-1 overflow-y-auto pb-10">
         <div className="px-8 py-6">
           <p className="text-gray-400 font-semibold max-w-xs lg:max-w-none">
-            Define your destination. We'll help you find the best path to get there.
+            Define your destination. We'll help you find the best path to get
+            there.
           </p>
         </div>
 
@@ -872,6 +888,46 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
             >
               Keep Existing Target
             </button>
+          </div>
+        </div>
+      )}
+
+      {showRecalculateModal && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+              <Zap size={28} />
+            </div>
+
+            <h2 className="text-xl font-black text-gray-900 text-center">
+              Recalculate Calorie Goal?
+            </h2>
+
+            <p className="mt-3 text-sm leading-6 text-gray-400 text-center font-bold mb-8 leading-relaxed">
+              Would you like to recalculate your calorie target based on your
+              current updates made? Your existing target may change.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowRecalculateModal(false);
+                  // TODO: Recalculate and save the new targets here.
+                }}
+                className="w-full rounded-2xl bg-[#1A2A33] px-5 py-3 font-bold text-white transition hover:bg-emerald-700"
+              >
+                Yes, Recalculate
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowRecalculateModal(false)}
+                className="w-full rounded-2xl bg-gray-100 px-5 py-3 font-bold text-gray-600 transition hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
