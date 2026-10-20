@@ -664,10 +664,7 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
           id: "macroTarget",
           icon: PieChart,
           label: "Carbs, protein, fat, and fiber goals",
-          value:
-            user.macroGoalOrigin === "custom"
-              ? `${user.targetCarbs}c ${user.targetProtein}p ${user.targetFat}f ${user.targetFiber}fb`
-              : "Standard",
+          value: `Carbs ${user.targetCarbs}g · Protein ${user.targetProtein}g · Fat ${user.targetFat}g · Fiber ${user.targetFiber}g (${user.macroGoalOrigin || "Standard"})`,
           options: MACRO_ORIGINS,
           readOnly: false,
         },
@@ -725,9 +722,8 @@ const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
 
       <div className="flex-1 overflow-y-auto pb-10">
         <div className="px-8 py-6">
-          <p className="text-gray-400 font-semibold max-w-xs">
-            Define your destination. We'll help you find the best path to get
-            there.
+          <p className="text-gray-400 font-semibold max-w-xs lg:max-w-none">
+            Define your destination. We'll help you find the best path to get there.
           </p>
         </div>
 
