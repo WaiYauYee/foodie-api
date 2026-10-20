@@ -450,6 +450,7 @@ const App: React.FC = () => {
 
   // frontend field -> backend goal field
   const GOAL_MAP: Record<string, string> = {
+    startWeight: "startWeightKg",
     goalWeight: "goalWeightKg",
     activityLevel: "activityLevel",
     dietaryGoal: "dietaryGoal",
