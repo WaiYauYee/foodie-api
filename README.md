@@ -48,12 +48,12 @@ The system provides three main capabilities:
 - 🇲🇾 **Malaysian Food Recognition** – Classifies food images across 120 Malaysian food categories.
 - 📸 **AI Food Scanner** – Analyses food images to identify ingredients and estimate calories and macronutrients.
 - 🧩 **Ingredient Segmentation** – Uses Grounding DINO and SAM to generate ingredient-level masks.
-- 📊 **Food Diary & Nutrition Tracking** – Logs meals and tracks daily calorie and macronutrient intake against personalised goals.
-- 🔍 **Food Search & Logging** – Supports food search and meal logging for nutrition tracking.
+- 📊 **Food Diary & Nutrition Tracking** – Logs meals and tracks daily calorie and macronutrient intake against personalised goals. (IN PROGRESS...)
+- 🔍 **Food Search & Logging** – Supports food search and meal logging for nutrition tracking. (IN PROGRESS...)
 - 🎙️ **Voice Food Logging** – Enables hands-free meal logging through voice input and keyword detection to identify food items.
-- 🐣 **Virtual Food Pal** – Features a virtual companion with friendship levels, XP, and customisable accessories.
-- 🪙 **Rewards & Gamification** – Earns MakanCoins through activities and tasks to unlock companion accessories and backgrounds.
-- 🔔 **Notifications & Reminders** – Helps users stay on track with food logging and wellness goals.
+- 🐣 **Virtual Food Pal** – Features a virtual companion with friendship levels, XP, and customisable accessories. (IN PROGRESS...)
+- 🪙 **Rewards & Gamification** – Earns MakanCoins through activities and tasks to unlock companion accessories and backgrounds. (IN PROGRESS...)
+- 🔔 **Notifications & Reminders** – Helps users stay on track with food logging and wellness goals. (IN PROGRESS...)
 - 👤 **Personalised User Profile** – Manages user preferences, dietary settings, and nutrition goals.
 - 🔐 **Authentication & Password Recovery** – Supports account registration, login, and email-based password reset.
 
