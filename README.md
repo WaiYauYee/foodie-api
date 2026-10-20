@@ -239,7 +239,7 @@ MakanFit exposes its main image-analysis capabilities through RESTful endpoints.
 | Deep Learning | PyTorch |
 | Computer Vision | Grounding DINO, Segment Anything Model (SAM), OpenCV, Pillow |
 | HTTP Communication | Axios |
-| Nutritional Data | MyFCD, SG FoodID |
+| Nutritional Data | MyFCD, SG FoodID, External References (Fallback) |
 | Ingredient Matching | Text Embeddings, Semantic Similarity |
 
 ## 📂 Project Structure
@@ -393,7 +393,7 @@ npm run dev
 
 
 4. ⚡ **Performance**
-- Segmentation inference on CPU (~80 seconds) too slow for real-time use
+- Segmentation inference on CPU can be computationally intensive, limiting suitability for real-time applications
 - No batch processing or caching mechanisms
 - Single-image input constraint
 
