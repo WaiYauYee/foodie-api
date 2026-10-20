@@ -57,6 +57,15 @@ The system provides three main capabilities:
 - 👤 **Personalised User Profile** – Manages user preferences, dietary settings, and nutrition goals.
 - 🔐 **Authentication & Password Recovery** – Supports account registration, login, and email-based password reset.
 
+## 🖥️ Frontend
+A preview of MakanFit's user interface, featuring a clean emerald-green design and an intuitive, responsive layout for both laptop and mobile view.
+
+### 📱 Mobile View
+<img width="1920" height="1080" alt="makanfit_frontend_emerald" src="https://github.com/user-attachments/assets/b3f0ee56-2b78-4393-ae28-28c185ddcac3" />
+
+### 📱 Desktop View
+<img width="1920" height="1080" alt="makanfit_desktop_warm" src="https://github.com/user-attachments/assets/4653c8b7-781c-469c-8fb0-74ec7e97c280" />
+
 ## 🏗️ Architecture
 ### 🔌 API Endpoints Architecture
 MakanFit separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
