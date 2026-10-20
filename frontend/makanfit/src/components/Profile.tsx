@@ -198,7 +198,9 @@ const Profile: React.FC<ProfileProps> = ({
                     Goal
                   </p>
                   <p className="text-xl font-black text-gray-900 capitalize">
-                    {user.dietaryGoal}
+                    <span className="capitalize">
+                      {user.dietaryGoal?.replace(/_/g, " ")}
+                    </span>
                   </p>
                 </div>
               </div>
