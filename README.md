@@ -276,14 +276,18 @@ foodie-api/
 │   ├── package.json
 │   └── server.js                 # Express server entry point
 │
+├── docs/                         
+│   └── DATABASE.md               # Store database table documentation
+│
 ├── frontend/                     # Frontend workspace
 │   └── makanfit/                 # React + TypeScript application
 │       ├── public/
 │       ├── src/                  # Application source code
 │           ├── assets/           # Images, icons, and other assets
-│           ├── components/
+│           ├── components/       # Reusable UI components
 │           ├── data/             # Static data and constants
 │           ├── hooks/            # Custom React hooks
+│           ├── pages/            # Full application screens
 │           ├── services/         # API calls and service logic
 │           ├── styles/           # Shared styles
 │           ├── types/            # TypeScript type definitions

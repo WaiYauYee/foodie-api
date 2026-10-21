@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { Camera, Image as ImageIcon, X } from "lucide-react";
-import MealCategoryIcon from "./MealCategoryIcon";
+import MealCategoryIcon from "../components/icons/MealCategoryIcon";
 
 interface CameraScannerProps {
   category: string;

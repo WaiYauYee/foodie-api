@@ -1,5 +1,5 @@
 import React from 'react';
-import { MealType } from '../types/types';
+import { MealType } from '../../types/types';
 
 interface MealCategoryIconProps {
   type: MealType | string;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, Sparkles, ChevronLeft } from "lucide-react";
-// import MakanFitAvatar from './MakanFitAvatar';
+// import MakanFitAvatar from '../components/MakanFitAvatar';
 import {
   login,
   requestPasswordReset,
@@ -10,7 +10,7 @@ import {
 import OTPInput from "./OTPInput";
 import { FaCheck } from "react-icons/fa";
 // import { FcGoogle } from "react-icons/fc";
-import StoryCategoryIcon from "./StoryCategoryIcon";
+import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 
 interface LoginProps {
   onLogin: () => void;

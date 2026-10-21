@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, CheckCircle2 } from "lucide-react";
 import logoAvatar from "../assets/logoAvatar.jpeg";
-import StoryCategoryIcon from "./StoryCategoryIcon";
+import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 
 interface WelcomeStoryboardProps {
   onStartOnboarding: () => void;

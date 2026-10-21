@@ -20,14 +20,14 @@ import {
   Palmtree,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import Mascot, { MascotMoodState } from "./Mascot";
+import Mascot, { MascotMoodState } from "../components/mascot/Mascot";
 import { Challenge, MealEntry, OutfitItem, User } from "../types/types";
 import { calculateStreak } from "../utils/streak";
 import PalBackground, {
   BackgroundTheme,
   BACKGROUND_OPTIONS,
-} from "./PalBackground";
-import StreakModal from "./StreakModal";
+} from "../components/visuals/PalBackground";
+import StreakModal from "../components/modals/StreakModal";
 import { SHOP_ITEMS, ITEM_VIEWBOX } from "../data/shopItems";
 
 interface PalProps {

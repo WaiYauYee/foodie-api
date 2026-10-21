@@ -5,7 +5,7 @@ import {
   Check, ArrowLeft, RefreshCw, AlertCircle, 
   Smile, ThumbsUp, Flame, UtensilsCrossed 
 } from 'lucide-react';
-import MakanFitAvatar from './MakanFitAvatar';
+import MakanFitAvatar from '../components/avatars/MakanFitAvatar';
 
 interface AnalysisResult {
   dishName: string;

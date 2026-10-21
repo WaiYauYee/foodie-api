@@ -7,10 +7,10 @@ import {
   User,
   CheckCircle2,
 } from "lucide-react";
-import Mascot from "./Mascot";
+import Mascot from "../components/mascot/Mascot";
 import { signUp } from "../services/authService";
 import { FaCheck } from "react-icons/fa";
-import StoryCategoryIcon from "./StoryCategoryIcon";
+import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 
 interface SignUpProps {
   onSignUp: () => void;

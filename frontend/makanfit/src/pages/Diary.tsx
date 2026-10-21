@@ -1,4 +1,4 @@
-//frontend/makanfit/src/components/Diary.tsx
+//frontend/makanfit/src/pages/Diary.tsx
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import { MealType, Food, User, MealEntry } from "../types/types";
 import Calendar from "react-calendar";
@@ -35,16 +35,16 @@ import {
 } from "lucide-react";
 // import Fuse from 'fuse.js';
 import CameraScanner from "./CameraScanner";
-import MealCategoryIcon from "./MealCategoryIcon";
+import MealCategoryIcon from "../components/icons/MealCategoryIcon";
 import { segmentFoodImage } from "../services/foodSegmentationService";
 import { classifyFoodImage } from "../services/foodClassificationService";
 import {
   CalorieEstimationResponse,
   getCaloriesBySegmentation,
 } from "../services/foodCalorieEstimation";
-import VoiceInputDialog from "./VoiceInputDialog";
+import VoiceInputDialog from "../components/dialogs/VoiceInputDialog";
 import { SEARCHABLE_FOODS } from "../data/foodDatabase";
-import StoryCategoryIcon from "./StoryCategoryIcon";
+import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 
 interface DiaryProps {
   meals: MealEntry[];

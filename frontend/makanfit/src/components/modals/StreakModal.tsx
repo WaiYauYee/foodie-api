@@ -11,13 +11,13 @@ import {
   AlertCircle,
   Trophy,
 } from "lucide-react";
-import { MealEntry } from "../types/types";
+import { MealEntry } from "../../types/types";
 import {
   calculateStreak,
   getStreakHistory7Days,
   STREAK_MILESTONES,
   StreakMilestone,
-} from "../utils/streak";
+} from "../../utils/streak";
 
 interface StreakModalProps {
   isOpen: boolean;

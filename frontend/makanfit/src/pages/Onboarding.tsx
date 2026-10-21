@@ -10,7 +10,7 @@ import {
   Check,
   CalendarCheck,
 } from "lucide-react";
-import StoryCategoryIcon from "./StoryCategoryIcon";
+import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import { motion } from "motion/react";
 
 interface OnboardingProps {

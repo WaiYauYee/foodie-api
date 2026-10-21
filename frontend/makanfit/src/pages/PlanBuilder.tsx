@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { OnboardingData, User } from '../types/types';
 import { calculateNutritionPlan } from '../utils/nutritionCalculator';
-import StoryCategoryIcon from './StoryCategoryIcon';
+import StoryCategoryIcon from '../components/icons/StoryCategoryIcon';
 
 interface PlanBuilderProps {
   onboardingData: OnboardingData;

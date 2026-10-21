@@ -9,18 +9,18 @@ import {
   MealType,
   CompleteOnboardingData,
 } from "./types/types";
-import Dashboard from "./components/Dashboard";
-import Diary from "./components/Diary";
-import Profile from "./components/Profile";
-import PersonalInfo from "./components/PersonalInfo";
-import ChangePassword from "./components/ChangePassword";
-import Goal from "./components/Goal";
-import PrivacyPolicy from "./components/PrivacyPolicy";
-import TermOfService from "./components/TermOfService";
-import AddWeight from "./components/AddWeight";
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-import Onboarding from "./components/Onboarding";
+import Dashboard from "./pages/Dashboard";
+import Diary from "./pages/Diary";
+import Profile from "./pages/Profile";
+import PersonalInfo from "./pages/PersonalInfo";
+import ChangePassword from "./pages/ChangePassword";
+import Goal from "./pages/Goal";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermOfService from "./pages/TermOfService";
+import AddWeight from "./pages/AddWeight";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import Onboarding from "./pages/Onboarding";
 import {
   Flame,
   Heart,
@@ -28,13 +28,13 @@ import {
   User as UserIcon,
   Utensils,
 } from "lucide-react";
-import AccountSetting from "./components/AccountSetting";
-import NotificationSettings from "./components/NotificationSettings";
-import Pal from "./components/Pal";
-import StreakModal from "./components/StreakModal";
+import AccountSetting from "./pages/AccountSetting";
+import NotificationSettings from "./pages/NotificationSettings";
+import Pal from "./pages/Pal";
+import StreakModal from "./components/modals/StreakModal";
 import { calculateStreak } from "./utils/streak";
-import WelcomeStoryboard from "./components/WelcomeStoryboard";
-import PlanBuilder from "./components/PlanBuilder";
+import WelcomeStoryboard from "./pages/WelcomeStoryboard";
+import PlanBuilder from "./pages/PlanBuilder";
 import { OnboardingData } from "./types/types";
 import {
   completeOnboarding,

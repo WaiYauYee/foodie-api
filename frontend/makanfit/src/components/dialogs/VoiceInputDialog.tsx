@@ -9,11 +9,11 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
-import { MealType, Food, VoiceDetectionResult } from "../types/types";
-import { useVoiceRecognition } from "../hooks/useVoiceRecognition";
-import { detectVoiceKeywords } from "../services/voiceKeywordDetector";
-import { SEARCHABLE_FOODS } from "../data/foodDatabase";
-import MealCategoryIcon from "./MealCategoryIcon";
+import { MealType, Food, VoiceDetectionResult } from "../../types/types";
+import { useVoiceRecognition } from "../../hooks/useVoiceRecognition";
+import { detectVoiceKeywords } from "../../services/voiceKeywordDetector";
+import { SEARCHABLE_FOODS } from "../../data/foodDatabase";
+import MealCategoryIcon from "../icons/MealCategoryIcon";
 import confetti from "canvas-confetti";
 
 interface VoiceInputDialogProps {
