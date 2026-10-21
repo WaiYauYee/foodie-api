@@ -80,6 +80,8 @@ Conventions
 
 <img width="4267" height="2836" alt="test" src="https://github.com/user-attachments/assets/7de4fa46-54f7-42e6-af57-2e339bec1444" />
 
+For the database table descriptions, see the [database documentation](docs/DATABASE.md).
+
 ## 🏗️ Architecture
 ### 🔌 API Endpoints Architecture
 MakanFit separates the application layer from the machine-learning layer to make the system easier to maintain and extend.
