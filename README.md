@@ -70,14 +70,6 @@ A preview of MakanFit's user interface, featuring a clean emerald-green design a
 
 PostgreSQL database schema for MakanFit, a food-logging and nutrition-tracking app with AI photo analysis and a gamified virtual pal (Lemmy).
 
-Conventions
-- snake_case everywhere; the API layer maps to camelCase TypeScript types.
-- uuid primary keys for user data.
-- All timestamps are timestamptz (UTC). local_date columns hold the user's calendar day so streaks and daily totals survive timezone changes.
-- Nutrients are stored per 100 g (or 100 ml). Per serving = value * serving_size / 100.
-- Coins only change through coin_transactions.
-- NN = NOT NULL, PK = primary key, FK = foreign key, UQ = unique.
-
 <img width="4267" height="2836" alt="test" src="https://github.com/user-attachments/assets/7de4fa46-54f7-42e6-af57-2e339bec1444" />
 
 For the database table descriptions, see the [database documentation](docs/DATABASE.md).
