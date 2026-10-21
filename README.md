@@ -285,9 +285,11 @@ foodie-api/
 │       ├── src/                  # Application source code
 │           ├── assets/           # Images, icons, and other assets
 │           ├── components/       # Reusable UI components
+│           ├── contexts/         # Shared application data
 │           ├── data/             # Static data and constants
 │           ├── hooks/            # Custom React hooks
 │           ├── pages/            # Full application screens
+│           ├── routes/           # Navigation and access control
 │           ├── services/         # API calls and service logic
 │           ├── styles/           # Shared styles
 │           ├── types/            # TypeScript type definitions
