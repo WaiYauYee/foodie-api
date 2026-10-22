@@ -856,8 +856,8 @@ export const Pal: React.FC<PalProps> = ({
         "Hooaam... Lemmy is running on empty! Time for another meal to keep our energy burning! 🥗";
       needsFood = true;
     } else if (
-      calorieRatio < 0.35 ||
-      (hoursSinceLastMeal > 3.5 && calorieRatio < 0.65)
+      calorieRatio < 0.5 ||
+      (hoursSinceLastMeal > 3.5 && calorieRatio < 0.75)
     ) {
       // Hungry
       moodState = "hungry";
@@ -1349,6 +1349,18 @@ export const Pal: React.FC<PalProps> = ({
                 />
               </div>
 
+              {/* Mood status badge */}
+              <div className="z-10 mt-1 flex flex-col items-center gap-1">
+                <span
+                  className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${palStatus.statusBadgeColor}`}
+                >
+                  {palStatus.statusBadge}
+                </span>
+                <span className="text-[11px] font-semibold text-slate-600 bg-white/70 px-2 py-0.5 rounded-full">
+                  {palStatus.statusSubtitle}
+                </span>
+              </div>
+
               {/* Quick Scenery Theme Bar: scrolls on mobile, wraps on laptop so every scene is visible */}
               <div className="w-full flex items-center justify-center gap-1 mt-1 z-10">
                 <div className="flex items-center gap-1 bg-white/90 backdrop-blur-md p-1 rounded-2xl border border-white shadow-xs overflow-x-auto [scrollbar-width:none] lg:flex-wrap lg:justify-center lg:overflow-visible">
@@ -1436,7 +1448,7 @@ export const Pal: React.FC<PalProps> = ({
         </div>
 
         {/* Missions (modals live outside this block) */}
-        <div className="px-5 space-y-4 max-w-md mx-auto lg:max-w-none lg:mx-0 lg:px-0 lg:col-span-5 lg:bg-white/60 lg:border lg:border-white lg:rounded-[32px] lg:shadow-xs lg:p-6">
+        <div className="px-5 space-y-4 max-w-md mx-auto lg:max-w-none lg:mx-0 lg:px-0 lg:col-span-5 lg:rounded-[32px] lg:shadow-xs lg:p-6">
           <MissionSection
             title="Daily Missions"
             quests={challenges}
