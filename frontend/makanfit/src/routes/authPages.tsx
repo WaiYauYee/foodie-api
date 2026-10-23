@@ -4,24 +4,8 @@ import React, { lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const Login = lazy(() => import("../pages/Login"));
 const SignUp = lazy(() => import("../pages/SignUp"));
 const TermOfService = lazy(() => import("../pages/TermOfService"));
-
-export const LoginRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { login } = useAuth();
-  return (
-    <Login
-      onLogin={async () => {
-        await login();
-        navigate("/", { replace: true });
-      }}
-      onNavigateToSignUp={() => navigate("/signup")}
-      onBackToWelcome={() => navigate("/welcome")}
-    />
-  );
-};
 
 export const SignUpRoute: React.FC = () => {
   const navigate = useNavigate();

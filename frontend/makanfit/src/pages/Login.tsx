@@ -11,20 +11,15 @@ import OTPInput from "./OTPInput";
 import { FaCheck } from "react-icons/fa";
 // import { FcGoogle } from "react-icons/fc";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
-
-interface LoginProps {
-  onLogin: () => void;
-  onNavigateToSignUp: () => void;
-  onBackToWelcome?: () => void;
-}
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 type LoginView = "login" | "forgot" | "otp" | "reset";
 
-const Login: React.FC<LoginProps> = ({
-  onLogin,
-  onNavigateToSignUp,
-  onBackToWelcome,
-}) => {
+const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const { login: startSession } = useAuth();
+
   const [view, setView] = useState<LoginView>("login");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -65,8 +60,9 @@ const Login: React.FC<LoginProps> = ({
       const result = await login(email, password);
 
       if (result.success && result.token) {
-        // Login successful → user and token are stored in localStorage
-        onLogin(); // probably navigates to onboarding
+        // API stored user + token in localStorage; sync the context, then enter the app
++        await startSession();
++        navigate("/", { replace: true });
       } else {
         setError(result.message || "Invalid email or password");
       }
@@ -253,10 +249,10 @@ const Login: React.FC<LoginProps> = ({
       {/* Right Pane - Form (Mobile gets the full green background here) */}
       <div className="flex-1 flex items-center justify-center p-6 md:p-12 bg-gradient-to-br from-[#10B981] md:from-transparent via-[#059669] md:via-transparent to-[#064E3B] md:to-transparent">
         <div className="w-full max-w-md bg-white rounded-[40px] md:rounded-none shadow-2xl md:shadow-none p-8 md:p-0 overflow-hidden relative">
-          {onBackToWelcome && view === "login" && (
+          {view === "login" && (
             <button
               type="button"
-              onClick={onBackToWelcome}
+              onClick={() => navigate("/welcome")}
               className="flex items-center space-x-1.5 text-sm font-bold text-slate-400 hover:text-emerald-600 mb-6 transition-colors cursor-pointer"
             >
               <ChevronLeft size={20} />
@@ -444,7 +440,7 @@ const Login: React.FC<LoginProps> = ({
               <p className="mt-10 text-center text-gray-400 font-medium">
                 Don't have an account?{" "}
                 <button
-                  onClick={onNavigateToSignUp}
+                  onClick={() => navigate("/signup")}
                   className="text-emerald-600 font-black hover:underline"
                 >
                   Sign Up
