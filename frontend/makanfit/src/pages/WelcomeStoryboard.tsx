@@ -3,12 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, CheckCircle2 } from "lucide-react";
 import logoAvatar from "../assets/logoAvatar.jpeg";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
-
-interface WelcomeStoryboardProps {
-  onStartOnboarding: () => void;
-  onNavigateToLogin: () => void;
-  onNavigateToSignUp: () => void;
-}
+import { useNavigate } from "react-router-dom";
 
 interface StorySlide {
   id: number;
@@ -65,10 +60,11 @@ const STORY_SLIDES: StorySlide[] = [
   },
 ];
 
-const WelcomeStoryboard: React.FC<WelcomeStoryboardProps> = ({
-  onStartOnboarding,
-  onNavigateToLogin,
-}) => {
+const WelcomeStoryboard: React.FC = () => {
+  const navigate = useNavigate();
+  const onStartOnboarding = () => navigate("/onboarding");
+  const onNavigateToLogin = () => navigate("/login");
+
   const [mode, setMode] = useState<"splash" | "storyboard">("splash");
   const [slideIndex, setSlideIndex] = useState(0);
 

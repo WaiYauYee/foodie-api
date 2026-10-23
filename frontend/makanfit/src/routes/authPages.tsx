@@ -4,23 +4,11 @@ import React, { lazy } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const WelcomeStoryboard = lazy(() => import("../pages/WelcomeStoryboard"));
 const Onboarding = lazy(() => import("../pages/Onboarding"));
 const PlanBuilder = lazy(() => import("../pages/PlanBuilder"));
 const Login = lazy(() => import("../pages/Login"));
 const SignUp = lazy(() => import("../pages/SignUp"));
 const TermOfService = lazy(() => import("../pages/TermOfService"));
-
-export const WelcomeRoute: React.FC = () => {
-  const navigate = useNavigate();
-  return (
-    <WelcomeStoryboard
-      onStartOnboarding={() => navigate("/onboarding")}
-      onNavigateToSignUp={() => navigate("/signup")}
-      onNavigateToLogin={() => navigate("/login")}
-    />
-  );
-};
 
 export const OnboardingRoute: React.FC = () => {
   const navigate = useNavigate();

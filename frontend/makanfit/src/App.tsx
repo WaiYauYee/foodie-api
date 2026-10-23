@@ -7,7 +7,6 @@ import { WeightProvider } from "./contexts/WeightContext";
 import { GuestRoute, ProtectedRoute } from "./routes/guards";
 import AppLayout from "./layouts/AppLayout";
 import {
-  WelcomeRoute,
   OnboardingRoute,
   PlanBuilderRoute,
   LoginRoute,
@@ -26,6 +25,7 @@ const AddWeightPage = lazy(() => import("./pages/AddWeight"));
 const ChangePasswordPage = lazy(() => import("./pages/ChangePassword"));
 const NotificationsPage = lazy(() => import("./pages/NotificationSettings"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPolicy"));
+const WelcomePage = lazy(() => import("./pages/WelcomeStoryboard"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -35,7 +35,7 @@ const App: React.FC = () => (
           <Routes>
             {/* Logged-out only */}
             <Route element={<GuestRoute />}>
-              <Route path="/welcome" element={<WelcomeRoute />} />
+              <Route path="/welcome" element={<WelcomePage />} />
               <Route path="/login" element={<LoginRoute />} />
               <Route path="/signup" element={<SignUpRoute />} />
             </Route>
