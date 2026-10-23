@@ -4,25 +4,10 @@ import React, { lazy } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const Onboarding = lazy(() => import("../pages/Onboarding"));
 const PlanBuilder = lazy(() => import("../pages/PlanBuilder"));
 const Login = lazy(() => import("../pages/Login"));
 const SignUp = lazy(() => import("../pages/SignUp"));
 const TermOfService = lazy(() => import("../pages/TermOfService"));
-
-export const OnboardingRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated, setPendingOnboardingData } = useAuth();
-  return (
-    <Onboarding
-      onComplete={(data) => {
-        setPendingOnboardingData(data);
-        navigate("/plan");
-      }}
-      onBack={isAuthenticated ? undefined : () => navigate("/welcome")}
-    />
-  );
-};
 
 export const PlanBuilderRoute: React.FC = () => {
   const navigate = useNavigate();

@@ -12,13 +12,21 @@ import {
 } from "lucide-react";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-interface OnboardingProps {
-  onComplete: (data: CompleteOnboardingData) => void;
-  onBack?: () => void;
-}
+const Onboarding: React.FC = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, setPendingOnboardingData } = useAuth();
 
-const Onboarding: React.FC<OnboardingProps> = ({ onComplete, onBack }) => {
+  // Guests can go back to /welcome; logged-in users have nowhere to go back to.
+  const onBack = isAuthenticated ? undefined : () => navigate("/welcome");
+
+  const onComplete = (data: CompleteOnboardingData) => {
+    setPendingOnboardingData(data);
+    navigate("/plan");
+  };
+
   const [step, setStep] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
