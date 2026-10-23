@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { User } from "../types/types";
 import { ChevronLeft, Check, X, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-interface PersonalInfoProps {
-  user: User;
-  onBack: () => void;
-  onSave: (updatedUser: Partial<User>) => void;
-}
+const PersonalInfo: React.FC = () => {
+  const navigate = useNavigate();
+  const { user, updateUser } = useAuth();
+  const onBack = () => navigate("/profile");
 
-const PersonalInfo: React.FC<PersonalInfoProps> = ({
-  user,
-  onBack,
-  onSave,
-}) => {
   const [gender, setGender] = useState<"male" | "female">(user.gender);
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
@@ -26,7 +22,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
     null,
   );
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const updates: Partial<User> = {
       gender,
       firstName,
@@ -57,8 +53,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
 
     // No calorie-related changes: save normally.
     if (changedFields.length === 0) {
-      onSave(updates);
-      onBack();
+      if (await updateUser(updates)) onBack();
       return;
     }
 
@@ -260,13 +255,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
             </p>
 
             <button
-              onClick={() => {
-                if (pendingUpdate) {
-                  onSave(pendingUpdate);
-                  setShowGoalReminder(false);
-                  setPendingUpdate(null);
-                  onBack();
-                }
+              onClick={async () => {
+                if (!pendingUpdate) return;
+                const ok = await updateUser(pendingUpdate);
+                setShowGoalReminder(false);
+                setPendingUpdate(null);
+                if (ok) onBack();
               }}
               className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-[24px] shadow-xl active:scale-[0.95] transition-all uppercase text-xs tracking-[0.2em]"
             >

@@ -1,5 +1,5 @@
 // Composition root: providers + route table. No state, no business logic.
-import React, { Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { MealsProvider } from "./contexts/MealsContext";
@@ -20,7 +20,6 @@ import {
   DiaryRoute,
   PalRoute,
   ProfileRoute,
-  PersonalInfoRoute,
   AccountSettingRoute,
   ChangePasswordRoute,
   GoalRoute,
@@ -28,6 +27,7 @@ import {
   NotificationsRoute,
   AddWeightRoute,
 } from "./routes/appPages";
+const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -56,7 +56,7 @@ const App: React.FC = () => (
                 <Route path="/diary" element={<DiaryRoute />} />
                 <Route path="/pal" element={<PalRoute />} />
                 <Route path="/profile" element={<ProfileRoute />} />
-                <Route path="/profile/personal-info" element={<PersonalInfoRoute />} />
+                <Route path="/profile/personal-info" element={<PersonalInfoPage />} />
                 <Route path="/profile/account" element={<AccountSettingRoute />} />
                 <Route path="/profile/password" element={<ChangePasswordRoute />} />
                 <Route path="/profile/goal" element={<GoalRoute />} />

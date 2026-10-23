@@ -11,7 +11,6 @@ const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Diary = lazy(() => import("../pages/Diary"));
 const Pal = lazy(() => import("../pages/Pal"));
 const Profile = lazy(() => import("../pages/Profile"));
-const PersonalInfo = lazy(() => import("../pages/PersonalInfo"));
 const AccountSetting = lazy(() => import("../pages/AccountSetting"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword"));
 const Goal = lazy(() => import("../pages/Goal"));
@@ -115,15 +114,6 @@ export const ProfileRoute: React.FC = () => {
         navigate("/login", { replace: true });
       }}
     />
-  );
-};
-
-export const PersonalInfoRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const save = useSaveUser();
-  return (
-    <PersonalInfo user={user} onBack={() => navigate("/profile")} onSave={save} />
   );
 };
 
