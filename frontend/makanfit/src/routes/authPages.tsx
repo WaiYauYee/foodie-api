@@ -1,33 +1,12 @@
 // Thin adapters: pull data from contexts, pass the props your existing
 // logged-out components already expect.
 import React, { lazy } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const PlanBuilder = lazy(() => import("../pages/PlanBuilder"));
 const Login = lazy(() => import("../pages/Login"));
 const SignUp = lazy(() => import("../pages/SignUp"));
 const TermOfService = lazy(() => import("../pages/TermOfService"));
-
-export const PlanBuilderRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated, pendingOnboardingData, confirmPlan } = useAuth();
-
-  if (!pendingOnboardingData) return <Navigate to="/onboarding" replace />;
-
-  return (
-    <PlanBuilder
-      onboardingData={pendingOnboardingData}
-      isAuthenticated={isAuthenticated}
-      onBackToOnboarding={() => navigate("/onboarding")}
-      onConfirmPlan={async (planValues) => {
-        const result = await confirmPlan(planValues);
-        if (result === "completed") navigate("/", { replace: true });
-        if (result === "needs_signup") navigate("/signup");
-      }}
-    />
-  );
-};
 
 export const LoginRoute: React.FC = () => {
   const navigate = useNavigate();

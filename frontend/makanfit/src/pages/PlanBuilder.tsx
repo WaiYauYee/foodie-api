@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   CheckCircle2,
   Flame,
@@ -12,41 +12,50 @@ import {
   TrendingDown,
   TrendingUp,
   Scale,
-} from 'lucide-react';
-import { OnboardingData, User } from '../types/types';
-import { calculateNutritionPlan } from '../utils/nutritionCalculator';
-import StoryCategoryIcon from '../components/icons/StoryCategoryIcon';
-
-interface PlanBuilderProps {
-  onboardingData: OnboardingData;
-  onConfirmPlan: (planValues: Partial<User>) => void;
-  onBackToOnboarding?: () => void;
-  isAuthenticated?: boolean;
-}
+} from "lucide-react";
+import { OnboardingData } from "../types/types";
+import { calculateNutritionPlan } from "../utils/nutritionCalculator";
+import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
+import { useAuth } from "../contexts/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const BUILD_CHECKLIST = [
-  'Analyzing your body metrics & BMR...',
-  'Calibrating activity level & daily burn...',
-  'Balancing Malaysian Suku-Suku Separuh macros...',
-  'Setting daily fiber & hydration targets...',
-  'Finalizing your personal MakanFit blueprint...',
+  "Analyzing your body metrics & BMR...",
+  "Calibrating activity level & daily burn...",
+  "Balancing Malaysian Suku-Suku Separuh macros...",
+  "Setting daily fiber & hydration targets...",
+  "Finalizing your personal MakanFit blueprint...",
 ];
 
-const PlanBuilder: React.FC<PlanBuilderProps> = ({
+// Guard: no onboarding answers -> send the user back to onboarding.
+// Kept as a separate component so the hooks below never run with null data.
+const PlanBuilder: React.FC = () => {
+  const { pendingOnboardingData } = useAuth();
+  if (!pendingOnboardingData) return <Navigate to="/onboarding" replace />;
+  return <PlanBuilderContent onboardingData={pendingOnboardingData} />;
+};
+
+const PlanBuilderContent: React.FC<{ onboardingData: OnboardingData }> = ({
   onboardingData,
-  onConfirmPlan,
-  onBackToOnboarding,
-  isAuthenticated = false,
 }) => {
-  const [stage, setStage] = useState<'building' | 'reveal'>('building');
+  const navigate = useNavigate();
+  const { isAuthenticated, confirmPlan } = useAuth();
+  const onBackToOnboarding = () => navigate("/onboarding");
+
+  const [stage, setStage] = useState<"building" | "reveal">("building");
   const [progress, setProgress] = useState(0);
   const [activeCheckIndex, setActiveCheckIndex] = useState(0);
 
-  const calculated = useMemo(() => calculateNutritionPlan(onboardingData), [onboardingData]);
+  const calculated = useMemo(
+    () => calculateNutritionPlan(onboardingData),
+    [onboardingData],
+  );
 
   // Editable state on the Reveal screen so user can fine-tune if desired
   const [isEditingTargets, setIsEditingTargets] = useState(false);
-  const [customCalories, setCustomCalories] = useState(calculated.targetCalories);
+  const [customCalories, setCustomCalories] = useState(
+    calculated.targetCalories,
+  );
   const [customProtein, setCustomProtein] = useState(calculated.targetProtein);
   const [customCarbs, setCustomCarbs] = useState(calculated.targetCarbs);
   const [customFat, setCustomFat] = useState(calculated.targetFat);
@@ -64,7 +73,7 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
 
   // Animate the "Building a plan for you" progress from 0% -> 100%
   useEffect(() => {
-    if (stage !== 'building') return;
+    if (stage !== "building") return;
 
     const durationMs = 3400;
     const intervalMs = 40;
@@ -75,7 +84,7 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
         const next = Math.min(100, prev + step);
         const checkIdx = Math.min(
           BUILD_CHECKLIST.length - 1,
-          Math.floor((next / 100) * BUILD_CHECKLIST.length)
+          Math.floor((next / 100) * BUILD_CHECKLIST.length),
         );
         setActiveCheckIndex(checkIdx);
 
@@ -89,7 +98,7 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
     return () => clearInterval(timer);
   }, [stage]);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const isCustomized =
       customCalories !== calculated.targetCalories ||
       customProtein !== calculated.targetProtein ||
@@ -97,7 +106,7 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
       customFat !== calculated.targetFat ||
       customFiber !== calculated.targetFiber;
 
-    onConfirmPlan({
+    const result = await confirmPlan({
       targetCalories: customCalories,
       targetProtein: customProtein,
       targetCarbs: customCarbs,
@@ -107,9 +116,14 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
       goalOrigin: isCustomized ? 'custom' : 'standard',
       macroGoalOrigin: isCustomized ? 'custom' : 'standard',
     });
+
+    if (result === 'completed') navigate('/', { replace: true });
+    if (result === 'needs_signup') navigate('/signup');
   };
 
-  const weightDiff = Number((onboardingData.goalWeight - onboardingData.startWeight).toFixed(1));
+  const weightDiff = Number(
+    (onboardingData.goalWeight - onboardingData.startWeight).toFixed(1),
+  );
   const isWeightLoss = weightDiff < 0;
 
   return (
@@ -128,7 +142,7 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
 
           <div className="space-y-6 max-w-lg">
             <h2 className="text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight">
-              {stage === 'building' ? (
+              {stage === "building" ? (
                 <>
                   Crafting your <br />
                   <span className="text-emerald-200">custom plan.</span>
@@ -141,7 +155,9 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
               )}
             </h2>
             <p className="text-emerald-50/85 text-lg font-medium leading-relaxed">
-              Calculated using the scientific Mifflin-St Jeor equation and balanced for Malaysian meals so you never have to give up Nasi Lemak.
+              Calculated using the scientific Mifflin-St Jeor equation and
+              balanced for Malaysian meals so you never have to give up Nasi
+              Lemak.
             </p>
           </div>
         </div>
@@ -166,7 +182,7 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
       {/* Right Interactive Pane */}
       <div className="flex-1 flex flex-col justify-center min-h-screen bg-white relative">
         <AnimatePresence mode="wait">
-          {stage === 'building' ? (
+          {stage === "building" ? (
             /* ============================================================ */
             /* STAGE 1: BUILDING A PLAN FOR YOU                             */
             /* ============================================================ */
@@ -197,7 +213,8 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                     strokeWidth="10"
                     strokeDasharray={2 * Math.PI * 76}
                     strokeDashoffset={
-                      2 * Math.PI * 76 - (Math.min(100, progress) / 100) * (2 * Math.PI * 76)
+                      2 * Math.PI * 76 -
+                      (Math.min(100, progress) / 100) * (2 * Math.PI * 76)
                     }
                     strokeLinecap="round"
                     fill="transparent"
@@ -219,12 +236,14 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
 
               <div className="space-y-2 mb-8">
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                  {progress >= 100 ? 'Your plan is ready!' : 'Building a plan for you...'}
+                  {progress >= 100
+                    ? "Your plan is ready!"
+                    : "Building a plan for you..."}
                 </h2>
                 <p className="text-sm font-medium text-slate-400">
                   {progress >= 100
-                    ? 'All calculations complete. Tap Next to view your personalized targets.'
-                    : 'Tailoring your daily calories & macros to your body metrics'}
+                    ? "All calculations complete. Tap Next to view your personalized targets."
+                    : "Tailoring your daily calories & macros to your body metrics"}
                 </p>
               </div>
 
@@ -238,16 +257,16 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                     <div
                       key={idx}
                       className={`flex items-center space-x-3 transition-opacity duration-300 ${
-                        idx > activeCheckIndex ? 'opacity-35' : 'opacity-100'
+                        idx > activeCheckIndex ? "opacity-35" : "opacity-100"
                       }`}
                     >
                       <div
                         className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                           isDone
-                            ? 'bg-emerald-500 text-white'
+                            ? "bg-emerald-500 text-white"
                             : isCurrent
-                            ? 'border-2 border-emerald-500 bg-emerald-50'
-                            : 'border-2 border-slate-300 bg-white'
+                              ? "border-2 border-emerald-500 bg-emerald-50"
+                              : "border-2 border-slate-300 bg-white"
                         }`}
                       >
                         {isDone && <Check size={12} strokeWidth={3.5} />}
@@ -257,7 +276,9 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                       </div>
                       <span
                         className={`text-xs font-bold ${
-                          isDone || isCurrent ? 'text-slate-800' : 'text-slate-400'
+                          isDone || isCurrent
+                            ? "text-slate-800"
+                            : "text-slate-400"
                         }`}
                       >
                         {item}
@@ -282,14 +303,18 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                 <button
                   type="button"
                   disabled={progress < 100}
-                  onClick={() => setStage('reveal')}
+                  onClick={() => setStage("reveal")}
                   className={`flex-1 py-4 px-6 rounded-2xl font-black text-sm uppercase tracking-wider flex items-center justify-center space-x-2 transition-all ${
                     progress >= 100
-                      ? 'bg-[#1A2A33] hover:bg-black text-white shadow-xl active:scale-[0.98] cursor-pointer'
-                      : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                      ? "bg-[#1A2A33] hover:bg-black text-white shadow-xl active:scale-[0.98] cursor-pointer"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed"
                   }`}
                 >
-                  <span>{progress >= 100 ? 'Next' : `Calculating (${Math.round(progress)}%)`}</span>
+                  <span>
+                    {progress >= 100
+                      ? "Next"
+                      : `Calculating (${Math.round(progress)}%)`}
+                  </span>
                 </button>
               </div>
             </motion.div>
@@ -329,7 +354,7 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                   className="inline-flex items-center space-x-1 text-xs font-bold text-slate-500 hover:text-emerald-600 bg-slate-50 hover:bg-emerald-50 px-3 py-2 rounded-xl transition-colors cursor-pointer"
                 >
                   <Pencil size={13} />
-                  <span>{isEditingTargets ? 'Done' : 'Edit'}</span>
+                  <span>{isEditingTargets ? "Done" : "Edit"}</span>
                 </button>
               </div>
 
@@ -341,7 +366,8 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                     Your customized plan is ready!
                   </h1>
                   <p className="text-xs sm:text-sm font-semibold text-slate-400">
-                    Based on {onboardingData.heightCm} cm · {onboardingData.startWeight} kg ·{' '}
+                    Based on {onboardingData.heightCm} cm ·{" "}
+                    {onboardingData.startWeight} kg ·{" "}
                     {onboardingData.activityLevel}
                   </p>
                 </div>
@@ -359,11 +385,15 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                             type="number"
                             value={customCalories}
                             onChange={(e) =>
-                              setCustomCalories(Math.max(1000, parseInt(e.target.value) || 0))
+                              setCustomCalories(
+                                Math.max(1000, parseInt(e.target.value) || 0),
+                              )
                             }
                             className="w-28 bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-3xl font-black text-white outline-none focus:border-emerald-400 tabular-nums"
                           />
-                          <span className="text-sm font-bold text-slate-300">kcal / day</span>
+                          <span className="text-sm font-bold text-slate-300">
+                            kcal / day
+                          </span>
                         </div>
                       ) : (
                         <div className="flex items-baseline space-x-2">
@@ -376,12 +406,18 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                         </div>
                       )}
                       <p className="text-xs text-slate-300 font-medium pt-1">
-                        Goal: <strong className="text-white">{onboardingData.dietaryGoal}</strong>
+                        Goal:{" "}
+                        <strong className="text-white">
+                          {onboardingData.dietaryGoal}
+                        </strong>
                       </p>
                     </div>
 
                     <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex flex-col items-center justify-center shrink-0">
-                      <Flame className="text-emerald-400 fill-emerald-400" size={26} />
+                      <Flame
+                        className="text-emerald-400 fill-emerald-400"
+                        size={26}
+                      />
                       <span className="text-[9px] font-black uppercase tracking-wider text-emerald-300 mt-0.5">
                         TDEE {calculated.tdee}
                       </span>
@@ -428,40 +464,40 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                     {[
                       {
-                        label: 'Protein',
+                        label: "Protein",
                         value: customProtein,
                         setter: setCustomProtein,
-                        dotColor: 'bg-[#FF9999]',
-                        borderColor: 'border-rose-100',
-                        bgColor: 'bg-rose-50/40',
-                        sub: 'Muscle & repair',
+                        dotColor: "bg-[#FF9999]",
+                        borderColor: "border-rose-100",
+                        bgColor: "bg-rose-50/40",
+                        sub: "Muscle & repair",
                       },
                       {
-                        label: 'Carbs',
+                        label: "Carbs",
                         value: customCarbs,
                         setter: setCustomCarbs,
-                        dotColor: 'bg-[#99E0FF]',
-                        borderColor: 'border-sky-100',
-                        bgColor: 'bg-sky-50/40',
-                        sub: 'Daily energy',
+                        dotColor: "bg-[#99E0FF]",
+                        borderColor: "border-sky-100",
+                        bgColor: "bg-sky-50/40",
+                        sub: "Daily energy",
                       },
                       {
-                        label: 'Fats',
+                        label: "Fats",
                         value: customFat,
                         setter: setCustomFat,
-                        dotColor: 'bg-[#FFE066]',
-                        borderColor: 'border-amber-100',
-                        bgColor: 'bg-amber-50/40',
-                        sub: 'Hormone health',
+                        dotColor: "bg-[#FFE066]",
+                        borderColor: "border-amber-100",
+                        bgColor: "bg-amber-50/40",
+                        sub: "Hormone health",
                       },
                       {
-                        label: 'Fiber',
+                        label: "Fiber",
                         value: customFiber,
                         setter: setCustomFiber,
-                        dotColor: 'bg-[#D5B4B4]',
-                        borderColor: 'border-stone-200',
-                        bgColor: 'bg-stone-50/60',
-                        sub: 'Digestion',
+                        dotColor: "bg-[#D5B4B4]",
+                        borderColor: "border-stone-200",
+                        bgColor: "bg-stone-50/60",
+                        sub: "Digestion",
                       },
                     ].map((macro) => (
                       <div
@@ -469,8 +505,12 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                         className={`rounded-2xl p-3.5 border ${macro.borderColor} ${macro.bgColor} flex flex-col justify-between`}
                       >
                         <div className="flex items-center space-x-1.5">
-                          <span className={`w-2.5 h-2.5 rounded-full ${macro.dotColor}`} />
-                          <span className="text-xs font-black text-slate-700">{macro.label}</span>
+                          <span
+                            className={`w-2.5 h-2.5 rounded-full ${macro.dotColor}`}
+                          />
+                          <span className="text-xs font-black text-slate-700">
+                            {macro.label}
+                          </span>
                         </div>
 
                         <div className="my-2">
@@ -480,21 +520,29 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                                 type="number"
                                 value={macro.value}
                                 onChange={(e) =>
-                                  macro.setter(Math.max(0, parseInt(e.target.value) || 0))
+                                  macro.setter(
+                                    Math.max(0, parseInt(e.target.value) || 0),
+                                  )
                                 }
                                 className="w-16 bg-white border border-slate-200 rounded-lg px-2 py-1 text-lg font-black text-slate-900 outline-none focus:border-emerald-500 tabular-nums"
                               />
-                              <span className="text-xs font-bold text-slate-400">g</span>
+                              <span className="text-xs font-bold text-slate-400">
+                                g
+                              </span>
                             </div>
                           ) : (
                             <p className="text-2xl font-black text-slate-900 tabular-nums">
                               {macro.value}
-                              <span className="text-xs font-bold text-slate-400 ml-0.5">g</span>
+                              <span className="text-xs font-bold text-slate-400 ml-0.5">
+                                g
+                              </span>
                             </p>
                           )}
                         </div>
 
-                        <p className="text-[10px] font-semibold text-slate-400">{macro.sub}</p>
+                        <p className="text-[10px] font-semibold text-slate-400">
+                          {macro.sub}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -519,8 +567,8 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                       </p>
                       <p className="text-sm font-black text-slate-900 truncate">
                         {weightDiff === 0
-                          ? 'Maintain Current Weight'
-                          : `${weightDiff > 0 ? '+' : ''}${weightDiff} kg by ${calculated.targetDateLabel}`}
+                          ? "Maintain Current Weight"
+                          : `${weightDiff > 0 ? "+" : ""}${weightDiff} kg by ${calculated.targetDateLabel}`}
                       </p>
                       <p className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1 mt-0.5">
                         <Calendar size={11} />
@@ -534,14 +582,18 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                   {/* Hydration Target Card */}
                   <div className="bg-sky-50/60 rounded-2xl p-4 border border-sky-100 flex items-center space-x-3.5">
                     <div className="w-11 h-11 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center shrink-0">
-                      <Droplet size={20} className="fill-sky-400 text-sky-500" />
+                      <Droplet
+                        size={20}
+                        className="fill-sky-400 text-sky-500"
+                      />
                     </div>
                     <div>
                       <p className="text-[10px] font-black uppercase tracking-wider text-sky-600/80">
                         Daily Hydration
                       </p>
                       <p className="text-sm font-black text-slate-900 tabular-nums">
-                        {(customWater / 1000).toFixed(1)} Litres ({customWater} ml)
+                        {(customWater / 1000).toFixed(1)} Litres ({customWater}{" "}
+                        ml)
                       </p>
                       <p className="text-[11px] font-semibold text-slate-400 mt-0.5">
                         ~{Math.round(customWater / 250)} glasses of air kosong
@@ -560,7 +612,9 @@ const PlanBuilder: React.FC<PlanBuilderProps> = ({
                 >
                   <CheckCircle2 size={18} className="text-emerald-400" />
                   <span>
-                    {isAuthenticated ? 'Start My MakanFit Journey' : 'Save My Plan & Create Account'}
+                    {isAuthenticated
+                      ? "Start My MakanFit Journey"
+                      : "Save My Plan & Create Account"}
                   </span>
                   <ChevronRight size={18} strokeWidth={3} />
                 </button>
