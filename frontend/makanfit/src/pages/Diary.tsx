@@ -1,6 +1,6 @@
 //frontend/makanfit/src/pages/Diary.tsx
 import React, { useState, useRef, useMemo, useEffect } from "react";
-import { MealType, Food, User, MealEntry } from "../types/types";
+import { MealType, Food, MealEntry } from "../types/types";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/calendar-custom.css";
@@ -45,13 +45,8 @@ import {
 import VoiceInputDialog from "../components/dialogs/VoiceInputDialog";
 import { SEARCHABLE_FOODS } from "../data/foodDatabase";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
-
-interface DiaryProps {
-  meals: MealEntry[];
-  onAddMeal: (meal: Food, mealType: MealType) => void;
-  onDeleteMeal: (id: string) => void;
-  onUpdateMeal: (meal: MealEntry) => void;
-}
+import { useMeals } from "../contexts/MealsContext";
+import { useAuth } from "../contexts/AuthContext";
 
 // const FOOD_GROUPS = [
 //   { id: 'carbs', name: 'Carbs', icon: Rice, color: 'text-sky-400', bg: 'bg-sky-50', target: 7 },
@@ -161,12 +156,15 @@ const MacroRing: React.FC<MacroRingProps> = ({
   );
 };
 
-export const Diary: React.FC<DiaryProps> = ({
-  meals,
-  onAddMeal,
-  onDeleteMeal,
-  onUpdateMeal,
-}) => {
+export const Diary: React.FC = () => {
+  const {
+    meals,
+    addMeal: onAddMeal,
+    deleteMeal: onDeleteMeal,
+    updateMeal: onUpdateMeal,
+  } = useMeals();
+  const { user: userProfile } = useAuth();
+
   // Normalize initial date to midnight
   const [selectedDate, setSelectedDate] = useState(() => {
     const d = new Date();
@@ -197,7 +195,7 @@ export const Diary: React.FC<DiaryProps> = ({
   const [waterEntries, setWaterEntries] = useState<
     Record<string, WaterEntry[]>
   >({});
-  const WATER_GOAL_ML = 2000; // 2.0 L — could pull from userProfile later
+  const WATER_GOAL_ML = userProfile.targetWater ?? 2000; // 2.0 L for default water target daily
   const GLASS_SIZE_ML = 250; // used only to render the glass-fill visual
 
   const dateKey = selectedDate.toDateString();
@@ -482,39 +480,6 @@ export const Diary: React.FC<DiaryProps> = ({
     }
   }
 
-  const [userProfile] = useState<User>({
-    userId: "user-1",
-    email: "user@example.com",
-    firstName: "John",
-    lastName: "Doe",
-    passwordHash: "hashed_password_here", // example hash
-    gender: "male", // 'male' | 'female'
-    birthDate: "1990-01-01", // ISO date string
-    heightCm: 175,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    isActive: true,
-
-    // Profile fields
-    startWeight: 72.0, // starting weight in kg
-    currentWeight: 70.0, // current weight
-    goalWeight: 65.0, // target weight
-    activityLevel: "sedentary", // ActivityLevel type
-    dietaryGoal: "Gradual Lose Weight",
-    goalOrigin: "standard", // 'standard' | 'custom'
-    targetCalories: 2000,
-    targetProtein: 120,
-    targetCarbs: 250,
-    targetFat: 60,
-    targetFiber: 30,
-    macroGoalOrigin: "standard", // 'standard' | 'custom'
-    onboardingComplete: false,
-    triedOtherApps: false,
-    primaryGoal: "healthier", // PrimaryGoal type
-    dietType: "Classic",
-    targetWater: 1000,
-  });
-
   //   const fuse = new Fuse(SEARCHABLE_FOODS, {
   //   keys: ['name', 'brand'],
   //   threshold: 0.3
@@ -659,7 +624,7 @@ export const Diary: React.FC<DiaryProps> = ({
     );
   }, [todaysMeals]);
 
-  const targetCal = 1279;
+  const targetCal = userProfile.targetCalories;
   const remainingCal = Math.max(targetCal - totals.calories, 0);
 
   const currentNutrients = useMemo(() => {

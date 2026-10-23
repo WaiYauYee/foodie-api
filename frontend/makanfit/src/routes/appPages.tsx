@@ -7,7 +7,6 @@ import { useMeals } from "../contexts/MealsContext";
 import { useWeights } from "../contexts/WeightContext";
 import type { LayoutContext } from "../layouts/AppLayout";
 
-const Diary = lazy(() => import("../pages/Diary"));
 const Pal = lazy(() => import("../pages/Pal"));
 const Profile = lazy(() => import("../pages/Profile"));
 const AccountSetting = lazy(() => import("../pages/AccountSetting"));
@@ -28,18 +27,6 @@ export const AddWeightRoute: React.FC = () => {
       editingEntry={editingEntry}
       onBack={() => navigate("/")}
       onAdd={addWeight}
-    />
-  );
-};
-
-export const DiaryRoute: React.FC = () => {
-  const { meals, addMeal, deleteMeal, updateMeal } = useMeals();
-  return (
-    <Diary
-      meals={meals}
-      onAddMeal={addMeal}
-      onDeleteMeal={deleteMeal}
-      onUpdateMeal={updateMeal}
     />
   );
 };
