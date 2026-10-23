@@ -7,7 +7,6 @@ import { useMeals } from "../contexts/MealsContext";
 import { useWeights } from "../contexts/WeightContext";
 import type { LayoutContext } from "../layouts/AppLayout";
 
-const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Diary = lazy(() => import("../pages/Diary"));
 const Pal = lazy(() => import("../pages/Pal"));
 const Profile = lazy(() => import("../pages/Profile"));
@@ -16,22 +15,6 @@ const ChangePassword = lazy(() => import("../pages/ChangePassword"));
 const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const NotificationSettings = lazy(() => import("../pages/NotificationSettings"));
 const AddWeight = lazy(() => import("../pages/AddWeight"));
-
-export const DashboardRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { weightHistory } = useWeights();
-  return (
-    <Dashboard
-      user={user}
-      weightHistory={weightHistory}
-      onNavigateToAddWeight={() => navigate("/add-weight")}
-      onEditWeight={(entry: WeightEntry) =>
-        navigate("/add-weight", { state: { entry } })
-      }
-    />
-  );
-};
 
 export const AddWeightRoute: React.FC = () => {
   const navigate = useNavigate();

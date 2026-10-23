@@ -12,7 +12,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { User, WeightEntry } from "../types/types";
+import { WeightEntry } from "../types/types";
 import {
   Flame,
   ChevronRight,
@@ -24,13 +24,9 @@ import {
   Activity,
 } from "lucide-react";
 import { getDashboard, DashboardData } from "../services/dashboardService";
-
-interface DashboardProps {
-  user: User;
-  weightHistory: WeightEntry[];
-  onNavigateToAddWeight: () => void;
-  onEditWeight: (entry: WeightEntry) => void;
-}
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useWeights } from "../contexts/WeightContext";
 
 type TimeRange = 7 | 30 | 90;
 type TabType = "weight" | "nutrition";
@@ -48,12 +44,15 @@ const COLORS = {
 const CARD = "bg-white rounded-3xl p-6 lg:p-7 shadow-sm border border-gray-100";
 const CARD_TITLE = "text-slate-900 text-lg font-extrabold";
 
-const Dashboard: React.FC<DashboardProps> = ({
-  user,
-  weightHistory,
-  onNavigateToAddWeight,
-  onEditWeight,
-}) => {
+const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { weightHistory } = useWeights();
+
+  const onNavigateToAddWeight = () => navigate("/add-weight");
+  const onEditWeight = (entry: WeightEntry) =>
+    navigate("/add-weight", { state: { entry } });
+
   const [activeTab, setActiveTab] = useState<TabType>("weight");
   const [range, setRange] = useState<TimeRange>(7);
   const [view, setView] = useState<DashboardView>("main");

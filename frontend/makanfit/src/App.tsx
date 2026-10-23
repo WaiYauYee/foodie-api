@@ -16,7 +16,6 @@ import {
   PublicTermsRoute,
 } from "./routes/authPages";
 import {
-  DashboardRoute,
   DiaryRoute,
   PalRoute,
   ProfileRoute,
@@ -28,6 +27,7 @@ import {
 } from "./routes/appPages";
 const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
 const GoalPage = lazy(() => import("./pages/Goal"));
+const DashboardPage = lazy(() => import("./pages/Dashboard"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -51,7 +51,7 @@ const App: React.FC = () => (
             {/* Logged in + onboarded */}
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
-                <Route path="/" element={<DashboardRoute />} />
+                <Route path="/" element={<DashboardPage />} />
                 <Route path="/add-weight" element={<AddWeightRoute />} />
                 <Route path="/diary" element={<DiaryRoute />} />
                 <Route path="/pal" element={<PalRoute />} />
