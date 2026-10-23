@@ -49,11 +49,11 @@ const TermsOfService: React.FC = () => {
         <div className="px-6 py-3 lg:px-4 lg:py-6 flex items-center border-b border-gray-50">
           <button
             onClick={onBack}
-            className="p-2 -ml-2 text-gray-400 hover:text-gray-600"
+            className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors"
           >
             <ChevronLeft className="w-7 h-7" />
           </button>
-          <h2 className="flex-1 text-center text-xl font-semibold text-gray-700 pr-10">
+          <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-12">
             Terms of Service
           </h2>
         </div>
