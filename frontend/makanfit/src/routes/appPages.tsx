@@ -1,13 +1,10 @@
 // Thin adapters for logged-in pages. Components keep their current props.
 import React, { lazy } from "react";
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { WeightEntry } from "../types/types";
 import { useAuth } from "../contexts/AuthContext";
-import { useMeals } from "../contexts/MealsContext";
 import { useWeights } from "../contexts/WeightContext";
-import type { LayoutContext } from "../layouts/AppLayout";
 
-const Pal = lazy(() => import("../pages/Pal"));
 const Profile = lazy(() => import("../pages/Profile"));
 const AccountSetting = lazy(() => import("../pages/AccountSetting"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword"));
@@ -27,21 +24,6 @@ export const AddWeightRoute: React.FC = () => {
       editingEntry={editingEntry}
       onBack={() => navigate("/")}
       onAdd={addWeight}
-    />
-  );
-};
-
-export const PalRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { meals } = useMeals();
-  const { openStreakModal } = useOutletContext<LayoutContext>();
-  return (
-    <Pal
-      meals={meals}
-      user={user}
-      onNavigateToLogMeal={() => navigate("/diary")}
-      onOpenStreakModal={openStreakModal}
     />
   );
 };

@@ -21,21 +21,17 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Mascot, { MascotMoodState } from "../components/mascot/Mascot";
-import { Challenge, MealEntry, OutfitItem, User } from "../types/types";
+import { Challenge, MealEntry, OutfitItem } from "../types/types";
 import { calculateStreak } from "../utils/streak";
 import PalBackground, {
   BackgroundTheme,
   BACKGROUND_OPTIONS,
 } from "../components/visuals/PalBackground";
-import StreakModal from "../components/modals/StreakModal";
 import { SHOP_ITEMS, ITEM_VIEWBOX } from "../data/shopItems";
-
-interface PalProps {
-  meals?: MealEntry[];
-  user?: User;
-  onNavigateToLogMeal?: (category?: any) => void;
-  onOpenStreakModal?: () => void;
-}
+import { useAuth } from "../contexts/AuthContext";
+import { useMeals } from "../contexts/MealsContext";
+import { LayoutContext } from "../layouts/AppLayout";
+import { useOutletContext } from "react-router-dom";
 
 /* ------------------------------------------------------------------ */
 /* DATA                                                                */
@@ -583,12 +579,11 @@ const MissionSection: React.FC<{
 /* PAGE                                                                */
 /* ------------------------------------------------------------------ */
 
-export const Pal: React.FC<PalProps> = ({
-  meals: propMeals,
-  user: propUser,
-  onOpenStreakModal,
-  onNavigateToLogMeal,
-}) => {
+export const Pal: React.FC = () => {
+  const { meals } = useMeals();
+  const { user } = useAuth();
+  const { openStreakModal } = useOutletContext<LayoutContext>();
+
   // ---- state (all declared up-front so effects below can safely read it) ----
   const [coins, setCoins] = useState(() => {
     const saved = localStorage.getItem("makanfit_coins");
@@ -602,41 +597,13 @@ export const Pal: React.FC<PalProps> = ({
     return () => clearInterval(t);
   }, []);
 
-  const allMeals = useMemo(() => {
-    let list: MealEntry[] = propMeals || [];
-    if (!list.length) {
-      const saved = localStorage.getItem("makanfit_meals");
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) list = parsed;
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
-    return list;
-  }, [propMeals]);
-
-  const streakInfo = useMemo(
-    () => calculateStreak(allMeals, now),
-    [allMeals, now],
-  );
+  const streakInfo = useMemo(() => calculateStreak(meals, now), [meals, now]);
 
   const [showOutfits, setShowOutfits] = useState(false);
   const [showShop, setShowShop] = useState(false);
   const [outfitTab, setOutfitTab] = useState<TabKey>("all");
   const [shopTab, setShopTab] = useState<TabKey>("all");
   const [sheetItemId, setSheetItemId] = useState<string | null>(null);
-
-  const [internalStreakModalOpen, setInternalStreakModalOpen] = useState(false);
-  const handleOpenStreakModal = () => {
-    if (onOpenStreakModal) {
-      onOpenStreakModal();
-    } else {
-      setInternalStreakModalOpen(true);
-    }
-  };
 
   const [backgroundTheme, setBackgroundTheme] = useState<BackgroundTheme>(
     () => {
@@ -738,21 +705,7 @@ export const Pal: React.FC<PalProps> = ({
     const today = new Date(now);
     // const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
 
-    // Get effective meals from props or fallback to localStorage
-    let effectiveMeals: MealEntry[] = propMeals || [];
-    if (!effectiveMeals.length) {
-      const saved = localStorage.getItem("makanfit_meals");
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) effectiveMeals = parsed;
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
-
-    const todayMeals = effectiveMeals.filter((m) => {
+    const todayMeals = meals.filter((m) => {
       const time = getTimestamp(m.consumedAt || m.createdAt);
       if (!time) return false;
       const d = new Date(time);
@@ -773,7 +726,7 @@ export const Pal: React.FC<PalProps> = ({
 
     const todayCalories = todayMeals.reduce((sum, m) => sum + mealKcal(m), 0);
 
-    const targetCalories = propUser?.targetCalories || 1750;
+    const targetCalories = user.targetCalories || 1750;
     const calorieRatio =
       targetCalories > 0 ? todayCalories / targetCalories : 0;
 
@@ -917,7 +870,7 @@ export const Pal: React.FC<PalProps> = ({
       hasDinner,
       hasSnack,
     };
-  }, [propMeals, propUser, now]);
+  }, [meals, user.targetCalories, now]);
 
   useEffect(() => {
     // Only override dialogue if there is no temporary interactive animation (like petting)
@@ -1221,7 +1174,7 @@ export const Pal: React.FC<PalProps> = ({
       <div className="px-5 py-4 bg-white/80 backdrop-blur-md rounded-b-[28px] border-b border-emerald-100/60 shadow-xs sticky top-0 z-20">
         <div className="mx-auto w-full max-w-6xl flex items-center justify-between lg:px-3">
           <button
-            onClick={handleOpenStreakModal}
+            onClick={openStreakModal}
             className="flex items-center space-x-3 text-left group cursor-pointer hover:opacity-90 active:scale-[0.98] transition-all"
             title="Click to view full streak calendar and rewards"
           >
@@ -1808,17 +1761,6 @@ export const Pal: React.FC<PalProps> = ({
             </div>
           );
         })()}
-
-      {/* Fallback Streak Modal */}
-      <StreakModal
-        isOpen={internalStreakModalOpen}
-        onClose={() => setInternalStreakModalOpen(false)}
-        meals={allMeals}
-        onLogMeal={() => {
-          setInternalStreakModalOpen(false);
-          onNavigateToLogMeal?.();
-        }}
-      />
     </div>
   );
 };
