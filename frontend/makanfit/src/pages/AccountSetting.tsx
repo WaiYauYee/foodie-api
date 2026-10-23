@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { User } from "../types/types";
 import {
   Mail,
   CheckCircle2,
@@ -8,18 +7,8 @@ import {
   X,
   ChevronLeft,
 } from "lucide-react";
-
-interface AccountSettingProps {
-  user: User;
-  onBack: () => void;
-  onChangeEmail: (
-    email: string,
-  ) => Promise<{ success: boolean; message: string; user?: User }>;
-  onDeleteAccount: () => Promise<{
-    success: boolean;
-    message: string;
-  }>;
-}
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ErrorAlert = ({
   title,
@@ -54,12 +43,15 @@ const ErrorAlert = ({
   </div>
 );
 
-const AccountSetting: React.FC<AccountSettingProps> = ({
-  user,
-  onBack,
-  onChangeEmail,
-  onDeleteAccount,
-}) => {
+const AccountSetting: React.FC = () => {
+  const navigate = useNavigate();
+  const {
+    user,
+    changeEmail: onChangeEmail,
+    deleteAccount: onDeleteAccount,
+  } = useAuth();
+  const onBack = () => navigate("/profile");
+
   const [emailValue, setEmailValue] = useState(user.email);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -109,7 +101,8 @@ const AccountSetting: React.FC<AccountSettingProps> = ({
       if (!res.success) {
         setDeleteError(res.message);
       }
-      // On success, App.tsx handles logout.
+      // On success, AuthContext clears the session and ProtectedRoute
+      // redirects to /welcome, so no navigation is needed here.
     } catch {
       setDeleteError("We couldn't delete your account. Please try again.");
     } finally {

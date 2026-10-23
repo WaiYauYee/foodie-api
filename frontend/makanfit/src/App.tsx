@@ -16,7 +16,6 @@ import {
   PublicTermsRoute,
 } from "./routes/authPages";
 import {
-  AccountSettingRoute,
   ChangePasswordRoute,
   PrivacyRoute,
   NotificationsRoute,
@@ -28,6 +27,7 @@ const DashboardPage = lazy(() => import("./pages/Dashboard"));
 const DiaryPage = lazy(() => import("./pages/Diary"));
 const PalPage = lazy(() => import("./pages/Pal"));
 const ProfilePage = lazy(() => import("./pages/Profile"));
+const AccountSettingPage = lazy(() => import("./pages/AccountSetting"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -57,7 +57,7 @@ const App: React.FC = () => (
                 <Route path="/pal" element={<PalPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/profile/personal-info" element={<PersonalInfoPage />} />
-                <Route path="/profile/account" element={<AccountSettingRoute />} />
+                <Route path="/profile/account" element={<AccountSettingPage />} />
                 <Route path="/profile/password" element={<ChangePasswordRoute />} />
                 <Route path="/profile/goal" element={<GoalPage />} />
                 <Route path="/profile/privacy" element={<PrivacyRoute />} />
