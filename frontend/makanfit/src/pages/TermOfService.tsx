@@ -43,10 +43,10 @@ const TermsOfService: React.FC = () => {
   ];
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white md:bg-slate-100 flex justify-center animate-in slide-in-from-right duration-300">
-      <div className="flex flex-col w-full max-w-3xl bg-white md:my-8 md:rounded-[32px] md:shadow-xl md:border md:border-gray-100 overflow-hidden">
+    <div className="fixed inset-0 z-[100] bg-[#F8FAFC] md:bg-slate-100 flex justify-center animate-in slide-in-from-right duration-300">
+      <div className="flex flex-col w-full max-w-3xl bg-[#F8FAFC] md:my-8 md:rounded-[32px] md:shadow-xl md:border md:border-gray-100 overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-3 lg:px-4 lg:py-6 flex items-center border-b border-gray-50">
+        <div className="px-4 py-3 flex items-center border-b border-gray-50">
           <button
             onClick={onBack}
             className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors"
@@ -85,7 +85,7 @@ const TermsOfService: React.FC = () => {
               </div>
             ))}
 
-            <div className="bg-gray-50 rounded-[32px] p-8 border border-gray-100 shadow-sm">
+            <div className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm">
               <h4 className="font-bold text-gray-900 mb-2">
                 Malaysian Consumer Law
               </h4>

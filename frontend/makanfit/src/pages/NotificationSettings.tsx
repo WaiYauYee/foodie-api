@@ -180,7 +180,8 @@ const NotificationSettings: React.FC = () => {
   const editingMeal = mealTimes.find((m) => m.id === editingMealId);
 
   return (
-    <div className="fixed inset-0 bg-[#F8FAFC] z-[100] flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 z-[100] bg-[#F8FAFC] md:bg-slate-100 flex justify-center animate-in slide-in-from-right duration-300">
+    <div className="flex flex-col w-full max-w-3xl bg-[#F8FAFC] md:my-8 md:rounded-[32px] md:shadow-xl md:border md:border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 flex items-center bg-white">
         <button
@@ -329,6 +330,7 @@ const NotificationSettings: React.FC = () => {
         </>
       )}
     </div>
+     </div>
   );
 };
 

@@ -721,7 +721,8 @@ const Goal: React.FC = () => {
   ];
 
   return (
-    <div className="fixed inset-0 bg-[#F8FAFC] z-[200] flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 z-[100] bg-[#F8FAFC] md:bg-slate-100 flex justify-center animate-in slide-in-from-right duration-300">
+    <div className="flex flex-col w-full max-w-3xl bg-[#F8FAFC] md:my-8 md:rounded-[32px] md:shadow-xl md:border md:border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="px-6 py-3 flex items-center bg-white border-b border-gray-50 sticky top-0 z-10">
         <button
@@ -775,6 +776,7 @@ const Goal: React.FC = () => {
             </div>
           </div>
         ))}
+      </div>
       </div>
 
       {/* Footer Save Button */}
