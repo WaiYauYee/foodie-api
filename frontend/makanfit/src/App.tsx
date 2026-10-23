@@ -19,7 +19,6 @@ import {
   ChangePasswordRoute,
   PrivacyRoute,
   NotificationsRoute,
-  AddWeightRoute,
 } from "./routes/appPages";
 const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
 const GoalPage = lazy(() => import("./pages/Goal"));
@@ -28,6 +27,7 @@ const DiaryPage = lazy(() => import("./pages/Diary"));
 const PalPage = lazy(() => import("./pages/Pal"));
 const ProfilePage = lazy(() => import("./pages/Profile"));
 const AccountSettingPage = lazy(() => import("./pages/AccountSetting"));
+const AddWeightPage = lazy(() => import("./pages/AddWeight"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -52,7 +52,7 @@ const App: React.FC = () => (
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
                 <Route path="/" element={<DashboardPage />} />
-                <Route path="/add-weight" element={<AddWeightRoute />} />
+                <Route path="/add-weight" element={<AddWeightPage />} />
                 <Route path="/diary" element={<DiaryPage />} />
                 <Route path="/pal" element={<PalPage />} />
                 <Route path="/profile" element={<ProfilePage />} />

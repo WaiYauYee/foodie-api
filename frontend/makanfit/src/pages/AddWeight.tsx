@@ -1,16 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { X, CalendarIcon, Minus, Plus } from "lucide-react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/calendar-custom.css";
 import { WeightEntry } from "../types/types";
-
-interface AddWeightProps {
-  currentWeight: number;
-  editingEntry?: WeightEntry | null;
-  onBack: () => void;
-  onAdd: (weight: number, recordedAt?: number) => void;
-}
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useWeights } from "../contexts/WeightContext";
 
 const getToday = () => {
   const today = new Date();
@@ -18,12 +14,17 @@ const getToday = () => {
   return today;
 };
 
-const AddWeight: React.FC<AddWeightProps> = ({
-  currentWeight,
-  editingEntry,
-  onBack,
-  onAdd,
-}) => {
+const AddWeight: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
+  const { addWeight: onAdd } = useWeights();
+
+  const currentWeight = user.currentWeight;
+  const editingEntry =
+    (location.state?.entry as WeightEntry | undefined) ?? null;
+  const onBack = useCallback(() => navigate("/"), [navigate]);
+
   const initialVal =
     Number.isFinite(currentWeight) && currentWeight > 0 ? currentWeight : 65;
 
@@ -103,13 +104,13 @@ const AddWeight: React.FC<AddWeightProps> = ({
     });
   }, [selectedDate]);
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     const numericWeight = parseFloat(weightInput);
     const finalWeight =
       !isNaN(numericWeight) && numericWeight > 0 ? numericWeight : weightValue;
     if (finalWeight > 0) {
-      onAdd(Math.round(finalWeight * 10) / 10, selectedDate.getTime());
-      onBack();
+      const ok = await onAdd(Math.round(finalWeight * 10) / 10);
+      if (ok) onBack();
     }
   };
 
