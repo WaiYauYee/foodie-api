@@ -464,7 +464,7 @@ const SignUp: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/terms")}
-                  className="text-emerald-600 font-bold hover:underline"
+                  className="text-gray-400 font-bold hover:underline"
                 >
                   Terms of Service
                 </button>{" "}
@@ -472,7 +472,7 @@ const SignUp: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/privacy")}
-                  className="text-emerald-600 font-bold hover:underline"
+                  className="text-gray-400 font-bold hover:underline"
                 >
                   Privacy Policy
                 </button>

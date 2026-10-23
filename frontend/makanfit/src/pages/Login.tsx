@@ -449,11 +449,11 @@ const Login: React.FC = () => {
               {/* Bottom Terms & Privacy Note */}
               <div className="pt-6 text-center text-xs text-gray-400">
                 <span>By continuing, you agree to MakanFit's </span>
-                <a href="#" className="underline hover:text-gray-400">
+                <a href="#" className="text-gray-400 font-bold hover:underline">
                   Terms of Service
                 </a>
                 <span> & </span>
-                <a href="#" className="underline hover:text-gray-400">
+                <a href="#" className="text-gray-400 font-bold hover:underline">
                   Privacy Policy
                 </a>
               </div>
