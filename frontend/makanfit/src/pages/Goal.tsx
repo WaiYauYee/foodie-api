@@ -18,12 +18,8 @@ import {
   Scale,
   Droplets,
 } from "lucide-react";
-
-interface GoalProps {
-  user: Users;
-  onBack: () => void;
-  onSave: (updatedUser: Partial<Users>) => void;
-}
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 interface SelectionOption {
   id: string;
@@ -32,7 +28,11 @@ interface SelectionOption {
   icon: any;
 }
 
-const Goal: React.FC<GoalProps> = ({ user, onBack, onSave }) => {
+const Goal: React.FC = () => {
+  const navigate = useNavigate();
+  const { user, updateUser: onSave } = useAuth();
+  const onBack = () => navigate("/profile");
+
   const [activeOverlay, setActiveOverlay] = useState<string | null>(null);
   const [tempCalorie, setTempCalorie] = useState(
     (user.targetCalories ?? 1279).toString(),

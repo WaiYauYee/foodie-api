@@ -22,12 +22,12 @@ import {
   ProfileRoute,
   AccountSettingRoute,
   ChangePasswordRoute,
-  GoalRoute,
   PrivacyRoute,
   NotificationsRoute,
   AddWeightRoute,
 } from "./routes/appPages";
 const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
+const GoalPage = lazy(() => import("./pages/Goal"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -59,7 +59,7 @@ const App: React.FC = () => (
                 <Route path="/profile/personal-info" element={<PersonalInfoPage />} />
                 <Route path="/profile/account" element={<AccountSettingRoute />} />
                 <Route path="/profile/password" element={<ChangePasswordRoute />} />
-                <Route path="/profile/goal" element={<GoalRoute />} />
+                <Route path="/profile/goal" element={<GoalPage />} />
                 <Route path="/profile/privacy" element={<PrivacyRoute />} />
                 <Route path="/profile/notifications" element={<NotificationsRoute />} />
               </Route>

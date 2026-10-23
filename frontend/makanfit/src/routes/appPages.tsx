@@ -1,7 +1,7 @@
 // Thin adapters for logged-in pages. Components keep their current props.
 import React, { lazy } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { User, WeightEntry } from "../types/types";
+import { WeightEntry } from "../types/types";
 import { useAuth } from "../contexts/AuthContext";
 import { useMeals } from "../contexts/MealsContext";
 import { useWeights } from "../contexts/WeightContext";
@@ -13,30 +13,9 @@ const Pal = lazy(() => import("../pages/Pal"));
 const Profile = lazy(() => import("../pages/Profile"));
 const AccountSetting = lazy(() => import("../pages/AccountSetting"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword"));
-const Goal = lazy(() => import("../pages/Goal"));
 const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const NotificationSettings = lazy(() => import("../pages/NotificationSettings"));
 const AddWeight = lazy(() => import("../pages/AddWeight"));
-
-/**
- * Weight now lives in its own table/context, so a currentWeight change is
- * logged via addWeight and everything else goes through updateUser.
- */
-const useSaveUser = () => {
-  const { user, updateUser } = useAuth();
-  const { addWeight } = useWeights();
-
-  return async (fields: Partial<User>) => {
-    const { currentWeight, ...rest } = fields;
-    if (Object.keys(rest).length) {
-      const ok = await updateUser(rest);
-      if (!ok) return;
-    }
-    if (currentWeight !== undefined && currentWeight !== user.currentWeight) {
-      await addWeight(currentWeight);
-    }
-  };
-};
 
 export const DashboardRoute: React.FC = () => {
   const navigate = useNavigate();
@@ -115,13 +94,6 @@ export const ProfileRoute: React.FC = () => {
       }}
     />
   );
-};
-
-export const GoalRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const save = useSaveUser();
-  return <Goal user={user} onBack={() => navigate("/profile")} onSave={save} />;
 };
 
 export const AccountSettingRoute: React.FC = () => {
