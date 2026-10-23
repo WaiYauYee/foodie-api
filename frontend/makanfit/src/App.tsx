@@ -6,9 +6,6 @@ import { MealsProvider } from "./contexts/MealsContext";
 import { WeightProvider } from "./contexts/WeightContext";
 import { GuestRoute, ProtectedRoute } from "./routes/guards";
 import AppLayout from "./layouts/AppLayout";
-import {
-  PublicTermsRoute,
-} from "./routes/authPages";
 
 const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
 const GoalPage = lazy(() => import("./pages/Goal"));
@@ -26,6 +23,7 @@ const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const PlanBuilderPage = lazy(() => import("./pages/PlanBuilder"));
 const LoginPage = lazy(() => import("./pages/Login"));
 const SignUpPage = lazy(() => import("./pages/SignUp"));
+const TermsOfServicePage = lazy(() => import("./pages/TermOfService"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -42,7 +40,7 @@ const App: React.FC = () => (
 
             {/* Public */}
             <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<PublicTermsRoute />} />
+            <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/plan" element={<PlanBuilderPage />} />
 

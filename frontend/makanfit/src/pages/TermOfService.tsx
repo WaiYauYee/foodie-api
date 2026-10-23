@@ -1,12 +1,14 @@
 
 import React from 'react';
 import { ChevronLeft, FileText, Scale, Globe, ShieldAlert, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-interface TermsOfServiceProps {
-  onBack: () => void;
-}
+const TermsOfService: React.FC = () => {
+  const navigate = useNavigate();
+  // Go back if there is history, otherwise fall back to the welcome page.
+  const onBack = () =>
+    window.history.state?.idx > 0 ? navigate(-1) : navigate("/welcome");
 
-const TermsOfService: React.FC<TermsOfServiceProps> = ({ onBack }) => {
   const sections = [
     {
       title: "1. Acceptance of Terms",
