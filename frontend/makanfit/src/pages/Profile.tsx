@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { User as Users } from "../types/types";
 import {
   User,
   Target,
@@ -12,17 +11,8 @@ import {
   Bell,
 } from "lucide-react";
 import logoAvatarSmileFace from "../assets/logoAvatarSmileFace.jpeg";
-
-interface ProfileProps {
-  user: Users;
-  onNavigateToAccount: () => void;
-  onNavigateToSetting: () => void;
-  onNavigateToSecurity: () => void;
-  onNavigateToGoal: () => void;
-  onNavigateToPrivacy: () => void;
-  onNavigateToNotifications: () => void;
-  onLogout: () => void;
-}
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface MenuItem {
   icon: React.ElementType;
@@ -64,16 +54,22 @@ const MenuGroup: React.FC<{ title: string; items: MenuItem[] }> = ({
   </div>
 );
 
-const Profile: React.FC<ProfileProps> = ({
-  user,
-  onNavigateToAccount,
-  onNavigateToSetting,
-  onNavigateToSecurity,
-  onNavigateToGoal,
-  onNavigateToPrivacy,
-  onNavigateToNotifications,
-  onLogout,
-}) => {
+const Profile: React.FC = () => {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const onNavigateToAccount = () => navigate("/profile/personal-info");
+  const onNavigateToSetting = () => navigate("/profile/account");
+  const onNavigateToSecurity = () => navigate("/profile/password");
+  const onNavigateToGoal = () => navigate("/profile/goal");
+  const onNavigateToPrivacy = () => navigate("/profile/privacy");
+  const onNavigateToNotifications = () => navigate("/profile/notifications");
+
+  const onLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
+
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   // Close the logout modal with Escape (laptop keyboard)

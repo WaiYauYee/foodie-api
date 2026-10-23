@@ -5,7 +5,6 @@ import { WeightEntry } from "../types/types";
 import { useAuth } from "../contexts/AuthContext";
 import { useWeights } from "../contexts/WeightContext";
 
-const Profile = lazy(() => import("../pages/Profile"));
 const AccountSetting = lazy(() => import("../pages/AccountSetting"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword"));
 const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
@@ -24,26 +23,6 @@ export const AddWeightRoute: React.FC = () => {
       editingEntry={editingEntry}
       onBack={() => navigate("/")}
       onAdd={addWeight}
-    />
-  );
-};
-
-export const ProfileRoute: React.FC = () => {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  return (
-    <Profile
-      user={user}
-      onNavigateToAccount={() => navigate("/profile/personal-info")}
-      onNavigateToSetting={() => navigate("/profile/account")}
-      onNavigateToSecurity={() => navigate("/profile/password")}
-      onNavigateToGoal={() => navigate("/profile/goal")}
-      onNavigateToPrivacy={() => navigate("/profile/privacy")}
-      onNavigateToNotifications={() => navigate("/profile/notifications")}
-      onLogout={() => {
-        logout();
-        navigate("/login", { replace: true });
-      }}
     />
   );
 };
