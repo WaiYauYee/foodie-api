@@ -11,19 +11,11 @@ import Mascot from "../components/mascot/Mascot";
 import { signUp } from "../services/authService";
 import { FaCheck } from "react-icons/fa";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
+import { useNavigate } from "react-router-dom";
 
-interface SignUpProps {
-  onSignUp: () => void;
-  onNavigateToLogin: () => void;
-  onNavigateToPrivacy: () => void;
-  onNavigateToTerms: () => void;
-}
+const SignUp: React.FC = () => {
+  const navigate = useNavigate();
 
-const SignUp: React.FC<SignUpProps> = ({
-  onNavigateToLogin,
-  onNavigateToTerms,
-  onNavigateToPrivacy,
-}) => {
   // const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -265,7 +257,7 @@ const SignUp: React.FC<SignUpProps> = ({
               {/* CTA */}
               <button
                 type="button"
-                onClick={onNavigateToLogin}
+                onClick={() => navigate("/login")}
                 className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
               >
                 <span>Get Started</span>
@@ -471,7 +463,7 @@ const SignUp: React.FC<SignUpProps> = ({
                 By signing up, you agree to our{" "}
                 <button
                   type="button"
-                  onClick={onNavigateToTerms}
+                  onClick={() => navigate("/terms")}
                   className="text-emerald-600 font-bold hover:underline"
                 >
                   Terms of Service
@@ -479,7 +471,7 @@ const SignUp: React.FC<SignUpProps> = ({
                 and{" "}
                 <button
                   type="button"
-                  onClick={onNavigateToPrivacy}
+                  onClick={() => navigate("/privacy")}
                   className="text-emerald-600 font-bold hover:underline"
                 >
                   Privacy Policy
@@ -507,7 +499,7 @@ const SignUp: React.FC<SignUpProps> = ({
             <p className="mt-10 text-center text-gray-400 font-medium">
               Already have an account?{" "}
               <button
-                onClick={onNavigateToLogin}
+                onClick={() => navigate("/login")}
                 className="text-emerald-600 font-black hover:underline"
               >
                 Log In
