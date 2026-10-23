@@ -9,7 +9,6 @@ const Onboarding = lazy(() => import("../pages/Onboarding"));
 const PlanBuilder = lazy(() => import("../pages/PlanBuilder"));
 const Login = lazy(() => import("../pages/Login"));
 const SignUp = lazy(() => import("../pages/SignUp"));
-const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const TermOfService = lazy(() => import("../pages/TermOfService"));
 
 export const WelcomeRoute: React.FC = () => {
@@ -86,11 +85,6 @@ export const SignUpRoute: React.FC = () => {
       onNavigateToTerms={() => navigate("/terms")}
     />
   );
-};
-
-export const PublicPrivacyRoute: React.FC = () => {
-  const navigate = useNavigate();
-  return <PrivacyPolicy onBack={() => navigate(-1)} />;
 };
 
 export const PublicTermsRoute: React.FC = () => {

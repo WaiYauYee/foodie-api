@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { AlertCircle, ChevronLeft, Eye, EyeOff, X } from "lucide-react";
 import { changePassword } from "../services/authService";
 import { validatePassword } from "../utils/validators";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-interface ChangePasswordProps {
-  onBack: () => void;
-  userId: string;
-}
+const ChangePassword: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const userId = user.userId;
+  const onBack = () => navigate("/profile");
 
-const ChangePassword: React.FC<ChangePasswordProps> = ({ onBack, userId }) => {
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -173,7 +175,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ onBack, userId }) => {
       <div className="p-6">
         <button
           onClick={handleSave}
-          className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
+          disabled={saving}
+          className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs disabled:opacity-60"
         >
           {saving ? "Updating..." : "Update"}
         </button>

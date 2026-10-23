@@ -12,14 +12,9 @@ import {
   PlanBuilderRoute,
   LoginRoute,
   SignUpRoute,
-  PublicPrivacyRoute,
   PublicTermsRoute,
 } from "./routes/authPages";
-import {
-  ChangePasswordRoute,
-  PrivacyRoute,
-  NotificationsRoute,
-} from "./routes/appPages";
+
 const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
 const GoalPage = lazy(() => import("./pages/Goal"));
 const DashboardPage = lazy(() => import("./pages/Dashboard"));
@@ -28,6 +23,9 @@ const PalPage = lazy(() => import("./pages/Pal"));
 const ProfilePage = lazy(() => import("./pages/Profile"));
 const AccountSettingPage = lazy(() => import("./pages/AccountSetting"));
 const AddWeightPage = lazy(() => import("./pages/AddWeight"));
+const ChangePasswordPage = lazy(() => import("./pages/ChangePassword"));
+const NotificationsPage = lazy(() => import("./pages/NotificationSettings"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPolicy"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -43,7 +41,7 @@ const App: React.FC = () => (
             </Route>
 
             {/* Public */}
-            <Route path="/privacy" element={<PublicPrivacyRoute />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<PublicTermsRoute />} />
             <Route path="/onboarding" element={<OnboardingRoute />} />
             <Route path="/plan" element={<PlanBuilderRoute />} />
@@ -58,10 +56,10 @@ const App: React.FC = () => (
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/profile/personal-info" element={<PersonalInfoPage />} />
                 <Route path="/profile/account" element={<AccountSettingPage />} />
-                <Route path="/profile/password" element={<ChangePasswordRoute />} />
+                <Route path="/profile/password" element={<ChangePasswordPage />} />
                 <Route path="/profile/goal" element={<GoalPage />} />
-                <Route path="/profile/privacy" element={<PrivacyRoute />} />
-                <Route path="/profile/notifications" element={<NotificationsRoute />} />
+                <Route path="/profile/privacy" element={<PrivacyPage />} />
+                <Route path="/profile/notifications" element={<NotificationsPage />} />
               </Route>
             </Route>
 

@@ -12,11 +12,8 @@ import {
   getNotificationSettings,
   saveNotificationSettings,
 } from "../services/notificationService";
-
-interface NotificationSettingsProps {
-  onBack: () => void;
-  userId: string;
-}
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const LABELS: Record<string, string> = {
   breakfast: "Breakfast",
@@ -59,10 +56,12 @@ interface MealTime {
   time: string; // 24hr "HH:MM" — native <input type="time"> works in this format
 }
 
-const NotificationSettings: React.FC<NotificationSettingsProps> = ({
-  onBack,
-  userId,
-}) => {
+const NotificationSettings: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const userId = user.userId;
+  const onBack = () => navigate("/profile");
+
   const [loading, setLoading] = useState(true);
   const [mealReminders, setMealReminders] = useState(true);
   const [waterReminder, setWaterReminder] = useState(false);
