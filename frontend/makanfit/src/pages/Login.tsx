@@ -61,8 +61,8 @@ const Login: React.FC = () => {
 
       if (result.success && result.token) {
         // API stored user + token in localStorage; sync the context, then enter the app
-+        await startSession();
-+        navigate("/", { replace: true });
+        +(await startSession());
+        +navigate("/", { replace: true });
       } else {
         setError(result.message || "Invalid email or password");
       }
@@ -256,7 +256,6 @@ const Login: React.FC = () => {
               className="flex items-center space-x-1.5 text-sm font-bold text-slate-400 hover:text-emerald-600 mb-6 transition-colors cursor-pointer"
             >
               <ChevronLeft size={20} />
-              <span>Back to Intro</span>
             </button>
           )}
 
@@ -449,13 +448,21 @@ const Login: React.FC = () => {
               {/* Bottom Terms & Privacy Note */}
               <div className="pt-6 text-center text-xs text-gray-400">
                 <span>By continuing, you agree to MakanFit's </span>
-                <a href="#" className="text-gray-400 font-bold hover:underline">
+                <button
+                  type="button"
+                  onClick={() => navigate("/terms")}
+                  className="text-gray-400 font-bold hover:underline"
+                >
                   Terms of Service
-                </a>
+                </button>
                 <span> & </span>
-                <a href="#" className="text-gray-400 font-bold hover:underline">
+                <button
+                  type="button"
+                  onClick={() => navigate("/privacy")}
+                  className="text-gray-400 font-bold hover:underline"
+                >
                   Privacy Policy
-                </a>
+                </button>
               </div>
             </div>
           ) : view === "forgot" ? (
