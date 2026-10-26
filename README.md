@@ -180,12 +180,27 @@ MakanFit uses PostgreSQL for application data persistence and a curated JSON dat
 A custom CNN was trained to recognise Malaysian dishes from food images.
 Dataset: MalaysianFood120
 
+The dataset covers 120 Malaysian food categories across Malay, Chinese, Indian and Nyonya cuisines.
+
 | Property                  | Details  |
 | --------------------------| -------- |
 | Food categories           |    120   |
 | Total images              |  23,707  |
 | Test accuracy             |  75.60%  |
 | Best validation accuracy  |  76.03%  |
+
+#### Categories Covered
+
+| Group | Count | Classes |
+|---|---|---|
+| 🍚 Rice & rice-based dishes | 13 | Banana Leaf Rice, Bubur Pedas, Bazhang, Claypot Rice, Hainanese Chicken Rice, Ketupat, Lemang, Nasi Goreng Kampung, Nasi Impit, Nasi Kerabu, Nasi Kandar, Nasi Lemak, Nasi Pattaya |
+| 🍜 Noodle dishes & laksa | 22 | Asam Laksa, Curry Laksa, Char Kuey Teow, Chee Cheong Fun, Claypot Lou Shu Fun, Crispy Fried Bee Hoon, Hokkien Mee, Lor Mee, Maggi Goreng, Mee Goreng, Mee Hoon Kueh, Mee Hoon Soup, Mee Jawa, Mee Kolok, Mee Rebus, Mee Rojak, Mee Siam, Pan Mee, Prawn Mee, Wat Tan Ho, Wan Tan Mee, Yee Mee Soup |
+| 🍖 Meat, seafood, egg & soup mains | 20 | Bak Kut Teh, Beef Rendang, Char Siu, Chilli Crab, Fish Head Curry, Ikan Bakar, Prawn Sambal, Sambal Udang, Sambal Petai, Salted Egg Squid, Siew Yoke, Tandoori Chicken, Satay, Satay Celup, Soto Ayam, Tom Yum Soup, Oyster Omelette, Otak-otak, Half-Boiled Egg, Yong Tau Foo |
+| 🫓 Breads & griddle items | 10 | Capati, Murtabak, Puri, Roti Canai, Roti Jala, Roti John, Roti Naan, Roti Tissue, Thosai, Kaya Toast |
+| 🥟 Savoury snacks & street food | 15 | Chai Tow Kuay, Chwee Kueh, Cucur Udang, Curry Puff, Kuih Pai Tee, Lekor, Murukku, Pisang Goreng, Popiah, Rojak, Stinky Tofu, Tauhu Sumbat, Wonton, Youtiao, Yusheng |
+| 🍡 Kuih, cakes & sweet snacks | 29 | Ang Ku Kueh, Apam Balik, Bahulu, Banana Sponge Cake, Bingka Ubi, Dodol, Durian Crepe, Huat Kuih, Kaya Ball, Kaya Puff, Kek Lapis, Kuih Dadar, Kuih Kapit, Kuih Keria, Kuih Kosui, Kuih Lapis, Kuih Puteri Ayu, Kuih Seri Muka, Lepat Pisang, Mooncake, Muah Chee, Ondeh-Ondeh, Pineapple Tart, Pulut Inti, Putu Mayam, Putu Piring, Seri Muka, Wajik, Yam Cake |
+| 🍧 Desserts & drinks | 5 | Ais Kacang, Bubur Cha Cha, Cendol, Tang Yuan, Tau Foo Fah |
+| 🍈 Fruits & vegetables | 6 | Durian, Guava, Langsat, Mangosteen, Rambutan, Kangkung |
 
 ### 2. Ingredient Segmentation
 
