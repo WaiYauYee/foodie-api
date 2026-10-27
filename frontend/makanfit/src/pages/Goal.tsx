@@ -267,6 +267,14 @@ const Goal: React.FC = () => {
     }
   };
 
+  // Wrapper: bottom-aligned on mobile, centered on md+
+  const overlayWrapper =
+    "fixed inset-0 flex flex-col md:items-center md:justify-center md:p-6 animate-in fade-in slide-in-from-bottom md:slide-in-from-bottom-0 md:zoom-in-95 duration-300";
+
+  // Sheet: full-width bottom sheet on mobile, centered card on md+
+  const overlaySheet =
+    "relative mt-auto md:mt-0 w-full md:max-w-lg bg-white rounded-t-[48px] md:rounded-[40px] shadow-2xl max-h-[90vh] md:max-h-[85vh]";
+
   const SelectionOverlay = ({
     title,
     options,
@@ -280,12 +288,12 @@ const Goal: React.FC = () => {
     onSelect: (val: any) => void;
     onClose: () => void;
   }) => (
-    <div className="fixed inset-0 z-[210] flex flex-col animate-in fade-in slide-in-from-bottom duration-300">
+    <div className={`${overlayWrapper} z-[210]`}>
       <div
         className="absolute inset-0 bg-[#1A2A33]/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative mt-auto bg-white rounded-t-[48px] flex flex-col max-h-[90vh] shadow-2xl">
+      <div className={`${overlaySheet} flex flex-col overflow-hidden`}>
         <div className="flex items-center justify-between p-8 border-b border-gray-50">
           <div className="w-10" />
           <h3 className="text-xl font-black text-gray-900 uppercase tracking-widest text-sm">
@@ -347,12 +355,12 @@ const Goal: React.FC = () => {
     }, []);
 
     return (
-      <div className="fixed inset-0 z-[220] flex flex-col animate-in fade-in zoom-in duration-300">
+      <div className={`${overlayWrapper} z-[220]`}>
         <div
-          className="absolute inset-0 bg-[#1A2A33]/95 backdrop-blur-xl"
+          className="absolute inset-0 bg-[#1A2A33]/40 backdrop-blur-sm"
           onClick={() => setActiveOverlay(null)}
         />
-        <div className="relative mt-auto bg-white rounded-t-[48px] w-full flex flex-col overflow-hidden shadow-2xl">
+        <div className={`${overlaySheet} overflow-y-auto`}>
           <div className="p-8 flex items-center justify-between border-b border-gray-50">
             <div className="w-10" />
             <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest">
@@ -427,12 +435,12 @@ const Goal: React.FC = () => {
 
   const CustomWeightOverlay = () => {
     return (
-      <div className="fixed inset-0 z-[220] flex flex-col animate-in fade-in zoom-in duration-300">
+      <div className={`${overlayWrapper} z-[220]`}>
         <div
           className="absolute inset-0 bg-[#1A2A33]/40 backdrop-blur-sm"
           onClick={() => setActiveOverlay(null)}
         />
-        <div className="relative mt-auto bg-white rounded-t-[48px] w-full flex flex-col overflow-hidden shadow-2xl">
+        <div className={`${overlaySheet} overflow-y-auto`}>
           <div className="p-8 flex items-center justify-between border-b border-gray-50">
             <div className="w-10" />
             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
@@ -516,12 +524,12 @@ const Goal: React.FC = () => {
       //   </div>
       // </div>
 
-      <div className="fixed inset-0 z-[220] flex flex-col animate-in fade-in zoom-in duration-300 overflow-y-auto">
+      <div className={`${overlayWrapper} z-[220]`}>
         <div
-          className="absolute inset-0 bg-[#1A2A33]/95 backdrop-blur-xl"
+          className="absolute inset-0 bg-[#1A2A33]/40 backdrop-blur-sm"
           onClick={() => setActiveOverlay(null)}
         />
-        <div className="relative mt-auto bg-white rounded-t-[48px] w-full flex flex-col shadow-2xl">
+        <div className={`${overlaySheet} overflow-y-auto`}>
           <div className="p-8 flex items-center justify-between border-b border-gray-50">
             <div className="w-10" />
             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
@@ -569,13 +577,13 @@ const Goal: React.FC = () => {
 
   const CustomWaterOverlay = () => {
     return (
-      <div className="fixed inset-0 z-[220] flex flex-col animate-in fade-in slide-in-from-bottom duration-300">
+      <div className={`${overlayWrapper} z-[220]`}>
         <div
           className="absolute inset-0 bg-[#1A2A33]/40 backdrop-blur-sm"
           onClick={() => setActiveOverlay(null)}
         />
 
-        <div className="relative mt-auto bg-white rounded-t-[48px] w-full flex flex-col max-h-[90vh] shadow-2xl">
+        <div className={`${overlaySheet} flex flex-col`}>
           {/* Header */}
           <div className="flex items-center justify-between p-8 border-b border-gray-50">
             <div className="w-10" />
@@ -722,61 +730,61 @@ const Goal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-[100] bg-[#F8FAFC] md:bg-slate-100 flex justify-center animate-in slide-in-from-right duration-300">
-    <div className="flex flex-col w-full max-w-3xl bg-[#F8FAFC] md:my-8 md:rounded-[32px] md:shadow-xl md:border md:border-gray-100 overflow-hidden">
-      {/* Header */}
-      <div className="px-6 py-3 flex items-center bg-white border-b border-gray-50 sticky top-0 z-10">
-        <button
-          onClick={onBack}
-          className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors"
-        >
-          <ChevronLeft className="w-7 h-7" />
-        </button>
-        <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-12">
-          Goal
-        </h2>
-      </div>
-
-      <div className="flex-1 overflow-y-auto pb-10">
-        <div className="px-8 py-6">
-          <p className="text-gray-400 font-semibold max-w-xs lg:max-w-none">
-            Define your destination. We'll help you find the best path to get
-            there.
-          </p>
+      <div className="flex flex-col w-full max-w-3xl bg-[#F8FAFC] md:my-8 md:rounded-[32px] md:shadow-xl md:border md:border-gray-100 overflow-hidden">
+        {/* Header */}
+        <div className="px-6 py-3 flex items-center bg-white border-b border-gray-50 sticky top-0 z-10">
+          <button
+            onClick={onBack}
+            className="p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-emerald-600 transition-colors"
+          >
+            <ChevronLeft className="w-7 h-7" />
+          </button>
+          <h2 className="flex-1 text-center text-lg font-extrabold text-slate-900 pr-12">
+            Goal
+          </h2>
         </div>
 
-        {goalItems.map((section, sIdx) => (
-          <div key={sIdx} className="mb-8 px-6">
-            <h3 className="px-2 mb-3 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-              {section.section}
-            </h3>
-            <div className="bg-white rounded-[32px] border border-gray-100 divide-y divide-gray-50 overflow-hidden shadow-sm">
-              {section.items.map((item, iIdx) => (
-                <button
-                  key={iIdx}
-                  disabled={item.readOnly}
-                  onClick={() => setActiveOverlay(item.id)}
-                  className={`w-full flex items-center px-6 py-5 hover:bg-gray-50 transition-all ${item.readOnly ? "opacity-70" : "active:bg-emerald-50/50"}`}
-                >
-                  <div className="w-11 h-11 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400 transition-colors">
-                    <item.icon size={22} strokeWidth={2.5} />
-                  </div>
-                  <div className="ml-5 flex-1 flex flex-col items-start text-left">
-                    <span className="text-base font-black text-gray-900 leading-none mb-1">
-                      {item.label}
-                    </span>
-                    <span className="text-sm font-bold text-emerald-500 tracking-tight">
-                      {item.value}
-                    </span>
-                  </div>
-                  {!item.readOnly && (
-                    <ChevronRightIcon className="text-gray-200" size={20} />
-                  )}
-                </button>
-              ))}
-            </div>
+        <div className="flex-1 overflow-y-auto pb-10">
+          <div className="px-8 py-6">
+            <p className="text-gray-400 font-semibold max-w-xs lg:max-w-none">
+              Define your destination. We'll help you find the best path to get
+              there.
+            </p>
           </div>
-        ))}
-      </div>
+
+          {goalItems.map((section, sIdx) => (
+            <div key={sIdx} className="mb-8 px-6">
+              <h3 className="px-2 mb-3 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                {section.section}
+              </h3>
+              <div className="bg-white rounded-[32px] border border-gray-100 divide-y divide-gray-50 overflow-hidden shadow-sm">
+                {section.items.map((item, iIdx) => (
+                  <button
+                    key={iIdx}
+                    disabled={item.readOnly}
+                    onClick={() => setActiveOverlay(item.id)}
+                    className={`w-full flex items-center px-6 py-5 hover:bg-gray-50 transition-all ${item.readOnly ? "opacity-70" : "active:bg-emerald-50/50"}`}
+                  >
+                    <div className="w-11 h-11 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400 transition-colors">
+                      <item.icon size={22} strokeWidth={2.5} />
+                    </div>
+                    <div className="ml-5 flex-1 flex flex-col items-start text-left">
+                      <span className="text-base font-black text-gray-900 leading-none mb-1">
+                        {item.label}
+                      </span>
+                      <span className="text-sm font-bold text-emerald-500 tracking-tight">
+                        {item.value}
+                      </span>
+                    </div>
+                    {!item.readOnly && (
+                      <ChevronRightIcon className="text-gray-200" size={20} />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Footer Save Button */}
