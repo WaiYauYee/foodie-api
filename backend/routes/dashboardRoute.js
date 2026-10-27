@@ -1,7 +1,6 @@
 // routes/dashboardRoute.js
 const express = require("express");
 const { getDashboard } = require("../controller/dashboardController");
-const { listWeights, addWeight, deleteWeight } = require("../controller/weightController");
 const { authenticateToken, authorizeSelf } = require("../middlewares/authMiddleware");
 
 // Mounted twice in server.js:
@@ -10,9 +9,4 @@ const { authenticateToken, authorizeSelf } = require("../middlewares/authMiddlew
 const dashboardRouter = express.Router();
 dashboardRouter.get("/:userId", authenticateToken, authorizeSelf, getDashboard);
 
-const weightRouter = express.Router();
-weightRouter.get("/:userId", authenticateToken, authorizeSelf, listWeights);
-weightRouter.post("/:userId", authenticateToken, authorizeSelf, addWeight);
-weightRouter.delete("/:userId/:entryId", authenticateToken, authorizeSelf, deleteWeight);
-
-module.exports = { dashboardRouter, weightRouter };
+module.exports = dashboardRouter;
