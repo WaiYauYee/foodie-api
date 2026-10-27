@@ -16,6 +16,7 @@ import {
 import { INITIAL_USER } from "../constants/initialUser";
 import { readJSON } from "../hooks/useLocalStorage";
 import { buildOnboardingPayload } from "../utils/onboarding";
+import { logOut as logOutRequest } from "../services/authService";
 
 const KEYS = {
   user: "makanfit_user",
@@ -24,12 +25,25 @@ const KEYS = {
   pending: "makanfit_pending_onboarding",
 } as const;
 
+const USER_DATA_KEYS = [
+  "makanfit_coins",
+  "makanfit_daily_challenges",
+  "makanfit_daily_date",
+  "makanfit_weekly_challenges",
+  "makanfit_equipped_ids",
+  "makanfit_shop_items",
+  "makanfit_meals",
+  "makanfit_weights",
+  "makanfit_pending_onboarding",
+];
+
 const SESSION_KEYS = [
   KEYS.user,
   "makanfit_userId",
   "makanfit_token",
   KEYS.auth,
   KEYS.onboardingDone,
+  ...USER_DATA_KEYS,
 ];
 
 const PROFILE_KEYS = [
@@ -205,7 +219,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsAuthenticated(true); // last, so guards never see a half-updated state
   }, []);
 
-  const logout = useCallback(() => clearSession(), [clearSession]);
+  const logout = useCallback(() => {
+    void logOutRequest(); // fire-and-forget; token is read synchronously before clearSession
+    clearSession();
+  }, [clearSession]);
 
   // ---- account ----------------------------------------------------------
 

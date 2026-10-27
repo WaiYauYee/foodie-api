@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../models/userModel");
 const { validateEmail, validatePassword } = require("../utils/validators");
 const { toUserDto } = require("./authController");
+const { v4: uuidv4 } = require("uuid");
+const RevokedTokenModel = require("../models/revokedTokenModel");
 
 const saltRounds = 10;
 
@@ -67,8 +69,13 @@ const changeEmail = async (req, res) => {
     await UserModel.updateEmail(userId, email);
     const user = await UserModel.findById(userId);
 
-    // JWT carries the email, so issue a fresh one
-    const token = jwt.sign({ userId, email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    // JWT carries the email, so issue a fresh one (and retire the old one)
+    const token = jwt.sign({ userId, email }, process.env.JWT_SECRET, { expiresIn: "7d", jwtid: uuidv4() });
+
+    const { jti, exp } = req.user || {};
+    if (jti && exp) {
+      await RevokedTokenModel.revoke(jti, userId, new Date(exp * 1000));
+    }
 
     return res.status(200).json({
       success: true,
@@ -87,11 +94,16 @@ const deleteAccount = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    if (!(await confirmPassword(userId, req.body && req.body.password)))
-      return fail(res, 401, "Password is incorrect");
+    // if (!(await confirmPassword(userId, req.body && req.body.password)))
+    //   return fail(res, 401, "Password is incorrect");
 
     const ok = await UserModel.softDelete(userId);
     if (!ok) return fail(res, 404, "User not found");
+
+    const { jti, exp } = req.user || {};
+    if (jti && exp) {
+      await RevokedTokenModel.revoke(jti, userId, new Date(exp * 1000));
+    }
 
     return res.status(200).json({ success: true, message: "Account deleted" });
   } catch (error) {

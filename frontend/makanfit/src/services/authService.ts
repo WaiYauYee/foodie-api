@@ -222,29 +222,19 @@ export const completeOnboarding = async (
 // ============================================
 
 /**
- * Log out the current user and clear stored data
+ * Log out the current user
  */
 export const logOut = async (): Promise<void> => {
+  const token = localStorage.getItem('makanfit_token');
+  if (!token) return;
   try {
-    const token = localStorage.getItem('makanfit_token');
-    if (token) {
-      await fetch(`${API_BASE_URL}/api/auth/logout`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-      });
-    }
+    await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      keepalive: true,
+    });
   } catch (err) {
     console.error('Backend logout failed:', err);
-  } finally {
-    // Clear local storage anyway
-    localStorage.removeItem('makanfit_user');
-    localStorage.removeItem('makanfit_userId');
-    localStorage.removeItem('makanfit_token');
-    localStorage.removeItem('makanfit_auth');
-    localStorage.removeItem('makanfit_onboarding_done');
   }
 };
 

@@ -14,6 +14,7 @@ const {
   validateOnboardingData,
 } = require("../utils/validators");
 const { sendPasswordResetEmail } = require("../utils/mailer");
+const RevokedTokenModel = require("../models/revokedTokenModel");
 
 const saltRounds = 10;
 
@@ -182,7 +183,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
     { userId: user.user_id, email: user.email },
     process.env.JWT_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: '7d', jwtid: uuidv4() }
     );
 
     // Check if onboarding is completed
@@ -504,7 +505,16 @@ const resetPassword = async (req, res) => {
 // ---------------- LOGOUT ----------------
 
 const logout = async (req, res) => {
-  return res.status(200).json({ success: true, message: "Logged out successfully" });
+  try {
+    console.log("logout req.user:", req.user);
+    const { jti, userId, exp } = req.user || {};
+    if (jti && exp) {
+      await RevokedTokenModel.revoke(jti, userId, new Date(exp * 1000));
+    }
+    return res.status(200).json({ success: true, message: "Logged out successfully" });
+  } catch (error) {
+    return serverError(res, "Logout Error", error);
+  }
 };
 
 module.exports = {

@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
 
   const onLogout = () => {
     logout();
-    navigate("/login", { replace: true });
+    window.location.replace("/login");
   };
 
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -244,8 +244,7 @@ const Profile: React.FC = () => {
                   Log out?
                 </h3>
                 <p className="text-gray-400 font-bold leading-relaxed">
-                  Are you sure you want to log out? Your tracking data will be
-                  saved.
+                  Are you sure you want to log out?
                 </p>
               </div>
 

@@ -506,6 +506,14 @@ CREATE TABLE user_streak_milestone_claims (
   PRIMARY KEY (user_id, milestone_days, streak_start_date)
 );
 
+CREATE TABLE revoked_tokens (
+  jti        uuid PRIMARY KEY,
+  user_id    uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at timestamptz NOT NULL,
+  revoked_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX revoked_tokens_expires_at_idx ON revoked_tokens (expires_at);
+
 CREATE TABLE custom_foods (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
 
