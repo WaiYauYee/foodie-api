@@ -413,10 +413,9 @@ const Goal: React.FC = () => {
             <button
               type="button"
               onClick={() => {
-                setActiveOverlay(null);
                 setShowRecalculateModal(true);
               }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-emerald-100 text-emerald-600 font-bold text-sm hover:bg-emerald-50 transition-colors"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-emerald-100 text-emerald-600 font-bold text-sm hover:bg-emerald-50 transition-colors underline"
             >
               <Zap size={16} />
               Recalculate calorie goals
