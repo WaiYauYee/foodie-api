@@ -1,9 +1,10 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Flame, Heart, LayoutDashboard, User as UserIcon, Utensils } from "lucide-react";
 import StreakModal from "../components/modals/StreakModal";
 import { useMeals } from "../contexts/MealsContext";
 import { calculateStreak } from "../utils/streak";
+import { useAuth } from "../contexts/AuthContext";
 
 /** Passed to child routes via <Outlet context>; read with useOutletContext. */
 export interface LayoutContext {
@@ -102,6 +103,11 @@ const AppLayout: React.FC = () => {
   const { meals, streakInfo } = useMeals();
   const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
   const openStreakModal = () => setIsStreakModalOpen(true);
+
+  const { setPendingOnboardingData } = useAuth();
+  useEffect(() => {
+    setPendingOnboardingData(null);
+  }, [setPendingOnboardingData]);
 
   return (
     <div className="min-h-screen md:flex-row mx-auto bg-gray-50 relative overflow-x-hidden shadow-2xl">

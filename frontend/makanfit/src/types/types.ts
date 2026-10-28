@@ -247,6 +247,10 @@ export interface AuthResponse {
   userId?: string;
   token?: string;
   user?: User;
+
+  code?: string;
+  verificationRequired?: boolean;
+  email?: string;
 }
 
 export interface LoginResponse extends AuthResponse {

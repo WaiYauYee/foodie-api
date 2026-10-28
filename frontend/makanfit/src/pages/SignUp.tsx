@@ -12,6 +12,7 @@ import { signUp } from "../services/authService";
 import { FaCheck } from "react-icons/fa";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import { useNavigate } from "react-router-dom";
+import VerifyEmailForm from "../components/VerifyEmailForm";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +31,8 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
+
+  const [step, setStep] = useState<"form" | "verify">("form");
 
   // const handleSubmit = (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -103,8 +106,9 @@ const SignUp: React.FC = () => {
         return;
       }
 
-      // Success! Show success screen
-      setIsSuccess(true);
+      // Proceeding
+      setIsLoading(false);
+      setStep("verify"); 
     } catch (err) {
       console.error("SignUp error:", err);
       setError("An unexpected error occurred. Please try again.");
@@ -263,6 +267,12 @@ const SignUp: React.FC = () => {
                 <span>Get Started</span>
               </button>
             </div>
+          ) : step === "verify" ? (
+            <VerifyEmailForm
+              email={formData.email}
+              onVerified={() => setIsSuccess(true)}
+              onBack={() => setStep("form")}
+            />
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* error check */}

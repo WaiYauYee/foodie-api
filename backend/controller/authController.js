@@ -15,6 +15,8 @@ const {
 } = require("../utils/validators");
 const { sendPasswordResetEmail } = require("../utils/mailer");
 const RevokedTokenModel = require("../models/revokedTokenModel");
+const EmailVerificationTokenModel = require("../models/emailVerificationTokenModel");
+const { sendVerificationEmail } = require("../utils/mailer");
 
 const saltRounds = 10;
 
@@ -60,7 +62,7 @@ const toUserDto = (u) => ({
 const signup = async (req, res) => {
 
   try {
-    console.log('Received signup data:', req.body);
+    // console.log('Received signup data:', req.body);
     const { firstName, lastName, email, password, confirmPassword } = req.body;
 
     // 1. VALIDATE INPUT
@@ -80,20 +82,33 @@ const signup = async (req, res) => {
     }
 
     // 2. CHECK IF EMAIL ALREADY EXISTS
-    if (await UserModel.emailExists(email)) {
+    const existing = await UserModel.findSignupAccountByEmail(email);
+    if (existing && existing.email_verified_at) {
       return res.status(409).json({ success: false, message: "Email already registered" });
     }
 
     // 3. HASH PASSWORD
     const passwordHash = await bcrypt.hash(password, saltRounds);
-    const userId = uuidv4();
+    let target;
 
-    await UserModel.create({ userId, email, firstName, lastName, passwordHash });
+    if (existing) {
+      // Abandoned, never-verified signup: safe to overwrite
+      await UserModel.updateUnverifiedSignup(existing.user_id, { firstName, lastName, passwordHash });
+      target = { user_id: existing.user_id, email: existing.email };
+    } else {
+      const userId = uuidv4();
+      await UserModel.create({ userId, email, firstName, lastName, passwordHash });
+      target = { user_id: userId, email };
+    }
+
+    // 4. SEND VERIFICATION CODE
+    await issueVerificationCode(target, req.ip);
 
     return res.status(201).json({
       success: true,
-      message: "Account created successfully",
-      userId,
+      message: "Account created. Please check your email for a verification code.",
+      verificationRequired: true,
+      email,
     });
 
   } catch (error) {
@@ -176,6 +191,16 @@ const login = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
+      });
+    }
+
+    // Avoid user to probe verification status
+    if (!user.email_verified_at) {
+      return res.status(403).json({
+        success: false,
+        code: "EMAIL_NOT_VERIFIED",
+        message: "Please verify your email before logging in.",
+        email: user.email,
       });
     }
 
@@ -521,6 +546,94 @@ const logout = async (req, res) => {
   }
 };
 
+// ---------------- VERIFY EMAIL ON SIGN UP ----------------
+
+// Generates + stores + emails a code. Never throws on mail failure (user can resend).
+const issueVerificationCode = async (user, ip) => {
+  const code = crypto.randomInt(100000, 1000000).toString();
+  await EmailVerificationTokenModel.invalidateAllForUser(user.user_id);
+  await EmailVerificationTokenModel.create({
+    userId: user.user_id,
+    codeHash: hashToken(code),
+    expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    requestedIp: ip,
+  });
+  try {
+    await sendVerificationEmail(user.email, code);
+  } catch (e) {
+    console.error("Send verification email failed:", e);
+  }
+};
+
+const verifyEmail = async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    if (!email || !validateEmail(email))
+      return res.status(400).json({ success: false, message: "Valid email is required" });
+    if (!code || !/^\d{6}$/.test(code))
+      return res.status(400).json({ success: false, message: "Valid 6-digit code is required" });
+
+    const invalid = () =>
+      res.status(400).json({ success: false, message: "Invalid or expired verification code" });
+
+    const user = await UserModel.findSignupAccountByEmail(email);
+    if (!user) return invalid();
+    if (user.email_verified_at)
+      return res.status(200).json({ success: true, message: "Email already verified" });
+
+    const outcome = await withTransaction(async (client) => {
+      const token = await EmailVerificationTokenModel.findLatestActive(user.user_id, client);
+      if (!token) return "INVALID_CODE";
+      if (token.attempts >= 5) return "TOO_MANY_ATTEMPTS";
+
+      if (token.code_hash !== hashToken(code)) {
+        await EmailVerificationTokenModel.incrementAttempts(token.id, client);
+        return "INVALID_CODE";
+      }
+      await UserModel.markEmailVerified(user.user_id, client);
+      await EmailVerificationTokenModel.markUsed(token.id, client);
+      return "OK";
+    });
+
+    if (outcome === "INVALID_CODE") return invalid();
+    if (outcome === "TOO_MANY_ATTEMPTS")
+      return res.status(429).json({
+        success: false,
+        message: "Too many attempts. Please request a new code.",
+      });
+
+    return res.status(200).json({ success: true, message: "Email verified successfully" });
+  } catch (error) {
+    return serverError(res, "Verify Email Error", error);
+  }
+};
+
+const resendVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !validateEmail(email))
+      return res.status(400).json({ success: false, message: "Valid email is required" });
+
+    const generic = () =>
+      res.status(200).json({
+        success: true,
+        message: "If this email needs verification, a new code has been sent.",
+      });
+
+    const user = await UserModel.findSignupAccountByEmail(email);
+    if (!user || user.email_verified_at) return generic();
+
+    const latest = await EmailVerificationTokenModel.findLatestActive(user.user_id);
+    if (latest && Date.now() - new Date(latest.created_at).getTime() < 60 * 1000)
+      return generic(); // 60s server-side cooldown
+
+    await issueVerificationCode(user, req.ip);
+    return generic();
+  } catch (error) {
+    return serverError(res, "Resend Verification Error", error);
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -532,5 +645,7 @@ module.exports = {
   verifyResetCode,
   resetPassword,
   logout,
-  toUserDto
+  toUserDto,
+  verifyEmail,
+  resendVerification
 };

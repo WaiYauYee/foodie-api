@@ -117,9 +117,11 @@ export const login = async (
     const result = (await response.json()) as LoginResponse;
 
     if (!response.ok) {
-      return {
-        success: false,
-        message: result.message || 'Login failed',
+      return { 
+        success: false, 
+        message: result.message || 'Login failed', 
+        code: result.code, 
+        email: result.email 
       };
     }
 
@@ -620,5 +622,33 @@ export const deleteAccount = async (
       success: false,
       message: "Network error. Please try again.",
     };
+  }
+};
+
+export const verifyEmail = async (email: string, code: string): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/verify-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, code }),
+    });
+    return await jsonOrFail(res, 'Invalid or expired verification code');
+  } catch (e) {
+    console.error('Verify Email Error:', e);
+    return { success: false, message: 'Network error. Please try again.' };
+  }
+};
+
+export const resendVerification = async (email: string): Promise<AuthResponse> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/resend-verification`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    return await jsonOrFail(res, 'Failed to resend code');
+  } catch (e) {
+    console.error('Resend Verification Error:', e);
+    return { success: false, message: 'Network error. Please try again.' };
   }
 };

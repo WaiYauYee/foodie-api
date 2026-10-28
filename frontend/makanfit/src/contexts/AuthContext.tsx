@@ -183,7 +183,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         if (res.user) persistUser(res.user);
         localStorage.setItem(KEYS.onboardingDone, "true");
         setHasCompletedOnboarding(true);
-        setPendingOnboardingData(null);
         return "completed";
       } catch (error) {
         console.error("Complete onboarding error:", error);

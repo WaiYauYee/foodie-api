@@ -73,7 +73,7 @@ const UserModel = {
   /** Includes password_hash + is_active for login. Never send this row to the client. */
   async findByEmail(email, db = pool) {
     const { rows } = await db.query(
-      `SELECT ${USER_COLUMNS}, u.password_hash, u.is_active
+      `SELECT ${USER_COLUMNS}, u.password_hash, u.is_active, u.email_verified_at
        ${USER_FROM}
        WHERE u.email = $1 AND u.deleted_at IS NULL`, // email is citext -> already case-insensitive
       [email]
@@ -96,6 +96,17 @@ const UserModel = {
       [email]
     );
     return rows.length > 0;
+  },
+
+  async findSignupAccountByEmail(email, db = pool) {
+    const { rows } = await db.query(
+      `SELECT id AS user_id, email, email_verified_at
+      FROM users
+      WHERE email = $1 AND deleted_at IS NULL`,
+      [email]
+    );
+
+    return rows[0] || null;
   },
 
   /**
@@ -318,6 +329,29 @@ const UserModel = {
     );
     return rows[0] || null;
   },
+
+  async markEmailVerified(userId, db = pool) {
+  const { rowCount } = await db.query(
+    `UPDATE users SET email_verified_at = now()
+     WHERE id = $1 AND deleted_at IS NULL`,
+    [userId]
+  );
+  return rowCount > 0;
+},
+
+/** Re-signup on an email that was never verified: overwrite the abandoned attempt. */
+async updateUnverifiedSignup(userId, { firstName, lastName, passwordHash }, db) {
+  return inTx(db, async (c) => {
+    await c.query(
+      `UPDATE users SET password_hash = $1 WHERE id = $2 AND email_verified_at IS NULL`,
+      [passwordHash, userId]
+    );
+    await c.query(
+      `UPDATE user_profiles SET first_name = $1, last_name = $2 WHERE user_id = $3`,
+      [firstName.trim(), lastName.trim(), userId]
+    );
+  });
+},
 };
 
 module.exports = UserModel;

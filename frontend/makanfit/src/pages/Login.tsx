@@ -1,3 +1,4 @@
+// pages/Login.tsx
 import React, { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, Sparkles, ChevronLeft } from "lucide-react";
 // import MakanFitAvatar from '../components/MakanFitAvatar';
@@ -7,7 +8,7 @@ import {
   resetPassword,
   verifyResetCode,
 } from "../services/authService";
-import OTPInput from "./OTPInput";
+import OTPInput from "../components/otp/OTPInput";
 import { FaCheck } from "react-icons/fa";
 // import { FcGoogle } from "react-icons/fc";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";

@@ -6,7 +6,9 @@ const {
   requestPasswordReset,
   resetPassword,
   logout,
-  verifyResetCode
+  verifyResetCode,
+  verifyEmail,
+  resendVerification
 } = require("../controller/authController");
 const { authenticateToken } = require("../middlewares/authMiddleware");
 const { authLimiter, resetLimiter } = require("../middlewares/rateLimiter");
@@ -24,5 +26,9 @@ router.post("/verify-reset-code", resetLimiter, verifyResetCode);
 
 // Exit (needs a valid session)
 router.post('/logout', authenticateToken, logout);
+
+// verify email and resend code on sign up
+router.post("/verify-email", resetLimiter, verifyEmail);
+router.post("/resend-verification", resetLimiter, resendVerification);
 
 module.exports = router;

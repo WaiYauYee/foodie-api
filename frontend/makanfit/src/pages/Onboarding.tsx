@@ -214,7 +214,7 @@ const Onboarding: React.FC = () => {
                   onClick={() => onComplete(formData)}
                   className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-2xl shadow-xl active:scale-[0.98] transition-all flex items-center justify-center space-x-3 hover:bg-black"
                 >
-                  <span>Continue</span>
+                  <span>Customize</span>
                 </button>
               </div>
             </motion.div>
