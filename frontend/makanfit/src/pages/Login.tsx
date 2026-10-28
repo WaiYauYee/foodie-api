@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, Sparkles, ChevronLeft } from "lucide-react";
 // import MakanFitAvatar from '../components/MakanFitAvatar';
 import {
@@ -34,6 +34,36 @@ const Login: React.FC = () => {
   const [resetToken, setResetToken] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [cooldown, setCooldown] = useState(0);
+  const [info, setInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const t = setTimeout(() => setCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [cooldown]);
+
+  const handleResend = async () => {
+    if (cooldown > 0 || isLoading) return;
+    setError(null);
+    setInfo(null);
+    setResetToken("");
+    setIsLoading(true);
+    try {
+      const result = await requestPasswordReset(resetEmail);
+      if (result.success) {
+        setInfo("A new code has been sent to your email.");
+        setCooldown(60);
+      } else {
+        setError(result.message || "Failed to resend code");
+      }
+    } catch {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const requirements = {
     length: newPassword.length >= 8,
@@ -560,8 +590,7 @@ const Login: React.FC = () => {
                   OTP Verification
                 </h3>
                 <p className="text-gray-400 font-medium leading-relaxed">
-                  Please enter the verification reset code sent to your email,{" "}
-                  <span className="text-gray-900 font-bold">{resetEmail}</span>
+                  Please enter the verification reset code sent to your email
                 </p>
               </div>
 
@@ -583,17 +612,22 @@ const Login: React.FC = () => {
                     "Verify"
                   )}
                 </button>
+
+                {info && (
+                  <p className="text-center text-sm text-emerald-600 font-medium">
+                    {info}
+                  </p>
+                )}
+
                 <p className="text-center text-sm text-gray-400">
                   Didn't get a code?{" "}
                   <button
                     type="button"
-                    onClick={(e) => {
-                      setResetToken("");
-                      handleRequestReset(e);
-                    }}
-                    className="text-emerald-600 font-bold hover:underline"
+                    onClick={handleResend}
+                    disabled={cooldown > 0 || isLoading}
+                    className="text-emerald-600 font-bold hover:underline disabled:text-gray-300 disabled:no-underline"
                   >
-                    Resend
+                    {cooldown > 0 ? `Resend in ${cooldown}s` : "Resend"}
                   </button>
                 </p>
               </form>

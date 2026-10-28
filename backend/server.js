@@ -45,9 +45,9 @@ const userRoute = require("./routes/userRoute");
 const dashboardRouter = require("./routes/dashboardRoute");
 const weightRouter = require("./routes/weightRoute");
 const notificationRoute = require("./routes/notificationRoute");
-const diaryRouter = require("./routes/diaryRoute");
-const mealRouter = require("./routes/mealRoute");
-const waterRouter = require("./routes/waterRoute");
+// const diaryRouter = require("./routes/diaryRoute");
+// const mealRouter = require("./routes/mealRoute");
+// const waterRouter = require("./routes/waterRoute");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -119,13 +119,13 @@ app.use("/api/weight", weightRouter);
 app.use("/api/notifications", notificationRoute);
 
 // user's diary routes
-app.use("/api/diary", diaryRouter);
+// app.use("/api/diary", diaryRouter);
 
 // user's meal routes
-app.use("/api/meals", mealRouter);
+// app.use("/api/meals", mealRouter);
 
 // user's water routes
-app.use("/api/water", waterRouter);
+// app.use("/api/water", waterRouter);
 
 // ============================================
 // FOOD SEGMENTATION
