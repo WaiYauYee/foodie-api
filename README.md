@@ -70,7 +70,7 @@ A preview of MakanFit's user interface, featuring a clean emerald-green design a
 
 PostgreSQL database schema for MakanFit, a food-logging and nutrition-tracking app with AI photo analysis and a gamified virtual pal (Lemmy).
 
-<img width="4267" height="2836" alt="test" src="https://github.com/user-attachments/assets/7de4fa46-54f7-42e6-af57-2e339bec1444" />
+<img width="4267" height="2836" alt="test (1)" src="https://github.com/user-attachments/assets/d2ff34ac-a706-4026-ae11-56ed08d453dc" />
 
 For the database table descriptions, see the [database documentation](docs/DATABASE.md).
 
