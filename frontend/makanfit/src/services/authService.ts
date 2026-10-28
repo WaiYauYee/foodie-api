@@ -431,33 +431,6 @@ export const updateUserProfileGoals = async (
 };
 
 // ============================================
-// VERIFY EMAIL
-// ============================================
-
-/**
- * Check if email is already registered
- * @param email - Email to check
- * @returns Promise with availability status
- */
-export const checkEmailExists = async (email: string): Promise<boolean> => {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/api/auth/check-email?email=${encodeURIComponent(email)}`
-    );
-
-    if (!response.ok) {
-      return false;
-    }
-
-    const result = (await response.json()) as { exists: boolean };
-    return result.exists;
-  } catch (error) {
-    console.error('Check Email Error:', error);
-    return false;
-  }
-};
-
-// ============================================
 // VERIFY TOKEN
 // ============================================
 
