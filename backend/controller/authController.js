@@ -350,19 +350,20 @@ const requestPasswordReset = async (req, res) => {
       });
     }
 
+    const generic = () =>
+      res.status(200).json({
+        success: true,
+        message: "If this email is registered, a reset code has been sent.",
+      });
+
     // 2. FIND USER
     const user = await UserModel.findByEmail(email);
 
     // Email is not registered
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "This email is not registered",
-      });
-    }
+    if (!user) return generic();
 
     // 3. GENERATE 6-DIGIT OTP
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const code = crypto.randomInt(100000, 1000000).toString();
 
     // 4. HASH OTP BEFORE STORING
     const codeHash = hashToken(code);
@@ -385,11 +386,8 @@ const requestPasswordReset = async (req, res) => {
       console.error("Send reset email failed:", mailError);
     }
 
-    // 7. SUCCESS RESPONSE
-    return res.status(200).json({
-      success: true,
-      message: "Password reset code sent to your email",
-    });
+    // 7. GENERIC RESPONSE
+    return generic();
 
   } catch (error) {
     console.error("Request Password Reset Error:", error);
