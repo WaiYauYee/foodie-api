@@ -14,26 +14,9 @@ const {
 } = require("../controller/authController");
 const { changePassword, changeEmail, deleteAccount } = require("../controller/accountController");
 const { authenticateToken, authorizeSelf } = require('../middlewares/authMiddleware');
+const { resetLimiter, sensitiveLimiter } = require("../middlewares/rateLimiter");
 
 const router = express.Router();
-
-const rateLimit = require("express-rate-limit");
-
-const resetLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { success: false, message: "Too many requests. Try again later." },
-});
-
-const sensitiveLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { success: false, message: "Too many attempts. Try again later." },
-});
 
 // Auth routes
 // Public
