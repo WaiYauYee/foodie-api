@@ -13,7 +13,7 @@ PostgreSQL 15+ schema for MakanFit, a calorie / nutrition tracking app with AI f
 
 ## Table of Contents
 
-1. [Identity & Account](#1-identity--account): `users`, `auth_identities`, `sessions`, `password_reset_tokens`, `user_consents`
+1. [Identity & Account](#1-identity--account): `users`, `auth_identities`, `sessions`, `revoked_tokens`, `password_reset_tokens`, `email_verification_tokens`, `user_consents`
 2. [Profile & Goals](#2-profile--goals): `user_profiles`, `user_goals`
 3. [Notifications](#3-notifications): `notification_preferences`, `meal_reminder_times`, `push_devices`
 4. [Body & Hydration Tracking](#4-body--hydration-tracking): `weight_entries`, `water_logs`
@@ -71,6 +71,16 @@ Refresh-token sessions, one per device/login.
 | `expires_at` | timestamptz, NN | Expiry time. |
 | `revoked_at` | timestamptz | Set when logged out / revoked. |
 
+### `revoked_tokens`
+Denylist of revoked access-token IDs (JWT `jti`), so a token can be rejected before it expires (e.g. after logout). Rows can be purged once `expires_at` has passed.
+
+| Column | Type | Description |
+|---|---|---|
+| `jti` | uuid, PK | Unique ID of the revoked token (the JWT `jti` claim). |
+| `user_id` | uuid, FK → `users`, NN | Owning user (cascade delete). |
+| `expires_at` | timestamptz, NN | When the token would have expired naturally; after this the row is safe to purge. Indexed for the cleanup job. |
+| `revoked_at` | timestamptz, NN | When the token was revoked (default `now()`). |
+
 ### `password_reset_tokens`
 Forgot-password flow (request → OTP → reset).
 
@@ -82,6 +92,20 @@ Forgot-password flow (request → OTP → reset).
 | `attempts` | smallint, NN | Wrong-code attempts so far (≥ 0), for rate limiting. |
 | `requested_ip` | inet | IP that requested the reset. |
 | `created_at` | timestamptz, NN | Request time. |
+| `expires_at` | timestamptz, NN | Code expiry. |
+| `used_at` | timestamptz | When the code was successfully used. |
+
+### `email_verification_tokens`
+Email verification flow (signup → OTP → verified). Sets `users.email_verified_at` once the code is used.
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | uuid, PK | Token ID. |
+| `user_id` | uuid, FK → `users`, NN | User verifying their email (cascade delete). |
+| `code_hash` | text, NN | Hash of the verification code (the raw code is never stored). |
+| `attempts` | smallint, NN | Wrong-code attempts so far (≥ 0), for rate limiting. |
+| `requested_ip` | inet | IP that requested the code. |
+| `created_at` | timestamptz, NN | Request time. Indexed with `user_id` (newest first) to fetch the latest code. |
 | `expires_at` | timestamptz, NN | Code expiry. |
 | `used_at` | timestamptz | When the code was successfully used. |
 
