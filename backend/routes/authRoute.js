@@ -1,4 +1,4 @@
-// routes/authRoute.js
+// routes/authRoute.js — Public authentication routes: signup, login, logout, password reset.
 const express = require("express");
 const {
   signup,

@@ -1,4 +1,4 @@
-// routes/weightRoute.js
+// routes/weightRoute.js — Private weight routes: list, add, and delete weight entries.
 const express = require("express");
 const { listWeights, addWeight, deleteWeight } = require("../controller/weightController");
 const { authenticateToken, authorizeSelf } = require("../middlewares/authMiddleware");

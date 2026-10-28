@@ -1,4 +1,4 @@
-// routes/diaryRoute.js
+// routes/diaryRoute.js — Private diary route: get the logged-in user's food diary for a given day.
 const express = require("express");
 const { getDiaryDay } = require("../controller/diaryController");
 const {

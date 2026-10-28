@@ -1,3 +1,4 @@
+// routes/notificationRoute.js — Private notification routes: get and update notification settings.
 const express = require("express");
 const { getNotificationSettings, updateNotificationSettings } = require("../controller/notificationController");
 const { authenticateToken, authorizeSelf } = require("../middlewares/authMiddleware");

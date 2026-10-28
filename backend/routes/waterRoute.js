@@ -1,4 +1,4 @@
-// routes/waterRoute.js
+// routes/waterRoute.js — Private water intake routes: add and reduce water logged in the diary.
 const express = require("express");
 const { addWater, reduceWater } = require("../controller/diaryController");
 const {

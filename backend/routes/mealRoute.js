@@ -1,4 +1,4 @@
-// routes/mealRoute.js
+// routes/mealRoute.js — Private meal routes: create, update, and delete meal entries in the diary.
 const express = require("express");
 const {
   createMeal,
