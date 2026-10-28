@@ -362,6 +362,12 @@ const requestPasswordReset = async (req, res) => {
     // Email is not registered
     if (!user) return generic();
 
+    // Check the 60-second SERVER-SIDE cooldown
+    const latest = await PasswordResetTokenModel.findLatestActive(user.user_id);
+    if (latest && Date.now() - new Date(latest.created_at).getTime() < 60 * 1000) {
+      return generic(); // silently skip; don't send another email
+    }
+
     // 3. GENERATE 6-DIGIT OTP
     const code = crypto.randomInt(100000, 1000000).toString();
 
