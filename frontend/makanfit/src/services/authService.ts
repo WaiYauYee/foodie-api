@@ -170,7 +170,7 @@ export const completeOnboarding = async (
 
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/auth/onboarding/${userId}`,
+      `${API_BASE_URL}/api/users/onboarding/${userId}`,
       {
         method: 'POST',
         headers: {
@@ -313,7 +313,7 @@ export const getUserProfile = async (
 ): Promise<AuthResponse> => {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/auth/profile/${userId}`,
+      `${API_BASE_URL}/api/users/profile/${userId}`,
       {
         method: 'GET',
         headers: getAuthHeaders(),
@@ -355,7 +355,7 @@ export const updateUserProfile = async (
 ): Promise<AuthResponse> => {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/auth/profile/${userId}`,
+      `${API_BASE_URL}/api/users/profile/${userId}`,
       {
         method: 'PUT',
         headers: getAuthHeaders(),
@@ -403,7 +403,7 @@ export const updateUserProfileGoals = async (
 ): Promise<AuthResponse> => {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/auth/profile/${userId}/goals`,
+      `${API_BASE_URL}/api/users/profile/${userId}/goals`,
       {
         method: 'PUT',
         headers: getAuthHeaders(),
@@ -658,7 +658,7 @@ export const changePassword = async (
   confirmPassword: string
 ): Promise<AuthResponse> => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/auth/password/${userId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/users/password/${userId}`, {
       method: 'PUT',
       headers: getAuthHeaders(),
       body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
@@ -676,7 +676,7 @@ export const changeEmail = async (
   email: string,
 ): Promise<AuthResponse> => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/auth/email/${userId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/users/email/${userId}`, {
       method: "PUT",
       headers: getAuthHeaders(),
       body: JSON.stringify({ email }),
@@ -702,7 +702,7 @@ export const deleteAccount = async (
   userId: string,
 ): Promise<AuthResponse> => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/auth/account/${userId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/users/account/${userId}`, {
       method: "DELETE",
       headers: getAuthHeaders(),
     });

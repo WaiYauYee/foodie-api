@@ -23,7 +23,7 @@ const confirmPassword = async (userId, password) => {
   return hash ? bcrypt.compare(password, hash) : false;
 };
 
-// PUT /api/auth/password/:userId   body: { currentPassword, newPassword, confirmPassword }
+// PUT /api/users/password/:userId   body: { currentPassword, newPassword, confirmPassword }
 const changePassword = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -52,7 +52,7 @@ const changePassword = async (req, res) => {
   }
 };
 
-// PUT /api/auth/email/:userId   body: { email, password }
+// PUT /api/users/email/:userId   body: { email, password }
 const changeEmail = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -89,7 +89,7 @@ const changeEmail = async (req, res) => {
   }
 };
 
-// DELETE /api/auth/account/:userId   body: { password }
+// DELETE /api/users/account/:userId   body: { password }
 const deleteAccount = async (req, res) => {
   try {
     const { userId } = req.params;

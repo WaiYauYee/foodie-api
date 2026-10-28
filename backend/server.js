@@ -41,6 +41,7 @@ const fs = require("fs");
 
 // Routes
 const authRoute = require("./routes/authRoute");
+const userRoute = require("./routes/userRoute");
 const dashboardRouter = require("./routes/dashboardRoute");
 const weightRouter = require("./routes/weightRoute");
 const notificationRoute = require("./routes/notificationRoute");
@@ -104,6 +105,9 @@ app.get('/', (req, res) => {
 
 // Auth routes
 app.use("/api/auth", authRoute);
+
+// User routes
+app.use("/api/users", userRoute);
 
 // user's dashboard routes
 app.use("/api/dashboard", dashboardRouter);
