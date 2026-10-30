@@ -82,7 +82,7 @@ const signup = async (req, res) => {
     }
 
     // 2. CHECK IF EMAIL ALREADY EXISTS
-    const existing = await UserModel.findSignupAccountByEmail(email);
+    const existing = await UserModel.findAccountByEmail(email);
     if (existing && existing.email_verified_at) {
       return res.status(409).json({ success: false, message: "Email already registered" });
     }
@@ -382,7 +382,7 @@ const requestPasswordReset = async (req, res) => {
       });
 
     // 2. FIND USER
-    const user = await UserModel.findByEmail(email);
+    const user = await UserModel.findAccountByEmail(email);
 
     // Email is not registered
     if (!user) return generic();
@@ -441,7 +441,7 @@ const verifyResetCode = async (req, res) => {
     const invalid = () =>
       res.status(400).json({ success: false, message: "Invalid or expired reset code" });
 
-    const user = await UserModel.findByEmail(email);
+    const user = await UserModel.findAccountByEmail(email);
     if (!user) return invalid();
 
     const outcome = await withTransaction(async (client) => {
@@ -491,7 +491,7 @@ const resetPassword = async (req, res) => {
     const invalid = () =>
       res.status(400).json({ success: false, message: "Invalid or expired reset code" });
 
-    const user = await UserModel.findByEmail(email);
+    const user = await UserModel.findAccountByEmail(email);
     if (!user) return invalid();
 
     const passwordHash = await bcrypt.hash(newPassword, saltRounds);
@@ -576,7 +576,7 @@ const verifyEmail = async (req, res) => {
     const invalid = () =>
       res.status(400).json({ success: false, message: "Invalid or expired verification code" });
 
-    const user = await UserModel.findSignupAccountByEmail(email);
+    const user = await UserModel.findAccountByEmail(email);
     if (!user) return invalid();
     if (user.email_verified_at)
       return res.status(200).json({ success: true, message: "Email already verified" });
@@ -620,7 +620,7 @@ const resendVerification = async (req, res) => {
         message: "If this email needs verification, a new code has been sent.",
       });
 
-    const user = await UserModel.findSignupAccountByEmail(email);
+    const user = await UserModel.findAccountByEmail(email);
     if (!user || user.email_verified_at) return generic();
 
     const latest = await EmailVerificationTokenModel.findLatestActive(user.user_id);

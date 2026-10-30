@@ -98,7 +98,7 @@ const UserModel = {
     return rows.length > 0;
   },
 
-  async findSignupAccountByEmail(email, db = pool) {
+  async findAccountByEmail(email, db = pool) {
     const { rows } = await db.query(
       `SELECT id AS user_id, email, email_verified_at
       FROM users
