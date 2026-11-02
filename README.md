@@ -204,8 +204,6 @@ The dataset covers 120 Malaysian food categories across Malay, Chinese, Indian a
 
 ### 2. Ingredient Segmentation
 
-<img width="1534" height="770" alt="image" src="https://github.com/user-attachments/assets/0eef9459-2d80-4328-b395-07fd686ad2bd" />
-
 MakanFit uses Grounding DINO and the Segment Anything Model (SAM) through a Grounded SAM pipeline to identify and segment visible food components.
 
 <img width="1737" height="415" alt="level2a" src="https://github.com/user-attachments/assets/7b2a487d-4346-47fe-afd2-6186d04d8336" />
@@ -221,6 +219,8 @@ The pipeline combines:
 The resulting masks and ingredient labels provide information that can be used by the nutritional analysis pipeline.
 
 **Key challenge:** Malaysian dishes often contain overlapping, layered, or visually similar ingredients. Segmentation quality also depends on the text prompts and the visibility of individual components.
+
+<img width="1534" height="770" alt="image" src="https://github.com/user-attachments/assets/0eef9459-2d80-4328-b395-07fd686ad2bd" />
 
 ### 3. Calorie and Macronutrient Estimation
 
