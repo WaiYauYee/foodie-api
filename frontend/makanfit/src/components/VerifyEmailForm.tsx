@@ -76,19 +76,19 @@ const VerifyEmailForm: React.FC<Props> = ({
         {isLoading ? (
           <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
         ) : (
-          "Verify Email"
+          "Verify"
         )}
       </button>
 
-      <div className="flex justify-center items-center gap-1 text-sm text-gray-400">
-        <button type="button" onClick={onBack} className="hover:underline">
+      <div className="flex justify-center items-center gap-1 text-base text-gray-400">
+        <button type="button" onClick={onBack} className="font-medium hover:underline cursor-pointer">
           Wrong email?{" "}
         </button>
         <button
           type="button"
           onClick={handleResend}
           disabled={cooldown > 0}
-          className="text-emerald-600 font-bold hover:underline disabled:text-gray-300 disabled:no-underline"
+          className="text-emerald-600 font-black hover:underline disabled:text-gray-300 disabled:no-underline"
         >
           {cooldown > 0 ? `Resend in ${cooldown}s` : "Resend"}
         </button>
