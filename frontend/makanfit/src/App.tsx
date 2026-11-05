@@ -6,6 +6,8 @@ import { MealsProvider } from "./contexts/MealsContext";
 import { WeightProvider } from "./contexts/WeightContext";
 import { GuestRoute, ProtectedRoute } from "./routes/guards";
 import AppLayout from "./layouts/AppLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import { PasswordResetProvider } from "./contexts/PasswordResetContext";
 
 const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
 const GoalPage = lazy(() => import("./pages/Goal"));
@@ -24,6 +26,9 @@ const PlanBuilderPage = lazy(() => import("./pages/PlanBuilder"));
 const LoginPage = lazy(() => import("./pages/Login"));
 const SignUpPage = lazy(() => import("./pages/SignUp"));
 const TermsOfServicePage = lazy(() => import("./pages/TermOfService"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPassword"));
+const VerifyResetCodePage = lazy(() => import("./pages/VerifyResetCode"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPassword"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -34,8 +39,16 @@ const App: React.FC = () => (
             {/* Logged-out only */}
             <Route element={<GuestRoute />}>
               <Route path="/welcome" element={<WelcomePage />} />
-              <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
+
+              <Route element={<AuthLayout />}>
+                <Route path="/login" element={<LoginPage />} />
+                <Route element={<PasswordResetProvider />}>
+                  <Route path="/request-password-reset" element={<ForgotPasswordPage />} />
+                  <Route path="/verify-reset-code" element={<VerifyResetCodePage />} />
+                  <Route path="/reset-password" element={<ResetPasswordPage />} />
+                </Route>
+              </Route>
             </Route>
 
             {/* Public */}
@@ -52,12 +65,24 @@ const App: React.FC = () => (
                 <Route path="/diary" element={<DiaryPage />} />
                 <Route path="/pal" element={<PalPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/profile/personal-info" element={<PersonalInfoPage />} />
-                <Route path="/profile/account" element={<AccountSettingPage />} />
-                <Route path="/profile/password" element={<ChangePasswordPage />} />
+                <Route
+                  path="/profile/personal-info"
+                  element={<PersonalInfoPage />}
+                />
+                <Route
+                  path="/profile/account"
+                  element={<AccountSettingPage />}
+                />
+                <Route
+                  path="/profile/password"
+                  element={<ChangePasswordPage />}
+                />
                 <Route path="/profile/goal" element={<GoalPage />} />
                 <Route path="/profile/privacy" element={<PrivacyPage />} />
-                <Route path="/profile/notifications" element={<NotificationsPage />} />
+                <Route
+                  path="/profile/notifications"
+                  element={<NotificationsPage />}
+                />
               </Route>
             </Route>
 
