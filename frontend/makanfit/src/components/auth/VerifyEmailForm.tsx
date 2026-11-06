@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import OTPInput from "./otp/OTPInput";
-import { verifyEmail, resendVerification } from "../services/authService";
+import OTPInput from "../otp/OTPInput";
+import { verifyEmail, resendVerification } from "../../services/authService";
 
 interface Props {
   email: string;

@@ -12,7 +12,7 @@ import { signUp } from "../services/authService";
 import { FaCheck } from "react-icons/fa";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import { useNavigate } from "react-router-dom";
-import VerifyEmailForm from "../components/VerifyEmailForm";
+import VerifyEmailForm from "../components/auth/VerifyEmailForm";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
