@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { User } from "../types/types";
-import { ChevronLeft, Check, X, Zap, AlertCircle } from "lucide-react";
+import { ChevronLeft, Check, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import CalorieGoalReminderModal from "../components/modals/CalorieGoalReminderModal";
 
 type FieldErrors = {
   firstName?: string;
@@ -78,7 +79,6 @@ const PersonalInfo: React.FC = () => {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [saving, setSaving] = useState(false);
 
-  const [showGoalReminder, setShowGoalReminder] = useState(false);
   const [goalType, setGoalType] = useState<string | null>(null);
   const [pendingUpdate, setPendingUpdate] = useState<Partial<User> | null>(
     null,
@@ -191,7 +191,6 @@ const PersonalInfo: React.FC = () => {
     // Show the reminder before saving.
     setPendingUpdate(updates);
     setGoalType(changedFields.join(", "));
-    setShowGoalReminder(true);
   };
 
   return (
@@ -339,75 +338,17 @@ const PersonalInfo: React.FC = () => {
         </div>
 
         {/* Calorie Goal Update Modal */}
-        {showGoalReminder && (
-          <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 animate-in fade-in duration-300">
-            <div
-              className="absolute inset-0 bg-[#1A2A33]/80 backdrop-blur-sm"
-              onClick={() => {
-                setShowGoalReminder(false);
-                setPendingUpdate(null);
-              }}
-            />
-
-            <div
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="calorie-goal-title"
-              className="relative bg-white w-full max-w-[340px] rounded-[40px] p-8 flex flex-col items-center text-center shadow-2xl animate-in zoom-in duration-300"
-            >
-              <button
-                onClick={() => {
-                  setShowGoalReminder(false);
-                  setPendingUpdate(null);
-                }}
-                aria-label="Close reminder"
-                className="absolute top-5 right-5 text-gray-400 hover:text-gray-600"
-              >
-                <X size={20} />
-              </button>
-
-              <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-6">
-                <Zap className="text-emerald-500" size={40} />
-              </div>
-
-              <h3
-                id="calorie-goal-title"
-                className="text-xl font-black text-[#1A2A33] tracking-tight mb-4"
-              >
-                Calorie Goal Update
-              </h3>
-
-              <p className="text-gray-400 font-bold leading-relaxed mb-8 text-sm">
-                Modifying your{" "}
-                <span className="text-emerald-600 font-black">{goalType}</span>{" "}
-                may affect your target calories. Would you like to update them?
-              </p>
-
-              <button
-                onClick={async () => {
-                  if (!pendingUpdate) return;
-                  const ok = await updateUser(pendingUpdate);
-                  setShowGoalReminder(false);
-                  setPendingUpdate(null);
-                  if (ok) onBack();
-                }}
-                className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-[24px] shadow-xl active:scale-[0.95] transition-all uppercase text-xs tracking-[0.2em]"
-              >
-                Update
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowGoalReminder(false);
-                  setPendingUpdate(null);
-                }}
-                className="mt-4 text-gray-400 font-black uppercase text-[10px] tracking-widest hover:text-gray-600"
-              >
-                Keep Existing Target
-              </button>
-            </div>
-          </div>
-        )}
+        <CalorieGoalReminderModal
+          open={!!pendingUpdate}
+          changedFields={goalType ?? ""}
+          isLoading={saving}
+          onConfirm={async () => {
+            if (!pendingUpdate) return;
+            await saveUpdates(pendingUpdate); // saves, navigates back, or shows the error
+            setPendingUpdate(null);
+          }}
+          onCancel={() => setPendingUpdate(null)}
+        />
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import CalorieGoalReminderModal from "../components/modals/CalorieGoalReminderModal";
 
 interface SelectionOption {
   id: string;
@@ -43,11 +44,11 @@ const Goal: React.FC = () => {
   const [tempGoalWeight, setTempGoalWeight] = useState(
     user.goalWeight?.toString(),
   );
-  const [showGoalReminder, setShowGoalReminder] = useState(false);
-  const [reminderConfirmHandler, setReminderConfirmHandler] = useState<
-    (() => void) | null
-  >(null);
-  const [goalType, setGoalType] = useState<string | null>(null);
+
+  const [pendingGoal, setPendingGoal] = useState<{
+    update: Partial<Users>;
+    label: string;
+  } | null>(null);
 
   const [tempWater, setTempWater] = useState(
     (user.targetWater ?? 2000).toString(),
@@ -57,16 +58,8 @@ const Goal: React.FC = () => {
 
   const handleGoalChangeWithReminder = (
     update: Partial<Users>,
-    type: string,
-  ) => {
-    setGoalType(type);
-    setShowGoalReminder(true);
-    const handleConfirmReminder = () => {
-      onSave(update);
-      setShowGoalReminder(false);
-    };
-    setReminderConfirmHandler(() => handleConfirmReminder);
-  };
+    label: string,
+  ) => setPendingGoal({ update, label });
 
   // States for macro inputs
   const [tempMacros, setTempMacros] = useState({
@@ -866,40 +859,15 @@ const Goal: React.FC = () => {
       {activeOverlay === "customMacroInput" && <CustomMacroOverlay />}
 
       {/* Goal Reminder Modal */}
-      {showGoalReminder && (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 animate-in fade-in duration-300">
-          <div
-            className="absolute inset-0 bg-[#1A2A33]/80 backdrop-blur-sm"
-            onClick={() => setShowGoalReminder(false)}
-          />
-          <div className="relative bg-white w-full max-w-[340px] rounded-[48px] p-10 flex flex-col items-center text-center shadow-2xl animate-in zoom-in duration-300">
-            <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-6">
-              <Zap className="text-emerald-500" size={40} />
-            </div>
-            <h3 className="text-2xl font-black text-[#1A2A33] tracking-tight mb-4 text-sm tracking-widest">
-              Calorie Goal Update
-            </h3>
-            <p className="text-gray-400 font-bold leading-relaxed mb-8 text-sm">
-              Modifying your{" "}
-              <span className="text-emerald-600 font-black">{goalType}</span>{" "}
-              recalculates your target calories. Would you like us to adjust
-              them for you?
-            </p>
-            <button
-              onClick={() => reminderConfirmHandler?.()}
-              className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-[28px] shadow-xl active:scale-[0.95] transition-all uppercase text-xs tracking-[0.2em]"
-            >
-              Update
-            </button>
-            <button
-              onClick={() => setShowGoalReminder(false)}
-              className="mt-4 text-gray-400 font-black uppercase text-[10px] tracking-widest hover:text-gray-600"
-            >
-              Keep Existing Target
-            </button>
-          </div>
-        </div>
-      )}
+      <CalorieGoalReminderModal
+        open={!!pendingGoal}
+        changedFields={pendingGoal?.label ?? ""}
+        onConfirm={() => {
+          if (pendingGoal) onSave(pendingGoal.update);
+          setPendingGoal(null);
+        }}
+        onCancel={() => setPendingGoal(null)}
+      />
 
       {showRecalculateModal && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
