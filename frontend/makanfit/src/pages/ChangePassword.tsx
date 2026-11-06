@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AlertCircle, ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { changePassword } from "../services/authService";
-import { validatePassword } from "../utils/validators";
+import { validatePassword, validateConfirmPassword } from "../utils/validators";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -91,14 +91,16 @@ const ChangePassword: React.FC = () => {
     }
 
     const passwordValidation = validatePassword(newPassword);
-    if (!passwordValidation.valid) {
-      newErrors.new = passwordValidation.message!;
+    if (!passwordValidation.isValid) {
+      newErrors.new = passwordValidation.error;
     }
 
-    if (!confirmPassword) {
-      newErrors.confirm = "Please confirm your new password";
-    } else if (newPassword !== confirmPassword) {
-      newErrors.confirm = "Passwords do not match";
+    const confirmValidation = validateConfirmPassword(
+      newPassword,
+      confirmPassword,
+    );
+    if (!confirmValidation.isValid) {
+      newErrors.confirm = confirmValidation.error;
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -154,7 +156,7 @@ const ChangePassword: React.FC = () => {
               Choose a strong new password to keep your account secure.
             </p>
           </div>
-          
+
           <PasswordField
             label="Current Password"
             placeholder="Enter current password"
