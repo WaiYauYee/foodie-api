@@ -8,6 +8,7 @@ import { GuestRoute, ProtectedRoute } from "./routes/guards";
 import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import { PasswordResetProvider } from "./contexts/PasswordResetContext";
+import { EmailVerificationProvider } from "./contexts/EmailVerificationContext";
 
 const PersonalInfoPage = lazy(() => import("./pages/PersonalInfo"));
 const GoalPage = lazy(() => import("./pages/Goal"));
@@ -29,6 +30,7 @@ const TermsOfServicePage = lazy(() => import("./pages/TermOfService"));
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPassword"));
 const VerifyResetCodePage = lazy(() => import("./pages/VerifyResetCode"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPassword"));
+const VerifyEmailPage = lazy(() => import("./pages/VerifyEmail"));
 
 const App: React.FC = () => (
   <AuthProvider>
@@ -39,14 +41,19 @@ const App: React.FC = () => (
             {/* Logged-out only */}
             <Route element={<GuestRoute />}>
               <Route path="/welcome" element={<WelcomePage />} />
-              <Route path="/signup" element={<SignUpPage />} />
 
-              <Route element={<AuthLayout />}>
-                <Route path="/login" element={<LoginPage />} />
-                <Route element={<PasswordResetProvider />}>
-                  <Route path="/request-password-reset" element={<ForgotPasswordPage />} />
-                  <Route path="/verify-reset-code" element={<VerifyResetCodePage />} />
-                  <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route element={<EmailVerificationProvider />}>
+                <Route path="/signup" element={<SignUpPage />} />
+
+                <Route element={<AuthLayout />}>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/verify-email" element={<VerifyEmailPage />} />
+
+                  <Route element={<PasswordResetProvider />}>
+                    <Route path="/request-password-reset" element={<ForgotPasswordPage />} />
+                    <Route path="/verify-reset-code" element={<VerifyResetCodePage />} />
+                    <Route path="/reset-password" element={<ResetPasswordPage />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

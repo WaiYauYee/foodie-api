@@ -5,10 +5,12 @@ import { login } from "../services/authService";
 import { useAuth } from "../contexts/AuthContext";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import ErrorToast from "../components/modals/ErrorToast";
+import { useEmailVerification } from "../contexts/EmailVerificationContext";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { login: startSession } = useAuth();
+  const { start: startVerification } = useEmailVerification();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +30,9 @@ const Login: React.FC = () => {
         // authService stored user + token in localStorage; sync the context, then enter the app
         await startSession();
         navigate("/", { replace: true });
+      } else if (result.code === "EMAIL_NOT_VERIFIED" && result.email) {
+        startVerification({ email: result.email, source: "login" });
+        navigate("/verify-email");
       } else {
         setError(result.message || "Invalid email or password");
       }

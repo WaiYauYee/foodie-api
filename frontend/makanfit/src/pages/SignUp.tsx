@@ -1,52 +1,29 @@
 import React, { useState } from "react";
-import {
-  Eye,
-  EyeOff,
-  Mail,
-  Lock,
-  User,
-  CheckCircle2,
-} from "lucide-react";
-import Mascot from "../components/mascot/Mascot";
+import { Eye, EyeOff, Mail, Lock, User, CheckCircle2 } from "lucide-react";
 import { signUp } from "../services/authService";
 import { FaCheck } from "react-icons/fa";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import { useNavigate } from "react-router-dom";
-import VerifyEmailForm from "../components/auth/VerifyEmailForm";
+import { useEmailVerification } from "../contexts/EmailVerificationContext";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
+  const { pending, start } = useEmailVerification();
 
   // const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: pending?.source === "signup" ? (pending.firstName ?? "") : "",
+    lastName: pending?.source === "signup" ? (pending.lastName ?? "") : "",
+    email: pending?.source === "signup" ? pending.email : "",
     password: "",
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
-
-  const [step, setStep] = useState<"form" | "verify">("form");
-
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   // Simulate signup process
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //     setIsSuccess(true);
-  //     // Wait for 2 seconds to show success before redirecting to login
-  //     setTimeout(() => {
-  //       onSignUp();
-  //     }, 3000);
-  //   }, 1500);
-  // };
 
   // ============================================
   // HANDLE INPUT CHANGE
@@ -108,7 +85,13 @@ const SignUp: React.FC = () => {
 
       // Proceeding
       setIsLoading(false);
-      setStep("verify"); 
+      start({
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        source: "signup",
+      });
+      navigate("/verify-email");
     } catch (err) {
       console.error("SignUp error:", err);
       setError("An unexpected error occurred. Please try again.");
@@ -189,94 +172,31 @@ const SignUp: React.FC = () => {
             </button>
           )} */}
 
-          {!isSuccess && (
-            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-5 mb-8 text-center md:text-left">
-              {/* Signup Icon */}
-              <div className="flex justify-center md:justify-start shrink-0">
-                <StoryCategoryIcon
-                  type="signup"
-                  size={80}
-                  className="!w-16 !h-16 !rounded-full shadow-md"
-                />
-              </div>
-
-              {/* Heading */}
-              <div className="space-y-2">
-                <h3 className="text-3xl font-black text-gray-900 tracking-tight">
-                  Create Account
-                </h3>
-
-                <p className="text-gray-400 font-medium">
-                  Join us and start tracking your makan today!
-                </p>
-              </div>
+          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-5 mb-8 text-center md:text-left">
+            {/* Signup Icon */}
+            <div className="flex justify-center md:justify-start shrink-0">
+              <StoryCategoryIcon
+                type="signup"
+                size={80}
+                className="!w-16 !h-16 !rounded-full shadow-md"
+              />
             </div>
-          )}
 
-          {isSuccess ? (
-            <div className="animate-in zoom-in fade-in duration-500 flex flex-col items-center text-center py-6">
-              {/* Avatar with soft rings + check badge */}
-              <div className="relative mb-8">
-                {/* Soft rings behind the mascot */}
-                <div className="absolute inset-x-2 top-8 bottom-4 rounded-full bg-emerald-100/60 animate-pulse" />
-                <div className="absolute -inset-x-2 top-4 -bottom-2 rounded-full bg-emerald-50/60" />
+            {/* Heading */}
+            <div className="space-y-2">
+              <h3 className="text-3xl font-black text-gray-900 tracking-tight">
+                Create Account
+              </h3>
 
-                {/* Mascot only, no square */}
-                <Mascot animationState="idle" className="relative w-32 h-40" />
-
-                {/* Check badge */}
-                {/* <div className="absolute bottom-2 right-0 w-11 h-11 bg-emerald-500 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-40">
-                  <FaCheck className="text-white text-sm" />
-                </div> */}
-              </div>
-
-              {/* Message */}
-              <div className="space-y-3 mb-8">
-                <h4 className="text-3xl font-black text-gray-900 tracking-tight">
-                  Welcome, {formData.firstName}!
-                </h4>
-                <p className="text-gray-500 font-medium leading-relaxed max-w-[300px] mx-auto">
-                  Your account has been created successfully. You're all set to
-                  start tracking your makan.
-                </p>
-              </div>
-
-              {/* Account summary card */}
-              <div className="w-full bg-emerald-50/60 border border-emerald-100 rounded-2xl p-4 mb-8 flex items-center space-x-4 text-left">
-                <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center text-white font-black text-lg flex-shrink-0">
-                  {formData.firstName.charAt(0).toUpperCase()}
-                  {formData.lastName.charAt(0).toUpperCase()}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-bold text-gray-900 truncate">
-                    {formData.firstName} {formData.lastName}
-                  </p>
-                  <p className="text-sm text-gray-500 font-medium truncate">
-                    {formData.email}
-                  </p>
-                </div>
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 flex-shrink-0 ml-auto" />
-              </div>
-
-              {/* CTA */}
-              <button
-                type="button"
-                onClick={() => navigate("/login")}
-                className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
-              >
-                <span>Get Started</span>
-              </button>
+              <p className="text-gray-400 font-medium">
+                Join us and start tracking your makan today!
+              </p>
             </div>
-          ) : step === "verify" ? (
-            <VerifyEmailForm
-              email={formData.email}
-              onVerified={() => setIsSuccess(true)}
-              onBack={() => setStep("form")}
-            />
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* error check */}
-              {/* {error && (
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* error check */}
+            {/* {error && (
               <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded">
                 <div className="flex">
                   <div className="flex-shrink-0">
@@ -290,232 +210,225 @@ const SignUp: React.FC = () => {
                 </div>
               </div>
             )} */}
-              {/* error check */}
-              {error && (
-                <div className="fixed top-4 right-4 max-w-sm z-50 p-4 bg-red-50 border-l-4 border-red-500 rounded shadow-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="flex-shrink-0">
-                      <svg
-                        className="h-5 w-5 text-red-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <p className="text-sm font-medium text-red-800 flex-1">
-                      {error}
-                    </p>
-                    <button
-                      onClick={() => setError(null)}
-                      className="text-red-500 hover:text-red-700 transition-colors flex-shrink-0"
+            {/* error check */}
+            {error && (
+              <div className="fixed top-4 right-4 max-w-sm z-50 p-4 bg-red-50 border-l-4 border-red-500 rounded shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0">
+                    <svg
+                      className="h-5 w-5 text-red-500"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
                     >
-                      ✕
-                    </button>
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
                   </div>
+                  <p className="text-sm font-medium text-red-800 flex-1">
+                    {error}
+                  </p>
+                  <button
+                    onClick={() => setError(null)}
+                    className="text-red-500 hover:text-red-700 transition-colors flex-shrink-0"
+                  >
+                    ✕
+                  </button>
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* Name Fields - Side by Side */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="relative group">
-                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                    <User size={20} />
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={(e) =>
-                      handleInputChange("firstName", e.target.value)
-                    }
-                    className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
-                  />
+            {/* Name Fields - Side by Side */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="relative group">
+                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                  <User size={20} />
                 </div>
-
-                <div className="relative group">
-                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                    <User size={20} />
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={(e) =>
-                      handleInputChange("lastName", e.target.value)
-                    }
-                    className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
-                  />
-                </div>
+                <input
+                  type="text"
+                  required
+                  placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    handleInputChange("firstName", e.target.value)
+                  }
+                  className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
+                />
               </div>
 
               <div className="relative group">
                 <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                  <Mail size={20} />
+                  <User size={20} />
                 </div>
                 <input
-                  type="email"
+                  type="text"
                   required
-                  placeholder="Email address"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "email" ? "border-red-500" : "border-gray-100"}`}
+                  placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={(e) =>
+                    handleInputChange("lastName", e.target.value)
+                  }
+                  className="w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-4 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-400"
                 />
               </div>
+            </div>
 
-              <div className="space-y-3">
-                <div className="relative group">
-                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
-                    <Lock size={20} />
-                  </div>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={(e) =>
-                      handleInputChange("password", e.target.value)
-                    }
-                    className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "password" ? "border-red-500" : "border-gray-100"}`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {/* Password Requirement Checklist */}
-                {formData.password &&
-                  !(
-                    requirements.length &&
-                    requirements.uppercase &&
-                    requirements.number
-                  ) && (
-                    <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
-                      <span>
-                        {requirements.length &&
-                          requirements.uppercase &&
-                          requirements.number && (
-                            <FaCheck className="text-emerald-500 inline mr-1" />
-                          )}
-                        Password must be at least{" "}
-                        <span
-                          className={
-                            requirements.length
-                              ? "text-emerald-500 font-bold"
-                              : ""
-                          }
-                        >
-                          8+ characters
-                        </span>
-                        , include{" "}
-                        <span
-                          className={
-                            requirements.uppercase
-                              ? "text-emerald-500 font-bold"
-                              : ""
-                          }
-                        >
-                          one uppercase letter
-                        </span>
-                        , and{" "}
-                        <span
-                          className={
-                            requirements.number
-                              ? "text-emerald-500 font-bold"
-                              : ""
-                          }
-                        >
-                          one number
-                        </span>
-                        .
-                      </span>
-                    </div>
-                  )}
+            <div className="relative group">
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                <Mail size={20} />
               </div>
+              <input
+                type="email"
+                required
+                placeholder="Email address"
+                value={formData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-6 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "email" ? "border-red-500" : "border-gray-100"}`}
+              />
+            </div>
 
+            <div className="space-y-3">
               <div className="relative group">
                 <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
                   <Lock size={20} />
                 </div>
                 <input
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showPassword ? "text" : "password"}
                   required
-                  placeholder="Confirm Password"
-                  value={formData.confirmPassword}
+                  placeholder="Password"
+                  value={formData.password}
                   onChange={(e) =>
-                    handleInputChange("confirmPassword", e.target.value)
+                    handleInputChange("password", e.target.value)
                   }
-                  className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "confirmPassword" ? "border-red-500" : "border-gray-100"}`}
+                  className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "password" ? "border-red-500" : "border-gray-100"}`}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-
-              <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
-                By signing up, you agree to our{" "}
-                <button
-                  type="button"
-                  onClick={() => navigate("/terms")}
-                  className="text-gray-400 font-bold hover:underline"
-                >
-                  Terms of Service
-                </button>{" "}
-                and{" "}
-                <button
-                  type="button"
-                  onClick={() => navigate("/privacy")}
-                  className="text-gray-400 font-bold hover:underline"
-                >
-                  Privacy Policy
-                </button>
-                .
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3 disabled:opacity-70"
-              >
-                {isLoading ? (
-                  <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <span>Create Account</span>
-                  </>
+              {/* Password Requirement Checklist */}
+              {formData.password &&
+                !(
+                  requirements.length &&
+                  requirements.uppercase &&
+                  requirements.number
+                ) && (
+                  <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
+                    <span>
+                      {requirements.length &&
+                        requirements.uppercase &&
+                        requirements.number && (
+                          <FaCheck className="text-emerald-500 inline mr-1" />
+                        )}
+                      Password must be at least{" "}
+                      <span
+                        className={
+                          requirements.length
+                            ? "text-emerald-500 font-bold"
+                            : ""
+                        }
+                      >
+                        8+ characters
+                      </span>
+                      , include{" "}
+                      <span
+                        className={
+                          requirements.uppercase
+                            ? "text-emerald-500 font-bold"
+                            : ""
+                        }
+                      >
+                        one uppercase letter
+                      </span>
+                      , and{" "}
+                      <span
+                        className={
+                          requirements.number
+                            ? "text-emerald-500 font-bold"
+                            : ""
+                        }
+                      >
+                        one number
+                      </span>
+                      .
+                    </span>
+                  </div>
                 )}
-              </button>
-            </form>
-          )}
+            </div>
 
-          {!isSuccess && (
-            <p className="mt-10 text-center text-gray-400 font-medium">
-              Already have an account?{" "}
+            <div className="relative group">
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                <Lock size={20} />
+              </div>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                required
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  handleInputChange("confirmPassword", e.target.value)
+                }
+                className={`w-full bg-gray-50 md:bg-gray-100/50 border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-14 text-gray-800 font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all ${error && fieldError === "confirmPassword" ? "border-red-500" : "border-gray-100"}`}
+              />
               <button
-                onClick={() => navigate("/login")}
-                className="text-emerald-600 font-black hover:underline"
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               >
-                Log In
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
-            </p>
-          )}
+            </div>
+
+            <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
+              By signing up, you agree to our{" "}
+              <button
+                type="button"
+                onClick={() => navigate("/terms")}
+                className="text-gray-400 font-bold hover:underline"
+              >
+                Terms of Service
+              </button>{" "}
+              and{" "}
+              <button
+                type="button"
+                onClick={() => navigate("/privacy")}
+                className="text-gray-400 font-bold hover:underline"
+              >
+                Privacy Policy
+              </button>
+              .
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-[#1A2A33] text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center space-x-3 disabled:opacity-70"
+            >
+              {isLoading ? (
+                <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>
+                  <span>Create Account</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          <p className="mt-10 text-center text-gray-400 font-medium">
+            Already have an account?{" "}
+            <button
+              onClick={() => navigate("/login")}
+              className="text-emerald-600 font-black hover:underline"
+            >
+              Log In
+            </button>
+          </p>
         </div>
       </div>
     </div>
