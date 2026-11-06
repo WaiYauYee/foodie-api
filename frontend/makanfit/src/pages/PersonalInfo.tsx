@@ -4,6 +4,11 @@ import { ChevronLeft, Check, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import CalorieGoalReminderModal from "../components/modals/CalorieGoalReminderModal";
+import {
+  validateName,
+  validateHeight,
+  validateBirthDate,
+} from "../utils/validators";
 
 type FieldErrors = {
   firstName?: string;
@@ -91,37 +96,17 @@ const PersonalInfo: React.FC = () => {
   const validate = (): FieldErrors => {
     const e: FieldErrors = {};
 
-    if (!String(firstName ?? "").trim()) {
-      e.firstName = "Please enter your first name";
-    }
+    const first = validateName(firstName, "first name");
+    if (!first.isValid) e.firstName = first.error;
 
-    if (!String(lastName ?? "").trim()) {
-      e.lastName = "Please enter your last name";
-    }
+    const last = validateName(lastName, "last name");
+    if (!last.isValid) e.lastName = last.error;
 
-    const h = Number(heightCm);
-    if (heightCm == null || !Number.isFinite(h)) {
-      e.height = "Please enter your height";
-    } else if (h < 50 || h > 250) {
-      e.height = "Height must be between 50 and 250 cm";
-    }
+    const height = validateHeight(heightCm);
+    if (!height.isValid) e.height = height.error;
 
-    if (!birthDate) {
-      e.birthDate = "Please select your date of birth";
-    } else {
-      const d = new Date(birthDate as any);
-      const now = new Date();
-      const oldest = new Date();
-      oldest.setFullYear(now.getFullYear() - 120);
-
-      if (isNaN(d.getTime())) {
-        e.birthDate = "Please enter a valid date";
-      } else if (d > now) {
-        e.birthDate = "Date of birth can't be in the future";
-      } else if (d < oldest) {
-        e.birthDate = "Please enter a valid date of birth";
-      }
-    }
+    const birth = validateBirthDate(birthDate);
+    if (!birth.isValid) e.birthDate = birth.error;
 
     return e;
   };
