@@ -5,6 +5,8 @@ import { FaCheck } from "react-icons/fa";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import { useNavigate } from "react-router-dom";
 import { useEmailVerification } from "../contexts/EmailVerificationContext";
+import { validateTerms } from "../utils/validators";
+import TermsCheckbox from "../components/auth/TermsCheckbox";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -25,6 +27,9 @@ const SignUp: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
 
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState<string | null>(null);
+
   // ============================================
   // HANDLE INPUT CHANGE
   // ============================================
@@ -41,6 +46,14 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     setError(null);
     setFieldError(null);
+
+    const terms = validateTerms(acceptedTerms);
+    if (!terms.isValid) {
+      setTermsError(terms.error!);
+      return;
+    }
+    setTermsError(null);
+
     setIsLoading(true);
 
     try {
@@ -385,25 +398,14 @@ const SignUp: React.FC = () => {
               </button>
             </div>
 
-            <div className="px-1 text-xs text-gray-400 leading-relaxed font-medium">
-              By signing up, you agree to our{" "}
-              <button
-                type="button"
-                onClick={() => navigate("/terms")}
-                className="text-gray-400 font-bold hover:underline"
-              >
-                Terms of Service
-              </button>{" "}
-              and{" "}
-              <button
-                type="button"
-                onClick={() => navigate("/privacy")}
-                className="text-gray-400 font-bold hover:underline"
-              >
-                Privacy Policy
-              </button>
-              .
-            </div>
+            <TermsCheckbox
+              checked={acceptedTerms}
+              onChange={(v) => {
+                setAcceptedTerms(v);
+                if (v) setTermsError(null);
+              }}
+              error={termsError}
+            />
 
             <button
               type="submit"

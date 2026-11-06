@@ -6,6 +6,8 @@ import { useAuth } from "../contexts/AuthContext";
 import StoryCategoryIcon from "../components/icons/StoryCategoryIcon";
 import ErrorToast from "../components/modals/ErrorToast";
 import { useEmailVerification } from "../contexts/EmailVerificationContext";
+import { validateTerms } from "../utils/validators";
+import TermsCheckbox from "../components/auth/TermsCheckbox";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -18,10 +20,21 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError(null);
+
+    const terms = validateTerms(acceptedTerms);
+    if (!terms.isValid) {
+      setTermsError(terms.error!);
+      return;
+    }
+    setTermsError(null);
+
+    setIsLoading(true);
 
     try {
       const result = await login(email, password);
@@ -122,6 +135,15 @@ const Login: React.FC = () => {
           </button>
         </div>
 
+        <TermsCheckbox
+          checked={acceptedTerms}
+          onChange={(v) => {
+            setAcceptedTerms(v);
+            if (v) setTermsError(null);
+          }}
+          error={termsError}
+        />
+
         <button
           type="submit"
           disabled={isLoading}
@@ -145,25 +167,6 @@ const Login: React.FC = () => {
           Sign Up
         </button>
       </p>
-
-      <div className="pt-6 text-center text-xs text-gray-400">
-        <span>By continuing, you agree to MakanFit's </span>
-        <button
-          type="button"
-          onClick={() => navigate("/terms")}
-          className="text-gray-400 font-bold hover:underline"
-        >
-          Terms of Service
-        </button>
-        <span> & </span>
-        <button
-          type="button"
-          onClick={() => navigate("/privacy")}
-          className="text-gray-400 font-bold hover:underline"
-        >
-          Privacy Policy
-        </button>
-      </div>
     </div>
   );
 };
