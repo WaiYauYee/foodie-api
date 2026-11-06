@@ -6,6 +6,7 @@ import {
   Trash2,
   X,
   ChevronLeft,
+  AlertCircle,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -134,21 +135,33 @@ const AccountSetting: React.FC = () => {
               <input
                 type="email"
                 value={emailValue}
-                onChange={(e) => setEmailValue(e.target.value)}
-                className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 font-semibold text-slate-900 focus:border-emerald-500 focus:outline-none transition-all text-sm"
+                onChange={(e) => {
+                  setEmailValue(e.target.value);
+                  if (emailError) setEmailError("");
+                }}
+                aria-invalid={!!emailError}
+                className={`w-full bg-slate-50 border-2 rounded-2xl px-5 py-4 font-semibold text-slate-900 focus:outline-none transition-all text-sm ${
+                  emailError
+                    ? "border-rose-300 focus:border-rose-500"
+                    : "border-slate-100 focus:border-emerald-500"
+                }`}
                 placeholder="Enter your email"
               />
-              <Mail className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 w-5 h-5" />
+              <Mail className={`absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 w-5 h-5 ${
+                  emailError ? "text-rose-300" : "text-slate-300"
+                }`} />
             </div>
+            {emailError && (
+              <p
+                role="alert"
+                aria-live="polite"
+                className="px-1 flex items-start gap-1.5 text-sm font-semibold text-rose-600 animate-in fade-in slide-in-from-top-1 duration-200"
+              >
+                <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                <span>{emailError}</span>
+              </p>
+            )}
           </div>
-
-          {emailError && (
-            <ErrorAlert
-              title="Unable to update email"
-              message={emailError}
-              onDismiss={() => setEmailError("")}
-            />
-          )}
 
           <button
             onClick={handleSaveEmail}
