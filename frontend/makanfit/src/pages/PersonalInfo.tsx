@@ -18,6 +18,13 @@ type FieldErrors = {
   general?: string;
 };
 
+const getToday = () => {
+  const d = new Date();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${month}-${day}`;
+};
+
 const InputField = ({
   label,
   value,
@@ -26,6 +33,7 @@ const InputField = ({
   type = "text",
   icon: Icon,
   error,
+  max,
 }: any) => (
   <div className="relative w-full group">
     <label className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] px-2 mb-2 block">
@@ -37,6 +45,7 @@ const InputField = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        max={max}
         aria-invalid={!!error}
         className={`w-full bg-slate-100 shadow-sm border-2 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none transition-all placeholder:text-gray-300 appearance-none ${
           error
@@ -296,6 +305,7 @@ const PersonalInfo: React.FC = () => {
                   clearError("birthDate");
                 }}
                 type="date"
+                max={getToday()}
                 error={errors.birthDate}
               />
             </div>
