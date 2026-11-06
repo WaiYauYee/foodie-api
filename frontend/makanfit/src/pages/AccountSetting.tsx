@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { validateEmailChange } from "../utils/validators";
 
 const ErrorAlert = ({
   title,
@@ -64,13 +65,9 @@ const AccountSetting: React.FC = () => {
   const handleSaveEmail = async () => {
     setEmailError("");
 
-    if (!emailValue.trim()) {
-      setEmailError("Please enter your email address.");
-      return;
-    }
-
-    if (emailValue.trim().toLowerCase() === user.email.toLowerCase()) {
-      setEmailError("Your new email is the same as your current email.");
+    const { isValid, error } = validateEmailChange(emailValue, user.email);
+    if (!isValid) {
+      setEmailError(error!);
       return;
     }
 
@@ -147,9 +144,11 @@ const AccountSetting: React.FC = () => {
                 }`}
                 placeholder="Enter your email"
               />
-              <Mail className={`absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 w-5 h-5 ${
+              <Mail
+                className={`absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 w-5 h-5 ${
                   emailError ? "text-rose-300" : "text-slate-300"
-                }`} />
+                }`}
+              />
             </div>
             {emailError && (
               <p
