@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { AlertCircle, ChevronLeft, Eye, EyeOff, X } from "lucide-react";
+import { AlertCircle, ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { changePassword } from "../services/authService";
 import { validatePassword } from "../utils/validators";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+
+type FieldErrors = {
+  current?: string;
+  new?: string;
+  confirm?: string;
+  general?: string;
+};
 
 const PasswordField = ({
   label,
@@ -12,6 +19,7 @@ const PasswordField = ({
   onChange,
   show,
   setShow,
+  error,
 }: any) => (
   <div className="relative w-full">
     {label && (
@@ -25,7 +33,13 @@ const PasswordField = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-slate-100 border-2 border-gray-100 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none focus:border-emerald-500 focus:bg-white transition-all placeholder:text-gray-300 appearance-none"
+        aria-invalid={!!error}
+        className={`w-full bg-slate-100 border-2 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none focus:bg-white transition-all placeholder:text-gray-300 appearance-none
+          ${
+            error
+              ? "border-rose-300 focus:border-rose-500"
+              : "border-gray-100 focus:border-emerald-500"
+          }`}
       />
       <button
         type="button"
@@ -35,6 +49,16 @@ const PasswordField = ({
         {show ? <EyeOff size={22} /> : <Eye size={22} />}
       </button>
     </div>
+    {error && (
+      <p
+        role="alert"
+        aria-live="polite"
+        className="mt-2 px-2 flex items-start gap-1.5 text-sm font-semibold text-rose-600 animate-in fade-in slide-in-from-top-1 duration-200"
+      >
+        <AlertCircle size={16} className="mt-0.5 shrink-0" />
+        <span>{error}</span>
+      </p>
+    )}
   </div>
 );
 
@@ -46,32 +70,43 @@ const ChangePassword: React.FC = () => {
 
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showCurrent, setShowCurrent] = useState(false);
 
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [showCurrent, setShowCurrent] = useState(false);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<FieldErrors>({});
   const [saving, setSaving] = useState(false);
 
+  // Clear only the error of the field being edited
+  const clearError = (key: keyof FieldErrors) =>
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+
   const handleSave = async () => {
-    setError("");
+    const newErrors: FieldErrors = {};
 
     if (!currentPassword) {
-      return setError("Please enter your current password");
+      newErrors.current = "Please enter your current password";
     }
 
     const passwordValidation = validatePassword(newPassword);
-
     if (!passwordValidation.valid) {
-      return setError(passwordValidation.message!);
+      newErrors.new = passwordValidation.message!;
     }
 
-    if (newPassword !== confirmPassword) {
-      return setError("Passwords do not match");
+    if (!confirmPassword) {
+      newErrors.confirm = "Please confirm your new password";
+    } else if (newPassword !== confirmPassword) {
+      newErrors.confirm = "Passwords do not match";
     }
 
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     setSaving(true);
 
     try {
@@ -83,13 +118,15 @@ const ChangePassword: React.FC = () => {
       );
 
       if (!res.success) {
-        setError(res.message);
+        // Most server failures here are "current password incorrect".
+        // Change the target field if your API returns a field/code.
+        setErrors({ current: res.message });
         return;
       }
 
       onBack();
     } catch {
-      setError("Something went wrong. Please try again.");
+      setErrors({ general: "Something went wrong. Please try again." });
     } finally {
       setSaving(false);
     }
@@ -114,66 +151,59 @@ const ChangePassword: React.FC = () => {
         <div className="flex-1 overflow-y-auto px-6 py-0 space-y-6 mt-3">
           <div className="space-y-2 pb-1">
             <p className="text-gray-400 font-semibold">
-              Your new password must be at least 8 characters long.
+              Choose a strong new password to keep your account secure.
             </p>
           </div>
-          {error && (
-            <div
-              role="alert"
-              aria-live="polite"
-              className="flex items-start gap-3 rounded-2xl border border-rose-200/80 bg-rose-50 p-4 animate-in fade-in slide-in-from-top-1 duration-200"
-            >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-600">
-                <AlertCircle size={20} strokeWidth={2.2} />
-              </div>
-
-              <div className="min-w-0 flex-1 pt-0.5">
-                <p className="text-sm font-extrabold text-rose-900">
-                  Unable to update password
-                </p>
-                <p className="mt-1 text-sm leading-relaxed text-rose-700">
-                  {error}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setError("")}
-                aria-label="Dismiss error"
-                className="shrink-0 rounded-lg p-1 text-rose-400 transition-colors hover:bg-rose-100 hover:text-rose-700"
-              >
-                <X size={18} />
-              </button>
-            </div>
-          )}
+          
           <PasswordField
             label="Current Password"
             placeholder="Enter current password"
             value={currentPassword}
-            onChange={setCurrentPassword}
+            onChange={(v: string) => {
+              setCurrentPassword(v);
+              clearError("current");
+            }}
             show={showCurrent}
             setShow={setShowCurrent}
+            error={errors.current}
           />
           <PasswordField
             label="New Password"
             placeholder="New Password"
             value={newPassword}
-            onChange={setNewPassword}
+            onChange={(v: string) => {
+              setNewPassword(v);
+              clearError("new");
+            }}
             show={showNew}
             setShow={setShowNew}
+            error={errors.new}
           />
           <PasswordField
             label="Confirm Password"
             placeholder="New Password Confirmation"
             value={confirmPassword}
-            onChange={setConfirmPassword}
+            onChange={(v: string) => {
+              setConfirmPassword(v);
+              clearError("confirm");
+            }}
             show={showConfirm}
             setShow={setShowConfirm}
+            error={errors.confirm}
           />
         </div>
 
         {/* Footer Save Button */}
         <div className="p-6">
+          {errors.general && (
+            <p
+              role="alert"
+              className="mb-3 flex items-start gap-1.5 text-sm font-semibold text-rose-600"
+            >
+              <AlertCircle size={16} className="mt-0.5 shrink-0" />
+              <span>{errors.general}</span>
+            </p>
+          )}
           <button
             onClick={handleSave}
             disabled={saving}
