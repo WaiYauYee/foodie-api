@@ -1,37 +1,67 @@
 import React, { useState } from "react";
 import { User } from "../types/types";
-import { ChevronLeft, Check, X, Zap } from "lucide-react";
+import { ChevronLeft, Check, X, Zap, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
+type FieldErrors = {
+  firstName?: string;
+  lastName?: string;
+  height?: string;
+  birthDate?: string;
+  general?: string;
+};
+
 const InputField = ({
-    label,
-    value,
-    onChange,
-    placeholder,
-    type = "text",
-    icon: Icon,
-  }: any) => (
-    <div className="relative w-full group">
-      <label className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] px-2 mb-2 block">
-        {label}
-      </label>
-      <div className="relative">
-        <input
-          type={type}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="w-full bg-slate-100 shadow-sm border-2 border-slate-100 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none focus:border-emerald-500 transition-all placeholder:text-gray-300 appearance-none"
-        />
-        {Icon && (
-          <div className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-emerald-500 transition-colors pointer-events-none">
-            <Icon size={20} />
-          </div>
-        )}
-      </div>
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  icon: Icon,
+  error,
+}: any) => (
+  <div className="relative w-full group">
+    <label className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] px-2 mb-2 block">
+      {label}
+    </label>
+    <div className="relative">
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        aria-invalid={!!error}
+        className={`w-full bg-slate-100 shadow-sm border-2 rounded-2xl py-5 px-6 text-gray-900 font-bold focus:outline-none transition-all placeholder:text-gray-300 appearance-none ${
+          error
+            ? "border-rose-300 focus:border-rose-500"
+            : "border-slate-100 focus:border-emerald-500"
+        }`}
+      />
+      {Icon && (
+        <div
+          className={`absolute right-5 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
+            error
+              ? "text-rose-300"
+              : "text-gray-300 group-focus-within:text-emerald-500"
+          }`}
+        >
+          <Icon size={20} />
+        </div>
+      )}
     </div>
-  );
+    {error && (
+      <p
+        role="alert"
+        aria-live="polite"
+        className="mt-2 px-2 flex items-start gap-1.5 text-sm font-semibold text-rose-600 animate-in fade-in slide-in-from-top-1 duration-200"
+      >
+        <AlertCircle size={16} className="mt-0.5 shrink-0" />
+        <span>{error}</span>
+      </p>
+    )}
+  </div>
+);
 
 const PersonalInfo: React.FC = () => {
   const navigate = useNavigate();
@@ -45,17 +75,89 @@ const PersonalInfo: React.FC = () => {
   const [birthDate, setBirthDate] = useState(user.birthDate);
   const [heightCm, setHeightCm] = useState(user.heightCm);
 
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [saving, setSaving] = useState(false);
+
   const [showGoalReminder, setShowGoalReminder] = useState(false);
   const [goalType, setGoalType] = useState<string | null>(null);
   const [pendingUpdate, setPendingUpdate] = useState<Partial<User> | null>(
     null,
   );
 
+  // Clear only the error of the field being edited
+  const clearError = (key: keyof FieldErrors) =>
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+
+  const validate = (): FieldErrors => {
+    const e: FieldErrors = {};
+
+    if (!String(firstName ?? "").trim()) {
+      e.firstName = "Please enter your first name";
+    }
+
+    if (!String(lastName ?? "").trim()) {
+      e.lastName = "Please enter your last name";
+    }
+
+    const h = Number(heightCm);
+    if (heightCm == null || !Number.isFinite(h)) {
+      e.height = "Please enter your height";
+    } else if (h < 50 || h > 250) {
+      e.height = "Height must be between 50 and 250 cm";
+    }
+
+    if (!birthDate) {
+      e.birthDate = "Please select your date of birth";
+    } else {
+      const d = new Date(birthDate as any);
+      const now = new Date();
+      const oldest = new Date();
+      oldest.setFullYear(now.getFullYear() - 120);
+
+      if (isNaN(d.getTime())) {
+        e.birthDate = "Please enter a valid date";
+      } else if (d > now) {
+        e.birthDate = "Date of birth can't be in the future";
+      } else if (d < oldest) {
+        e.birthDate = "Please enter a valid date of birth";
+      }
+    }
+
+    return e;
+  };
+
+  const saveUpdates = async (updates: Partial<User>) => {
+    setSaving(true);
+    try {
+      const ok = await updateUser(updates);
+      if (ok) {
+        onBack();
+      } else {
+        setErrors({
+          general: "We couldn't save your changes. Please try again.",
+        });
+      }
+    } catch {
+      setErrors({
+        general: "Something went wrong. Please try again.",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleSave = async () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+
     const updates: Partial<User> = {
       gender,
-      firstName,
-      lastName,
+      firstName: String(firstName).trim(),
+      lastName: String(lastName).trim(),
       heightCm: Number(heightCm),
       birthDate,
     };
@@ -82,7 +184,7 @@ const PersonalInfo: React.FC = () => {
 
     // No calorie-related changes: save normally.
     if (changedFields.length === 0) {
-      if (await updateUser(updates)) onBack();
+      await saveUpdates(updates);
       return;
     }
 
@@ -168,14 +270,22 @@ const PersonalInfo: React.FC = () => {
               <InputField
                 label="First Name"
                 value={firstName}
-                onChange={setFirstName}
+                onChange={(v: string) => {
+                  setFirstName(v);
+                  clearError("firstName");
+                }}
                 placeholder="First Name"
+                error={errors.firstName}
               />
               <InputField
                 label="Last Name"
                 value={lastName}
-                onChange={setLastName}
+                onChange={(v: string) => {
+                  setLastName(v);
+                  clearError("lastName");
+                }}
                 placeholder="Last Name"
+                error={errors.lastName}
               />
             </div>
 
@@ -185,16 +295,24 @@ const PersonalInfo: React.FC = () => {
               <InputField
                 label="Height (cm)"
                 value={heightCm}
-                onChange={setHeightCm}
+                onChange={(v: string) => {
+                  setHeightCm(v as any);
+                  clearError("height");
+                }}
                 placeholder="170"
                 type="number"
+                error={errors.height}
               />
               {/* Native Date Picker */}
               <InputField
                 label="Date of Birth"
                 value={birthDate}
-                onChange={setBirthDate}
+                onChange={(v: string) => {
+                  setBirthDate(v as any);
+                  clearError("birthDate");
+                }}
                 type="date"
+                error={errors.birthDate}
               />
             </div>
           </div>
@@ -202,11 +320,21 @@ const PersonalInfo: React.FC = () => {
 
         {/* Footer Save Button */}
         <div className="p-6 pb-10">
+          {errors.general && (
+            <p
+              role="alert"
+              className="mb-3 flex items-start gap-1.5 text-sm font-semibold text-rose-600"
+            >
+              <AlertCircle size={16} className="mt-0.5 shrink-0" />
+              <span>{errors.general}</span>
+            </p>
+          )}
           <button
             onClick={handleSave}
+            disabled={saving}
             className="w-full bg-[#1A2A33] text-white font-black py-5 rounded-3xl shadow-xl hover:bg-black active:scale-[0.98] transition-all uppercase tracking-widest text-xs"
           >
-            Save Changes
+            {saving ? "Saving..." : "Save Changes"}
           </button>
         </div>
 
